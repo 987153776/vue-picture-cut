@@ -17,7 +17,7 @@ interface BezierInterface {
     [name: string]: number[];
 }
 
-const tp = (v: any) =>Object.prototype.toString.call(v);
+const tp = (v: unknown) =>Object.prototype.toString.call(v);
 
 /**
  * 三次贝塞尔$Bezier([])

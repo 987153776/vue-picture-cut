@@ -98,7 +98,7 @@ export default class Photo {
             this.h = img.height;
             // 初始化矩形
             if (!this.minX) this.setMoveRange();
-            this._initRept();
+            this._initRect();
             this._checkRange();
             // 设置为可操作
             // this.isCan = true
@@ -178,7 +178,7 @@ export default class Photo {
      * 初始化图片矩形
      * @private
      */
-    _initRept () {
+    _initRect () {
         const pw = this.pc.width;
         const ph = this.pc.height;
         const w = this.w;
@@ -518,8 +518,8 @@ export default class Photo {
      * @private
      */
     _isHover (x: number, y: number) {
-        const rept = this.getRept()
-        return x >= rept[0] && y >= rept[1] && x <= rept[2] && y <= rept[3];
+        const rect = this.getRect()
+        return x >= rect[0] && y >= rect[1] && x <= rect[2] && y <= rect[3];
     }
 
     /**
@@ -561,7 +561,7 @@ export default class Photo {
      * 获取图片所在矩形
      * @returns {*[]}
      */
-    getRept () {
+    getRect () {
         return [this.cx, this.cy, this.cx + this.cw, this.cy + this.ch];
     }
 

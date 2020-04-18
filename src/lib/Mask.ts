@@ -16,11 +16,11 @@ export default class Mask {
         this.y = 0;
         this.w = 0;
         this.h = 0;
-        this._initRept();
+        this._initRect();
         this.draw();
     }
 
-    _initRept () {
+    _initRect () {
         const pw = this.pc.width;
         const ph = this.pc.height;
         if (pw > ph) {
@@ -80,7 +80,7 @@ export default class Mask {
         this.draw();
     }
 
-    getRept () {
+    getRect () {
         return [this.x, this.y, this.w, this.h];
     }
 }

@@ -29,6 +29,7 @@ export class PhotoCutting {
     readonly ctx: CanvasRenderingContext2D;
     readonly photo: Photo;
     private mask: Mask;
+    // 图片可移动范围
     private moveRange: number[] | undefined;
 
     // 记录滚轮触发时间
@@ -49,7 +50,7 @@ export class PhotoCutting {
         this.con = con;
         el.width = width * this.magnification;
         el.height = height * this.magnification;
-        // this.moveRange = [0, 0, 0, 0] // 图片可移动范围
+        // this.moveRange = [0, 0, 0, 0]
         this.ctx = el.getContext('2d') as CanvasRenderingContext2D;
         this.ctx.save();
         this.photo = new Photo(this);
@@ -71,16 +72,12 @@ export class PhotoCutting {
         const {width, height} = this;
         if (width > height) {
             const x1 = (width - height) / 2;
-            const y1 = 0;
             const x2 = width - x1;
-            const y2 = width;
-            this.moveRange = [x1, y1, x2, y2];
+            this.moveRange = [x1, 0, x2, width];
         } else {
-            const x1 = 0;
             const y1 = (height - width) / 2;
-            const x2 = height;
             const y2 = height - y1;
-            this.moveRange = [x1, y1, x2, y2];
+            this.moveRange = [0, y1, height, y2];
         }
     }
 
@@ -100,8 +97,8 @@ export class PhotoCutting {
      */
     openMask () {
         this.mask.open();
-        const maskRept = this.mask.getRept();
-        this.photo.setMoveRange(maskRept[0], maskRept[1], maskRept[0] + maskRept[2], maskRept[1] + maskRept[3]);
+        const maskRect = this.mask.getRect();
+        this.photo.setMoveRange(maskRect[0], maskRect[1], maskRect[0] + maskRect[2], maskRect[1] + maskRect[3]);
     }
 
     /**
