@@ -13,8 +13,8 @@ export interface TouchePoint {
 }
 
 interface WheelEvent2{
-    x: number;
-    y: number;
+    offsetX: number;
+    offsetY: number;
     wheelDelta?: number; // chrome & ie
     detail?: number; // firefox
 }
@@ -40,7 +40,7 @@ export class PhotoCutting {
 
     constructor (el: HTMLCanvasElement, width: number, height: number, con: HTMLDivElement) {
         this.canvas = el;
-        this.magnification = 2;
+        this.magnification = 1.5;
         this.width = width * this.magnification;
         this.height = height * this.magnification;
         this.core = {
@@ -167,9 +167,17 @@ export class PhotoCutting {
         this.canvas.addEventListener('mousewheel', event => {
             if (!this.photo) return;
             const e = (event || window.event) as unknown as WheelEvent2;
-            const delta = e.wheelDelta ? e.wheelDelta : e.detail;
-            this._mouseWheel(delta as number, e.x, e.y);
+            const delta = e.wheelDelta || e.detail;
+            this._mouseWheel(delta as number, e.offsetX, e.offsetY);
         });
+    }
+
+    getClientPosition (el: HTMLElement, p: Position): Position {
+        if (el.tagName === 'HTML') {
+            return {x: p.x + el.offsetLeft, y: p.y + el.offsetTop};
+        } else {
+            return this.getClientPosition(el.parentNode as HTMLElement, {x: p.x + el.offsetLeft, y: p.y + el.offsetTop});
+        }
     }
 
     _touchStart (touches: TouchList) {
@@ -260,9 +268,10 @@ export class PhotoCutting {
      * @private
      */
     _getTouchePoint (ct: Touch): TouchePoint {
+        const elOffset = this.getClientPosition(this.canvas, {x: 0, y: 0});
         return {
-            x: ct.pageX * this.magnification,
-            y: ct.pageY * this.magnification,
+            x: (ct.clientX - elOffset.x) * this.magnification,
+            y: (ct.clientY - elOffset.x) * this.magnification,
             id: ct.identifier
         };
     }
@@ -274,8 +283,8 @@ export class PhotoCutting {
      */
     _getMousePoint (ct: MouseEvent): TouchePoint {
         return {
-            x: ct.pageX * this.magnification,
-            y: ct.pageY * this.magnification,
+            x: ct.offsetX * this.magnification,
+            y: ct.offsetY * this.magnification,
             id: 0
         };
     }

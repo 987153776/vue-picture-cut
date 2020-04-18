@@ -3,12 +3,10 @@ $_v_p_c_bg-color: #f3f4f9;
 
 .vue-picture-cut{
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAFfKj/FAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////t7e3a1IluwAAAEJJREFUeNpiYGAEQoAAYgCTAAEEohhBiAEggCAsBBdEAAQQVBQuDZZD5gEBQABhUUOMLgwGQIChmIVhOJEClOiFAgBGQgCBoRdySQAAAABJRU5ErkJggg==");
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 700;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
   * {
     box-sizing: border-box;
   }
@@ -43,7 +41,7 @@ $_v_p_c_bg-color: #f3f4f9;
     }
     &-box{
       background-color: white;
-      border-radius: 12px;
+      border-radius: 12px 12px 0 0;
       font-size: 15px;
       color: $_v_p_c_color;
       overflow: hidden;

@@ -17,7 +17,9 @@ export default class App extends Vue {}
     padding: 0;
   }
   #app {
-    width: 100vw;
-    height: 100vh;
+    width: 90vw;
+    height: 90vh;
+    margin: 5vh 5vw;
+    outline: 1px solid #000;
   }
 </style>

@@ -7,13 +7,13 @@ interface AnimationParamsEnd {
     (): void;
 }
 interface AnimationParams {
-    change?: AnimationParamsChange;
-    duration?: number;
-    timing?: string | number[];
-    delay?: number;
-    iteration?: number | string;
-    direction?: string;
-    end?: AnimationParamsEnd;
+    change: AnimationParamsChange;
+    duration: number;
+    timing: string | number[];
+    delay: number;
+    iteration: number | string;
+    direction: string;
+    end: AnimationParamsEnd;
 }
 export interface AnimationInterface {
     start(): AnimationInterface;
