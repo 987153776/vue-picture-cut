@@ -39,7 +39,7 @@ Vue.user(VuePictureCut);
 ![示例截图](https://github.com/987153776/vue-picture-cut/blob/master/readme/cut.jpg?raw=true)
 
 ## 二、API
-### 1、基本使用
+### 1. 基本使用
 #### 属性Attribute
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ---- | ---- | ---- | ---- | ---- |
@@ -51,15 +51,15 @@ Vue.user(VuePictureCut);
 | ---- | ---- | ---- |
 | change | 当用户处理完图片，点击右下角`√`时的回调 | ({src: base64, file: Blob对象}) |
 
-### 2、其他工具类
-#### 2.1 Bezier对象
+### 2. 其他工具类
+#### 2.1. Bezier对象
 
 ```javascript
   import { Bezier } from 'vue-picture-cut';
 
 ```
 
-(1). 静态属性BEZIER，是一个键值对，包含一些预设值
+* 静态属性BEZIER，是一个键值对，包含一些预设值
 | 键 | 值 | 说明 |
 | ---- | ---- | ---- |
 | linear | \[0.0, 0.0, 1.0, 1.0\] | 线性过渡 |
@@ -68,10 +68,10 @@ Vue.user(VuePictureCut);
 | ease-out | \[0, 0, 0.58, 1.0\] | 由快到慢 |
 | ease-in-out | \[0.42, 0, 0.58, 1.0\] | 由慢到快再到慢 |
 
-(2). 构造函数
+* 构造函数
 一个无参的构造函数，内部调用了`setOptByString('ease')`方法
 
-(3). 方法
+* 方法
 
 | 方法名 | 说明 | 参数 | 返回值 |
 | ---- | ---- | ---- | ---- |
@@ -80,7 +80,7 @@ Vue.user(VuePictureCut);
 | setOptByArr | 设置贝塞尔曲线类型 | (x1: number, y1: number, x2: number, y2: number) | Bezier对象本身 |
 | getPoint | 返回x坐标对应的y坐标值 | (x: number) 0~1之间 | 对应y坐标，0~1之间 |
 
-(4). 参数ParamsInterface说明
+* 参数ParamsInterface说明
 ParamsInterface为包含4个number类型的数组
 
 #### 2.2 createAnimation方法
