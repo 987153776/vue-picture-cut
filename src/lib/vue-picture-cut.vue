@@ -35,22 +35,22 @@
             <div>剪裁</div>
           </div>
           <div class="vue-picture-cut_menu1-item" @click="rotate(-0.5)"
-               :class="{usable: ['all', 'clip'].indexOf(status) > -1}">
+               :class="{usable: ['all'].indexOf(status) > -1}">
             <i class="v-p-icon v-p-icon_rotateLeft"/>
             <div>左旋转</div>
           </div>
           <div class="vue-picture-cut_menu1-item" @click="rotate(0.5)"
-               :class="{usable: ['all', 'clip'].indexOf(status) > -1}">
+               :class="{usable: ['all'].indexOf(status) > -1}">
             <i class="v-p-icon v-p-icon_rotateRight"/>
             <div>右旋转</div>
           </div>
           <div class="vue-picture-cut_menu1-item" @click="flip(false)"
-               :class="{usable: ['all', 'clip'].indexOf(status) > -1}">
+               :class="{usable: ['all'].indexOf(status) > -1}">
             <i class="v-p-icon v-p-icon_flipV"/>
             <div>上下翻转</div>
           </div>
           <div class="vue-picture-cut_menu1-item" @click="flip(true)"
-               :class="{usable: ['all', 'clip'].indexOf(status) > -1}">
+               :class="{usable: ['all'].indexOf(status) > -1}">
             <i class="v-p-icon v-p-icon_flipH"/>
             <div>水平翻转</div>
           </div>
@@ -78,8 +78,8 @@
       /*********data*********/
       loadBoxShow = false;
       @Ref() private form!: HTMLFormElement;
-      @Ref() private fileInput01!: HTMLInputElement;
-      @Ref() private fileInput02!: HTMLInputElement;
+      // @Ref() private fileInput01!: HTMLInputElement;
+      // @Ref() private fileInput02!: HTMLInputElement;
       @Ref() private main!: HTMLDivElement;
       @Ref() private canvas!: HTMLCanvasElement;
       @Ref() private conso!: HTMLDivElement;
@@ -90,7 +90,7 @@
       photoCutting: PhotoCutting | null = null;
       newSrc: string | null = null;
       newBlob: Blob | null = null;
-      status = 'all';
+      status = '';
 
       @Watch('src')
       watchSrc (to: string | null): void {
@@ -112,6 +112,11 @@
                   (this.photoCutting as PhotoCutting).openMask();
                   break;
           }
+      }
+
+      @Watch('photoCutting.photo.isLoad')
+      watchIsLoad (to: boolean): void {
+          this.status = to ? 'all' : '';
       }
 
 
@@ -137,12 +142,12 @@
 
       setImg (src: string | null): void {
           if (!this.photoCutting || !src) return;
-          (this.photoCutting as PhotoCutting).setSrc(src as string);
+          this.photoCutting?.setSrc(src as string);
       }
 
       reset (): void {
           if (!this.photoCutting) return;
-          (this.photoCutting as PhotoCutting).photo.setSrc(this.src as string);
+          this.photoCutting?.photo.setSrc(this.src as string);
       }
 
       close () {
@@ -156,6 +161,7 @@
           }
       }
       sure () {
+          let data: ClipResult;
           switch (this.status) {
               case 'all':
                   this.onChangeEvnt(this.newBlob as Blob, this.newSrc as string);
@@ -163,11 +169,10 @@
                   break;
               case 'clip':
                   if (!this.photoCutting) return;
-                  // eslint-disable-next-line no-case-declarations
-                  const data = ((this.photoCutting as PhotoCutting)).photo.clip() as ClipResult;
+                  data = this.photoCutting.photo.clip() as ClipResult;
                   this.newSrc = data.src;
                   this.newBlob = data.file;
-                  (this.photoCutting as PhotoCutting).photo.setSrc(data.src);
+                  this.photoCutting.photo.setSrc(data.src);
                   this.status = 'all';
                   break;
           }
@@ -189,16 +194,16 @@
        * 旋转
        */
       rotate (deg: number): void {
-          if (!this.photoCutting) return;
-          (this.photoCutting as PhotoCutting).photo.rotate(deg);
+          if (this.status !== 'all') return;
+          this.photoCutting?.photo.rotate(deg);
       }
       /**
        * 翻转，true水平，false垂直
        * @param type
        */
       flip (type = false): void {
-          if (!this.photoCutting) return;
-          (this.photoCutting as PhotoCutting).photo.flip(type);
+          if (this.status !== 'all') return;
+          this.photoCutting?.photo.flip(type);
       }
 
       /*******生命周期********/

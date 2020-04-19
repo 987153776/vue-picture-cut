@@ -6,7 +6,6 @@ import {
     Position,
     TouchePoint
 } from './PhotoCutting';
-import { Win } from './tool';
 
 export interface ClipResult {
     src: string;
@@ -23,7 +22,7 @@ export default class Photo {
     // 状态
     private status: string | null = null;
     // 是否初始化
-    private isLoad = false;
+    isLoad = false;
     // 引用
     private pc: PhotoCutting;
     // 原始图片的坐标
@@ -57,6 +56,8 @@ export default class Photo {
     private touchstartlength = 0;
     // 滚轮数据
     private wheelData = {x: 0, y: 0, zoom: 1} as WheelData;
+
+    private animation: AnimationInterface | undefined = undefined;
 
     private img: HTMLImageElement | null = null;
     private src: string | undefined = undefined;
@@ -101,7 +102,7 @@ export default class Photo {
             this._initRect();
             this._checkRange();
             // 设置为可操作
-            // this.isCan = true
+            this.isCan = true
             this.isLoad = true;
             this.pc.draw();
         })
@@ -231,7 +232,7 @@ export default class Photo {
      * @param y 鼠标y坐标
      */
     mouseWheel (zoom: number, x: number, y: number) {
-        this.wheelAnimation && this.wheelAnimation.abort();
+        this.wheelAnimation?.abort();
 
         this.status = 'wheel';
         this.wheelData = {x, y, zoom};
@@ -264,6 +265,7 @@ export default class Photo {
     }
 
     _touchStart (touch: TouchePoint) {
+        this.animation?.abort();
         if (this.touch.length === 1) {
             if (this.touch[0].id !== touch.id) {
                 this.touch.push(touch);
@@ -438,7 +440,7 @@ export default class Photo {
     _animation (offX: number, offY: number, offW: number, offH: number) {
         this.isCan = false;
         const {cx, cy, cw, ch} = this;
-        createAnimation({
+        this.animation = createAnimation({
             duration: 300,
             timing: 'ease-in-out',
             change: i => {
@@ -474,7 +476,7 @@ export default class Photo {
         const base64 = $tool.clipBy(this.img, cx, cy, cw, ch, 0, 0, maxW, maxH);
         return {
             src: base64,
-            file: this._base64ToBlob(base64)
+            file: $tool.base64ToBlob(base64)
         };
     }
 
@@ -575,36 +577,5 @@ export default class Photo {
      */
     _getPointLength (x1: number, y1: number, x2: number, y2: number) {
         return Math.pow(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2), 0.5);
-    }
-
-    /*
-     * 将base64转Blob对象
-     */
-    _base64ToBlob (url: string) {
-        const format = 'image/jpeg';
-        const code = atob(url.split(',')[1]);
-        const aBuffer = new ArrayBuffer(code.length);
-        const uBuffer = new Uint8Array(aBuffer);
-        for (let i = 0, l = code.length; i < l; i++) {
-            uBuffer[i] = code.charCodeAt(i) & 0xff;
-        }
-        let blob = null;
-        try {
-            blob = new Blob([uBuffer], {type: format})
-        } catch (e) {
-            const win = window as Win;
-            const BlobBuilder = win.BlobBuilder ||
-                win.WebKitBlobBuilder ||
-                win.MozBlobBuilder ||
-                win.MSBlobBuilder;
-            if (e.name === 'TypeError' && BlobBuilder) {
-                const bb = new BlobBuilder();
-                bb.append(uBuffer.buffer);
-                blob = bb.getBlob(format);
-            } else if (e.name === 'InvalidStateError') {
-                blob = new Blob([aBuffer], {type: format});
-            }
-        }
-        return blob;
     }
 }

@@ -304,7 +304,7 @@ export class PhotoCutting {
     }
 
     /**
-     * 回复当前环境
+     * 恢复当前环境
      */
     restore () {
         this.ctx.restore();
@@ -344,7 +344,7 @@ export class PhotoCutting {
      */
     draw () {
         this.clear();
-        this.photo && this.photo.draw();
+        this.photo?.draw();
         this.mask.draw();
     }
 }
