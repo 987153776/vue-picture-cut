@@ -2,7 +2,7 @@
   "name": "vue-picture-cut",
   "version": "0.1.0",
   "description": "## Project setup ``` npm install ```",
-  "main": "babel.config.js",
+  "main": "src/lib/index.ts",
   "directories": {
     "test": "tests"
   },

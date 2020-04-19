@@ -16,7 +16,7 @@ interface AnimationParams {
     end: AnimationParamsEnd;
 }
 export interface AnimationInterface {
-    start(): AnimationInterface;
+    start(): this;
     abort(): void;
 }
 

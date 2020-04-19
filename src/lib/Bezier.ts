@@ -7,9 +7,9 @@ interface ParamsInterface {
     length: number;
 }
 interface CubeInterface {
-    setOpt (arg: string | ParamsInterface): Bezier;
-    setOptByString (arg: string): Bezier;
-    setOptByArr (p1x: number, p1y: number, p2x: number, p2y: number): Bezier;
+    setOpt (arg: string | ParamsInterface): this;
+    setOptByString (arg: string): this;
+    setOptByArr (p1x: number, p1y: number, p2x: number, p2y: number): this;
     getPoint(time: number): number;
 }
 
@@ -41,7 +41,7 @@ export default class Bezier implements CubeInterface {
         this.setOptByString('ease')
     }
 
-    setOpt (arg: string | ParamsInterface = 'ease'): Bezier {
+    setOpt (arg: string | ParamsInterface = 'ease'): this {
         if (tp(arg) === '[object Array]' && (arg as ParamsInterface).length >= 4) {
             const _arg = arg as ParamsInterface;
             return this.setOptByArr(_arg[0], _arg[1], _arg[2], _arg[3]);
@@ -51,7 +51,7 @@ export default class Bezier implements CubeInterface {
         return this.setOptByString('ease');
     }
 
-    setOptByString (arg = 'ease'): Bezier {
+    setOptByString (arg = 'ease'): this {
         let p = Bezier.BEZIER[arg as string];
         if (p === void 0) {
             p = Bezier.BEZIER.ease;
@@ -59,7 +59,7 @@ export default class Bezier implements CubeInterface {
         return this.setOptByArr(p[0], p[1], p[2], p[3]);
     }
 
-    setOptByArr (x1: number, y1: number, x2: number, y2: number): Bezier {
+    setOptByArr (x1: number, y1: number, x2: number, y2: number): this {
         this.pCrt1 = { x: x1, y: y1 };
         this.pCrt2 = { x: x2, y: y2 };
         return this;
