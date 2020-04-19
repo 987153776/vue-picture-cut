@@ -114,6 +114,17 @@ createAnimation会返回一个Animation对象
 
 ##### (1) 参数option
 
+| 参数 | 说明 | 类型 | 可选值 | 必需 | 默认值 |
+| ---- | ---- | ---- | ---- | ---- | ---- |
+| duration | 动画持续时间，单位毫秒 | number | —— | false | 1000 |
+| timing | 动画的过渡类型 | string、number[] | Bezier.BEZIER中的值，或者ParamsInterface类型 | false | ease |
+| delay | 动画的延迟时间，单位毫秒 | number | —— | false | 0 |
+| iteration | 动画循环次数，infinite为无限循环 | number、string | 'infinite'或正整数 | false | 0 |
+| direction | 动画在循环中是否反向运动 | string | normal(默认，正向运动)；reverse(反向运行)；alternate(先正向，后反向，并交替)；alternate-reverse(先反向，后正向，并交替)。 | false | normal |
+| change | 回调函数，接收参数x，x在0~1之间，动画在这里处理 | Function | —— | false | —— |
+| end | 回调函数，动画结束时执行 | Function | —— | false | —— |
+
+
 
 #### 2.3 Tool对象
 
