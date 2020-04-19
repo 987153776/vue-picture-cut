@@ -2,7 +2,7 @@
 
 基于vue和typescript开发的一款图片剪裁处理工具
 
-## 使用方法
+## 一、使用方法
 ### 通过npm安装插件
 ```nodejs
 npm install vue-picture-cut
@@ -35,7 +35,8 @@ Vue.user(VuePictureCut);
   }
 </script>
 ```
-
+### 截图
+![示例截图](https://github.com/987153776/vue-picture-cut/blob/master/readme/cut.jpg?raw=true)
 
 ## Project setup
 ```
