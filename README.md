@@ -151,7 +151,7 @@ createAnimation会返回一个Animation对象
 | 方法名 | 说明 | 参数 | 返回值 |
 | ---- | ---- | ---- | ---- |
 | loadImg | 加载图片 | (src: string) | Promise对象 |
-| clipBy | 根据坐标剪裁图像 | img：Image对象；cx：开始剪切的 x 坐标位置；cy：开始剪切的 y 坐标位置；cw：被剪切图像的宽度；ch：被剪切图像的高度；nx：在画布上放置图像的 x 坐标位置；ny：在画布上放置图像的 y 坐标位置；nw：要使用的图像的宽度；nh：要使用的图像的高度；encoderOptions：图片质量，0~1之间，默认0.8；format：返回的图片类型，默认'image/jpeg'。 | base64 |
+| clipBy | 根据坐标剪裁图像 | img：Image对象；  cx：开始剪切的 x 坐标位置；  cy：开始剪切的 y 坐标位置；  cw：被剪切图像的宽度；  ch：被剪切图像的高度；  nx：在画布上放置图像的 x 坐标位置；ny：在画布上放置图像的 y 坐标位置；nw：要使用的图像的宽度；nh：要使用的图像的高度；encoderOptions：图片质量，0~1之间，默认0.8；format：返回的图片类型，默认'image/jpeg'。 | base64 |
 | clipByMax | 若图片宽或高大于max，则压缩图片 | img：Image对象；max: 图片最大宽(高)，默认2000。 | { src: base64, file: Blob对象 } |
 | base64ToBlob | 将base64转Blob对象 | url：base64；format：转换后图片的类型，默认'image/jpeg' | Promise对象 |
 
