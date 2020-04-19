@@ -7,7 +7,7 @@ interface ParamsInterface {
     length: number;
 }
 interface CubeInterface {
-    setOpt (arg?: string | ParamsInterface): Bezier;
+    setOpt (arg: string | ParamsInterface): Bezier;
     setOptByString (arg: string): Bezier;
     setOptByArr (p1x: number, p1y: number, p2x: number, p2y: number): Bezier;
     getPoint(time: number): number;
@@ -41,7 +41,7 @@ export default class Bezier implements CubeInterface {
         this.setOptByString('ease')
     }
 
-    setOpt (arg?: string | ParamsInterface): Bezier {
+    setOpt (arg: string | ParamsInterface = 'ease'): Bezier {
         if (tp(arg) === '[object Array]' && (arg as ParamsInterface).length >= 4) {
             const _arg = arg as ParamsInterface;
             return this.setOptByArr(_arg[0], _arg[1], _arg[2], _arg[3]);
@@ -59,18 +59,18 @@ export default class Bezier implements CubeInterface {
         return this.setOptByArr(p[0], p[1], p[2], p[3]);
     }
 
-    setOptByArr (p1x: number, p1y: number, p2x: number, p2y: number): Bezier {
-        this.pCrt1 = { x: p1x, y: p1y };
-        this.pCrt2 = { x: p2x, y: p2y };
+    setOptByArr (x1: number, y1: number, x2: number, y2: number): Bezier {
+        this.pCrt1 = { x: x1, y: y1 };
+        this.pCrt2 = { x: x2, y: y2 };
         return this;
     }
 
     /**
      * 计算公式
-     * @param time
+     * @param x
      */
-    getPoint(time: number): number {
-        const _matrix1 = [1, time, time * time, time * time * time];
+    getPoint(x: number): number {
+        const _matrix1 = [1, x, x * x, x * x * x];
         const _matrix2 = [
             [1, 0, 0, 0],
             [-3, 3, 0, 0],
