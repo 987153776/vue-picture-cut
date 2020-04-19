@@ -8,14 +8,14 @@
 npm install vue-picture-cut
 ```
 ### 在vue中使用
-1. main.js 中全局引用
+1. 在`main.js`中全局引用
 ```javascript
 import Vue from 'vue';
 import VuePictureCut from 'vue-picture-cut';
 
 Vue.user(VuePictureCut);
 ```
-2. 在.vue文件中单独引用
+2. 或者在`.vue`文件中单独引用
 ```vue
 <template>
   <div>
