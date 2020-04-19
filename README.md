@@ -52,7 +52,7 @@ Vue.user(VuePictureCut);
 | change | 当用户处理完图片，点击右下角`√`时的回调 | ({src: base64, file: Blob对象}) |
 
 ### 2、其他工具类
-#### Bezier对象
+#### 2.1 Bezier对象
 
 ```javascript
   import { Bezier } from 'vue-picture-cut';
@@ -73,12 +73,22 @@ Vue.user(VuePictureCut);
 
 (3). 方法
 
-#### createAnimation方法
+| 方法名 | 说明 | 参数 | 返回值 |
+| ---- | ---- | ---- | ---- |
+| setOpt | 设置贝塞尔曲线类型 | (arg: string \| ParamsInterface = 'ease') | Bezier对象本身 |
+| setOptByString | 设置贝塞尔曲线类型 | BEZIER预设值(arg = 'ease') | Bezier对象本身 |
+| setOptByArr | 设置贝塞尔曲线类型 | (x1: number, y1: number, x2: number, y2: number) | Bezier对象本身 |
+| getPoint | 返回x坐标对应的y坐标值 | (x: number) 0~1之间 | 对应y坐标，0~1之间 |
+
+(4). 参数ParamsInterface说明
+ParamsInterface为包含4个number类型的数组
+
+#### 2.2 createAnimation方法
 ```javascript
   import { createAnimation } from 'vue-picture-cut';
 ```
 
-#### Tool对象
+#### 2.3 Tool对象
 ```javascript
   import { Tool } from 'vue-picture-cut';
 ```
