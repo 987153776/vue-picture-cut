@@ -52,6 +52,31 @@ Vue.user(VuePictureCut);
 | change | 当用户处理完图片，点击右下角`√`时的回调 | ({src: base64, file: Blob对象}) |
 
 ### 2、其他工具类
+#### Bezier对象
+```javascript
+  import { Bezier } from 'vue-picture-cut';
+```
+(1). 静态属性BEZIER，是一个键值对，包含一些预设值
+| 键 | 值 | 说明 |
+| ---- | ---- | ---- |
+| linear | \[0.0, 0.0, 1.0, 1.0\] | 线性过渡 |
+| ease | \[0.25, 0.1, 0.25, 1.0\] | 平滑过渡 |
+| ease-in | \[0.42, 0, 1.0, 1.0\] | 由慢到快 |
+| ease-out | \[0, 0, 0.58, 1.0\] | 由快到慢 |
+| ease-in-out | \[0.42, 0, 0.58, 1.0\] | 由慢到快再到慢 |
+(2). 构造函数
+一个无参的构造函数，内部调用了`setOptByString('ease')`方法
+(3). 方法
+
+#### createAnimation方法
+```javascript
+  import { createAnimation } from 'vue-picture-cut';
+```
+
+#### Tool对象
+```javascript
+  import { Tool } from 'vue-picture-cut';
+```
 
 
 
