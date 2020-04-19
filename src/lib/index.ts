@@ -11,7 +11,7 @@ export {
 };
 
 export default {
-    install: (Vue: Vue.VueConstructor, options?: any) => {
+    install: (Vue: Vue.VueConstructor) => {
         Vue.component('vue-picture-cut', vuePictureCut);
     }
 };

@@ -64,7 +64,8 @@ Vue.user(VuePictureCut);
 
 | 事件名 | 说明 | 回调参数 |
 | ---- | ---- | ---- |
-| change | 当用户处理完图片，点击右下角`√`时的回调 | ({src: base64, file: Blob对象}) |
+| change | 当用户处理完图片，点击右下角`√`时的回调 | ({base64: string, blob: Blob}) |
+| close | 点击右下角`×`时的回调 | —— |
 
 ### 2、其他工具类
 #### 2.1 Bezier对象

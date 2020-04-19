@@ -57,7 +57,7 @@ export default class Photo {
     // 滚轮数据
     private wheelData = {x: 0, y: 0, zoom: 1} as WheelData;
 
-    private animation: AnimationInterface | undefined = undefined;
+    animation: AnimationInterface | undefined = undefined;
 
     private img: HTMLImageElement | null = null;
     private src: string | undefined = undefined;

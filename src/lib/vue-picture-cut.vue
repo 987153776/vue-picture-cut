@@ -1,7 +1,7 @@
 <template>
   <div class="vue-picture-cut">
     <div class="vue-picture-cut_console" ref="conso"/>
-    <div class="vue-picture-cut_header">
+    <div class="vue-picture-cut_header" v-if="choose">
       <i class="vue-picture-cut_load-bt v-p-icon v-p-icon_import" @click="loadBoxShow = !loadBoxShow"/>
       <transition name="vue-picture-cut_mask">
         <div class="vue-picture-cut_mask" v-show="loadBoxShow" @click="loadBoxShow = false"/>
@@ -66,14 +66,23 @@
 </template>
 
 <script lang="ts">
-  import { Component, PropSync, Watch, Vue, Ref, Emit } from 'vue-property-decorator';
+  import { Component, Prop, Watch, Vue, Ref, Emit } from 'vue-property-decorator';
   import photoCutting, { PhotoCutting } from './PhotoCutting';
   import { ClipResult } from './Photo';
 
   @Component
   export default class VuePictureCut extends Vue {
-      @PropSync('show', { type: Boolean }) private syncedShow!: boolean;
-      // @Prop() private src: string | null = null;
+      // @PropSync('show', { type: Boolean }) private syncedShow!: boolean;
+      @Prop({
+          type: String,
+          default: null,
+          required: false
+      }) private src!: string | null;
+      @Prop({
+          type: Boolean,
+          default: true,
+          required: false
+      }) private choose!: boolean;
 
       /*********data*********/
       loadBoxShow = false;
@@ -84,7 +93,7 @@
       @Ref() private canvas!: HTMLCanvasElement;
       @Ref() private conso!: HTMLDivElement;
       file: File | null = null;
-      src: string | null = null;
+      oldSrc: string | null = null;
       winHeight = 0;
       winWidth = 0;
       photoCutting: PhotoCutting | null = null;
@@ -94,6 +103,15 @@
 
       @Watch('src')
       watchSrc (to: string | null): void {
+          if (to) {
+              if (this.photoCutting) {
+                  this.setImg(to);
+              }
+          }
+      }
+
+      @Watch('oldSrc')
+      watchOldSrc (to: string | null): void {
           if (to) {
               if (this.photoCutting) {
                   this.setImg(to);
@@ -123,7 +141,7 @@
       myChange (e: Event): void {
           const file = ((e.target as HTMLInputElement).files as FileList)[0];
           this.file = file;
-          this.src = URL.createObjectURL(file);
+          this.oldSrc = URL.createObjectURL(file);
           this.loadBoxShow = false;
           (this.form as HTMLFormElement).reset();
       }
@@ -137,7 +155,7 @@
               this.winHeight,
               this.conso as HTMLDivElement
           );
-          this.setImg(this.src as string);
+          this.setImg(this.oldSrc as string);
       }
 
       setImg (src: string | null): void {
@@ -147,13 +165,13 @@
 
       reset (): void {
           if (!this.photoCutting) return;
-          this.photoCutting?.photo.setSrc(this.src as string);
+          this.photoCutting?.photo.setSrc(this.oldSrc as string);
       }
 
       close () {
           switch (this.status) {
               case 'all':
-                  this.syncedShow = false;
+                  this.onCloseEvent();
                   break;
               case 'clip':
                   this.status = 'all';
@@ -164,8 +182,7 @@
           let data: ClipResult;
           switch (this.status) {
               case 'all':
-                  this.onChangeEvnt(this.newBlob as Blob, this.newSrc as string);
-                  this.close();
+                  this.onChangeEvent(this.newBlob as Blob, this.newSrc as string);
                   break;
               case 'clip':
                   if (!this.photoCutting) return;
@@ -209,12 +226,20 @@
       /*******生命周期********/
       protected mounted (): void {
           this.loadCanvas();
+          if (this.photoCutting) {
+              this.setImg(this.oldSrc);
+          }
       }
 
       /*******事件********/
       @Emit('on-change')
-      onChangeEvnt (newBlob: Blob, newSrc: string) {
-          return {newBlob, newSrc};
+      onChangeEvent (blob: Blob, base64: string) {
+          return {blob, base64};
+      }
+
+      @Emit('on-close')
+      onCloseEvent () {
+          //
       }
   }
 </script>

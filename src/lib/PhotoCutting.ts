@@ -230,6 +230,7 @@ export class PhotoCutting {
         if (now - this.wheelTime > 200 && !this.wheelstutas) {
             // 滚轮开始
             this.wheelstutas = true;
+            this.photo.animation?.abort();
         }
         this.wheelTime = now;
         this.wheelTimeOut = setTimeout(() => {
