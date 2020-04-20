@@ -10,7 +10,22 @@ $_v_p_c_bg-color: #f3f4f9;
   * {
     box-sizing: border-box;
   }
-
+  button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-focus: normal;
+    -moz-user-select: none;
+    &:focus{
+      outline: none;
+    }
+    &:disabled{
+      color: inherit;
+      opacity: .5;
+    }
+  }
   &_mask{
     background-color: rgba(0,0,0,.3);
     position: absolute;
@@ -109,9 +124,6 @@ $_v_p_c_bg-color: #f3f4f9;
       left: 0;
       right: 0;
       bottom: 0;
-      .usable {
-        opacity: 1;
-      }
     }
     &-child{
       display: flex;
@@ -190,22 +202,21 @@ $_v_p_c_bg-color: #f3f4f9;
       transform: scale(1);
     }
     &-item{
+      display: block;
       flex: none;
       width: 60px;
       height: 66px;
-      padding-top: 10px;
       text-align: center;
-      opacity: 0.5;
+      font: inherit;
+      background: transparent;
       cursor: pointer;
       div{
         font-size: 12px;
         line-height: 16px;
       }
-      &.usable{
-        &:active{
-          i{
-            transform: scale(1.2);
-          }
+      &:not(:disabled):active{
+        i{
+          transform: scale(1.2);
         }
       }
       &.active{
@@ -223,15 +234,23 @@ $_v_p_c_bg-color: #f3f4f9;
     left: 0;
     right: 0;
     bottom: 0;
-    i{
+    button{
       display: block;
-      width: 40px;
+      width: 60px;
       height: 50px;
-      font-size: 20px;
-      margin: 0 10px;
-      opacity: 0.5;
+      font-size: 18px;
+      padding: 0 10px;
       text-align: center;
       cursor: pointer;
+      transition: all .15s;
+      transform-origin: center;
+      transform: scale(1);
+      &:not(:disabled):active{
+        transform: scale(1.1);
+      }
+    }
+    &_reset{
+      margin: 0 auto;
     }
     .v-p-icon_cancel{
       float: left;

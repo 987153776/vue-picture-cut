@@ -29,37 +29,43 @@
     <div class="vue-picture-cut_menu-box">
       <div class="vue-picture-cut_menu1">
         <div class="flex-center">
-          <div class="vue-picture-cut_menu1-item" @click="clip"
-               :class="{usable: ['all', 'clip'].indexOf(status) > -1, 'active': status === 'clip'}">
+          <button class="vue-picture-cut_menu1-item" @click="clip"
+                  :disabled="['all', 'clip'].indexOf(status) === -1"
+                  :class="{'active': status === 'clip'}">
             <i class="v-p-icon v-p-icon_clip"/>
             <div>剪裁</div>
-          </div>
-          <div class="vue-picture-cut_menu1-item" @click="rotate(-0.5)"
-               :class="{usable: ['all'].indexOf(status) > -1}">
+          </button>
+          <button class="vue-picture-cut_menu1-item" @click="rotate(-0.5)"
+                  :disabled="['all'].indexOf(status) === -1">
             <i class="v-p-icon v-p-icon_rotateLeft"/>
             <div>左旋转</div>
-          </div>
-          <div class="vue-picture-cut_menu1-item" @click="rotate(0.5)"
-               :class="{usable: ['all'].indexOf(status) > -1}">
+          </button>
+          <button class="vue-picture-cut_menu1-item" @click="rotate(0.5)"
+                  :disabled="['all'].indexOf(status) === -1">
             <i class="v-p-icon v-p-icon_rotateRight"/>
             <div>右旋转</div>
-          </div>
-          <div class="vue-picture-cut_menu1-item" @click="flip(false)"
-               :class="{usable: ['all'].indexOf(status) > -1}">
+          </button>
+          <button class="vue-picture-cut_menu1-item" @click="flip(false)"
+                  :disabled="['all'].indexOf(status) === -1">
             <i class="v-p-icon v-p-icon_flipV"/>
             <div>上下翻转</div>
-          </div>
-          <div class="vue-picture-cut_menu1-item" @click="flip(true)"
-               :class="{usable: ['all'].indexOf(status) > -1}">
+          </button>
+          <button class="vue-picture-cut_menu1-item" @click="flip(true)"
+                  :disabled="['all'].indexOf(status) === -1">
             <i class="v-p-icon v-p-icon_flipH"/>
             <div>水平翻转</div>
-          </div>
+          </button>
         </div>
       </div>
       <div class="vue-picture-cut_menu2">
-        <i class="v-p-icon v-p-icon_cancel usable" @click="close"/>
-        <i class="v-p-icon v-p-icon_sure usable" @click="sure"/>
-        <span class="vue-picture-cut_reset" @click="reset">还原</span>
+        <button class="v-p-icon v-p-icon_cancel usable"
+                @click="close"/>
+        <button class="v-p-icon v-p-icon_sure usable"
+                :disabled="status === ''"
+                @click="sure"/>
+        <button class="vue-picture-cut_menu2_reset"
+                :disabled="oldSrc === null"
+                @click="reset">还原</button>
       </div>
     </div>
   </div>
@@ -72,7 +78,6 @@
 
   @Component
   export default class VuePictureCut extends Vue {
-      // @PropSync('show', { type: Boolean }) private syncedShow!: boolean;
       @Prop({
           type: String,
           default: null,
@@ -104,11 +109,7 @@
       @Watch('src')
       watchSrc (to: string | null): void {
           if (to) {
-              if (this.photoCutting) {
-                  this.newBlob = null;
-                  this.newSrc = null;
-                  this.setImg(to);
-              }
+              this.oldSrc = to;
           }
       }
 
@@ -182,12 +183,11 @@
 
       close () {
           switch (this.status) {
-              case 'all':
-                  this.onCloseEvent();
-                  break;
               case 'clip':
                   this.status = 'all';
                   break;
+              default:
+                  this.onCloseEvent();
           }
       }
       sure () {
@@ -222,7 +222,6 @@
        * 旋转
        */
       rotate (deg: number): void {
-          if (this.status !== 'all') return;
           this.photoCutting?.photo.rotate(deg);
       }
       /**
@@ -230,7 +229,6 @@
        * @param type
        */
       flip (type = false): void {
-          if (this.status !== 'all') return;
           this.photoCutting?.photo.flip(type);
       }
 
