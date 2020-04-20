@@ -1,6 +1,6 @@
 {
   "name": "vue-picture-cut",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "基于vue和typescript开发的一款图片剪裁处理工具",
   "main": "src/lib/index.ts",
   "directories": {
