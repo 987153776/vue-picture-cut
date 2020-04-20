@@ -1,6 +1,6 @@
 # vue-picture-cut
 
-***0.1.2版本已发布，欢迎实用！***  
+***0.1.3版本已发布，欢迎实用！***  
   
 基于vue和typescript开发的一款图片剪裁处理工具  
 <a href="https://github.com/987153776/vue-picture-cut" target="_blank">github主页</a>  
