@@ -105,6 +105,8 @@ export default class Photo {
             this.isCan = true
             this.isLoad = true;
             this.pc.draw();
+        }, () => {
+            console.error('加载图片出错！');
         })
     }
 
@@ -473,6 +475,7 @@ export default class Photo {
         const cy = 0 - offy * r;
         const cw = maxW * r;
         const ch = maxH * r;
+        // const base64 = $tool.clipBy(this.img, cx, cy, cw, ch, 0, 0, maxW, maxH);
         const base64 = $tool.clipBy(this.img, cx, cy, cw, ch, 0, 0, maxW, maxH);
         return {
             src: base64,
@@ -485,7 +488,7 @@ export default class Photo {
      * @param deg
      */
     rotate (deg: number) {
-        const base64 = $filter.rotateProcess(this.img as HTMLImageElement, deg)
+        const base64 = $filter.rotateProcess(this.img as HTMLImageElement, deg);
         if (this.isThisCreate) this.minX = null;
         this.setSrc(base64);
     }
@@ -495,7 +498,8 @@ export default class Photo {
      * @param status
      */
     flip (status: boolean) {
-        const base64 = $filter.flipProcess(this.img as HTMLImageElement, status)
+        const base64 = $filter.flipProcess(this.img as HTMLImageElement, status);
+        if (this.isThisCreate) this.minX = null;
         this.setSrc(base64);
     }
 
@@ -550,11 +554,11 @@ export default class Photo {
             ch = newLocation[3];
         }
         return [
-            cx - (minX as number),
+            cx - (minX || 0),
             cy - minY,
             cx + cw - maxX,
             cy + ch - maxY,
-            cw - (maxX - (minX as number)),
+            cw - (maxX - (minX || 0)),
             ch - (maxY - minY)
         ];
     }

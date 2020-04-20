@@ -22,7 +22,6 @@ export default class App extends Vue {
     }
 
     cutChange({ blob, base64 }: {blob: Blob; base64: string}) {
-        console.dir(blob);
         this.blob = blob;
         this.base64 = base64;
     }

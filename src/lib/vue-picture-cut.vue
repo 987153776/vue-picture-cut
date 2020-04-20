@@ -105,6 +105,8 @@
       watchSrc (to: string | null): void {
           if (to) {
               if (this.photoCutting) {
+                  this.newBlob = null;
+                  this.newSrc = null;
                   this.setImg(to);
               }
           }
@@ -114,6 +116,8 @@
       watchOldSrc (to: string | null): void {
           if (to) {
               if (this.photoCutting) {
+                  this.newBlob = null;
+                  this.newSrc = null;
                   this.setImg(to);
               }
           }
@@ -168,6 +172,14 @@
           this.photoCutting?.photo.setSrc(this.oldSrc as string);
       }
 
+      updateNewData () {
+          if (this.photoCutting) {
+              const data = this.photoCutting.photo.clip() as ClipResult;
+              this.newSrc = data.src;
+              this.newBlob = data.file;
+          }
+      }
+
       close () {
           switch (this.status) {
               case 'all':
@@ -179,17 +191,16 @@
           }
       }
       sure () {
-          let data: ClipResult;
           switch (this.status) {
               case 'all':
+                  if (!this.photoCutting) return;
+                  this.updateNewData();
                   this.onChangeEvent(this.newBlob as Blob, this.newSrc as string);
                   break;
               case 'clip':
                   if (!this.photoCutting) return;
-                  data = this.photoCutting.photo.clip() as ClipResult;
-                  this.newSrc = data.src;
-                  this.newBlob = data.file;
-                  this.photoCutting.photo.setSrc(data.src);
+                  this.updateNewData();
+                  this.photoCutting.photo.setSrc(this.newSrc as string);
                   this.status = 'all';
                   break;
           }
