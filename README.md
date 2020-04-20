@@ -1,6 +1,6 @@
 # vue-picture-cut
 
-***0.1.3版本已发布，欢迎实用！***  
+***0.1.4版本已发布，欢迎实用！***  
   
 基于vue和typescript开发的一款图片剪裁处理工具  
 <a href="https://github.com/987153776/vue-picture-cut" target="_blank">github主页</a>  
@@ -22,6 +22,7 @@ npm install vue-picture-cut
 
 ```javascript
 import Vue from 'vue';
+import 'vue-picture-cut/lib/vue-picture-cut.css';
 import VuePictureCut from 'vue-picture-cut';
 
 Vue.user(VuePictureCut);
@@ -37,6 +38,7 @@ Vue.user(VuePictureCut);
 </template>
 
 <script>
+  import 'vue-picture-cut/lib/vue-picture-cut.css';
   import { VuePictureCut } from 'vue-picture-cut';
     
   export default {
@@ -48,6 +50,10 @@ Vue.user(VuePictureCut);
   }
 </script>
 ```
+
+3. 注意  
+
+**组件在使用时，宽高跟随父级标签，所以需要设置父级标签的宽高。**
 
 ### 截图
 

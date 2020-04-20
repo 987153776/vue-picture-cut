@@ -3,8 +3,12 @@ node_modules/
 public/
 dist/
 tests/
+src/
+readme/
 vue.config.js
 babel.config.js
+package-lock.json
+tsconfig.json
 *.map
 *.html
 
