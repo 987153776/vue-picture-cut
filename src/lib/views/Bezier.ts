@@ -1,21 +1,9 @@
-interface Point {
-    x: number;
-    y: number;
-}
-interface ParamsInterface {
-    [index: number]: number;
-    length: number;
-}
-interface CubeInterface {
-    setOpt (arg: string | ParamsInterface): this;
-    setOptByString (arg: string): this;
-    setOptByArr (p1x: number, p1y: number, p2x: number, p2y: number): this;
-    getPoint(time: number): number;
-}
-
-interface BezierInterface {
-    [name: string]: number[];
-}
+import {
+    Point,
+    ParamsInterface,
+    CubeInterface,
+    BezierInterface
+} from './interface';
 
 const tp = (v: unknown) =>Object.prototype.toString.call(v);
 

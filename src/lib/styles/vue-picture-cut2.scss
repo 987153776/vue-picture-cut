@@ -1,0 +1,76 @@
+@import "~element-ui/packages/theme-chalk/src/slider";
+
+$_v_p_c_color: #444;
+$_v_p_c_bg-color: #f3f4f9;
+
+.vue-picture-cut2{
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAFfKj/FAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////t7e3a1IluwAAAEJJREFUeNpiYGAEQoAAYgCTAAEEohhBiAEggCAsBBdEAAQQVBQuDZZD5gEBQABhUUOMLgwGQIChmIVhOJEClOiFAgBGQgCBoRdySQAAAABJRU5ErkJggg==");
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  * {
+    box-sizing: border-box;
+  }
+
+  &_main{
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 116px;
+  }
+  &_canvas{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  &_mask{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  &_menu{
+    &-box{
+      background-color: $_v_p_c_bg-color;
+      height: 116px;
+      color: $_v_p_c_color;
+      font-size: 16px;
+      line-height: 50px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2000;
+    }
+  }
+  // 默认菜单按钮
+  &_default-menu{
+    width: 56px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 2px;
+    background-color: #fff;
+    margin-left: -28px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    cursor: pointer;
+    &:active{
+      background-color: #f4f5f6;
+    }
+  }
+  &_slider{
+    position: absolute !important;
+    bottom: 20px;
+    right: 20px;
+  }
+}

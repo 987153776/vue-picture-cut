@@ -1,8 +1,15 @@
 <template>
   <div id="app">
     <input type="file" accept="image/*" @change="inputChange"/>
-    <a download="xxx.jpeg" :href="base64" :style="{'background-image': `url(${base64})`}">处理后预览</a>
-    <vue-picture-cut class="cut" :src="src" @on-change="cutChange"/>
+    <a download="xxx.jpeg" :href="base64"
+       :style="{'background-image': `url(${base64})`}">
+      处理后预览<br/>点击下载
+    </a>
+    <vue-picture-cut class="cut" :src="src" rotate-control
+                      :msk-option="{width: 4, height: 5, isRound: true, resize: true}"
+                      @on-change="cutChange">
+      <!--      <vue-picture-cut-menu slot="menu" @on-change="cutChange"/>-->
+    </vue-picture-cut>
   </div>
 </template>
 
@@ -12,23 +19,28 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class App extends Vue {
 
-    private src: string | null = null;
-    private blob: Blob | null = null;
-    private base64: string | null = null;
+  private src: string | null = null;
+  private blob: Blob | null = null;
+  private base64: string | null = null;
 
-    inputChange (e: Event) {
-        const file = ((e.target as HTMLInputElement).files as FileList)[0];
-        this.src = URL.createObjectURL((file));
+  inputChange (e: Event) {
+    const files = (e.target as HTMLInputElement).files as FileList;
+    if (files.length > 0) {
+      this.src = URL.createObjectURL(files[0]);
     }
+  }
 
-    cutChange({ blob, base64 }: {blob: Blob; base64: string}) {
-        this.blob = blob;
-        this.base64 = base64;
-    }
+  cutChange({ blob, base64 }: {blob: Blob; base64: string}) {
+    this.blob = blob;
+    this.base64 = base64;
+  }
 }
 </script>
 
 <style lang="scss">
+  html{
+    font-family: Avenir, Helvetica, Arial, sans-serif, "微软雅黑";
+  }
   html,body{
     margin: 0;
     padding: 0;
@@ -44,6 +56,7 @@ export default class App extends Vue {
       border: 1px solid #000;
       background-repeat: no-repeat;
       background-size: contain;
+      background-position: center;
       color: #777;
       font-size: 12px;
       img{

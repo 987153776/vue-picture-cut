@@ -1,0 +1,36 @@
+<template>
+  <canvas class="vue-picture-cut2_canvas"/>
+</template>
+
+<script lang="ts">
+import {Component, Vue, Inject, Prop, Watch} from 'vue-property-decorator';
+import PhotoRoot from "./PhotoRoot";
+import PhotoMain from "./PhotoMain";
+
+@Component
+export default class VuePictureCutCanvas extends Vue {
+  @Inject({from: 'vuePictureCut', default: 'photoRoot'})
+  photoRoot!: PhotoRoot;
+  // 旋转
+  @Prop({ type: Number, required: false}) private angle: number | undefined;
+
+  PhotoMain: PhotoMain | null = null;
+
+  @Watch('angle')
+  watchAngle (to: number | undefined): void {
+    if (this.PhotoMain && to !== undefined) {
+      this.PhotoMain.setAngle(to, true);
+    }
+  }
+
+  /*******生命周期********/
+  protected mounted (): void {
+    setTimeout(() => {
+      this.PhotoMain = new PhotoMain(
+        this.$el as HTMLCanvasElement,
+        this.photoRoot
+      );
+    }, 0);
+  }
+}
+</script>
