@@ -2,6 +2,8 @@
 
 ***2.x版本即将发布***  
 
+<a href="https://github.com/987153776/vue-picture-cut/tree/1.0">1.x版本点这里</a>
+
 `
 用法更简单，功能更强大
 `
