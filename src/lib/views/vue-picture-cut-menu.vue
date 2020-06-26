@@ -17,11 +17,11 @@ export default class VuePictureCutMenu extends Vue {
 
   /*******事件********/
   @Emit('on-change')
-  onChangeEvent (blob: Blob, base64: string) {
+  onChangeEvent (blob: Blob, base64: string): {blob: Blob, base64: string} {
     return {blob, base64};
   }
   // 默认裁剪
-  sureCut() {
+  sureCut(): void{
     const mask = this.photoRoot.eventList.get('PhotoMask') as PhotoMask | undefined;
     if (mask) {
       const result = mask.clip();
@@ -32,7 +32,3 @@ export default class VuePictureCutMenu extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

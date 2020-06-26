@@ -1,22 +1,28 @@
 <template>
   <div class="vue-picture-cut2">
-    <div class="vue-picture-cut2_main" ref="main" :style="[ hasMenu || { bottom: 0 } ]">
+    <div class="vue-picture-cut2_main" ref="main" :style="[ hasMenu || { bottom: '50px' } ]">
       <vue-picture-cut-canvas :angle="initAngle"/>
       <slot>
         <vue-picture-cut-mask v-bind="mskOption"/>
       </slot>
     </div>
-    <div class="vue-picture-cut2_menu-box" :style="[ hasMenu || { height: 0 } ]">
+    <div class="vue-picture-cut2_menu-box" :style="[ hasMenu || { height: '50px' } ]">
       <slot name="menu">
-        <slider class="vue-picture-cut2_slider"
-                v-if="rotateControl"
-                v-model="sliderAngle"
-                :min="0"
-                :max="359"
-                :height="sliderHeight"
-                :style="{ bottom: sliderBottom }"
-                vertical/>
-        <div v-show="src" class="vue-picture-cut2_default-menu" @click="sureCut">确定</div>
+        <div class="vue-picture-cut2_default-menu">
+          <div class="vue-picture-cut2_slider"
+               v-if="rotateControl">
+            <input type="range" v-model="sliderAngle" :min="-180" :max="180"/>
+            <div class="vue-picture-cut2_slider-box">
+              <div class="vue-picture-cut2_slider-box-bar"
+                   :style="{left: sliderAngle * 100 / 361 + 50 + '%'}">
+                <div class="vue-picture-cut2_slider-box-tips">
+                  {{ sliderAngle }}°
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-show="src" class="vue-picture-cut2_button" @click="sureCut">确定</div>
+        </div>
       </slot>
     </div>
   </div>
@@ -29,13 +35,18 @@ import PhotoMain from './PhotoMain';
 import PhotoMask from './PhotoMask';
 import VuePictureCutCanvas from './vue-picture-cut-canvas.vue';
 import VuePictureCutMask from './vue-picture-cut-mask.vue';
-import { Slider } from 'element-ui';
+
+interface MskOption {
+  width?: number;
+  height?: number;
+  isRound?: boolean;
+  resize?: boolean;
+}
 
 @Component({
   components: {
     VuePictureCutCanvas,
-    VuePictureCutMask,
-    Slider
+    VuePictureCutMask
   }
 })
 export default class VuePictureCut extends Vue {
@@ -59,7 +70,7 @@ export default class VuePictureCut extends Vue {
         resize: true
       }
     }
-  }) private mskOption = {};
+  }) private mskOption!: MskOption;
 
   @Ref() private main!: HTMLDivElement;
 
@@ -96,10 +107,10 @@ export default class VuePictureCut extends Vue {
   }
 
   @Watch('sliderAngle')
-  watchSliderAngle (to: number): void {
+  watchSliderAngle (to: string): void {
     const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (photoMain) {
-      photoMain.setAngle(to);
+      photoMain.setAngle(parseInt(to));
     }
   }
 
@@ -120,14 +131,14 @@ export default class VuePictureCut extends Vue {
 
   /*******事件********/
   @Emit('on-change')
-  onChangeEvent (blob: Blob, base64: string) {
+  onChangeEvent (blob: Blob, base64: string): {blob: Blob, base64: string} {
     return {blob, base64};
   }
 
   /**********方法**********/
 
   // 默认裁剪
-  sureCut() {
+  sureCut(): void{
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
       const result = mask.clip();

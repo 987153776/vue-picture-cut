@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <input type="file" accept="image/*" @change="inputChange"/>
-    <a download="xxx.jpeg" :href="base64"
-       :style="{'background-image': `url(${base64})`}">
+    <a download="xxx.jpeg" :href="newSrc"
+       :style="{'background-image': `url(${newSrc})`}">
       处理后预览<br/>点击下载
     </a>
     <vue-picture-cut class="cut" :src="src" rotate-control
@@ -23,14 +23,18 @@ export default class App extends Vue {
   private blob: Blob | null = null;
   private base64: string | null = null;
 
-  inputChange (e: Event) {
+  get newSrc() {
+    return this.blob ? URL.createObjectURL(this.blob) : 0;
+  }
+
+  inputChange (e: Event): void{
     const files = (e.target as HTMLInputElement).files as FileList;
     if (files.length > 0) {
       this.src = URL.createObjectURL(files[0]);
     }
   }
 
-  cutChange({ blob, base64 }: {blob: Blob; base64: string}) {
+  cutChange({ blob, base64 }: {blob: Blob; base64: string}): void{
     this.blob = blob;
     this.base64 = base64;
   }
