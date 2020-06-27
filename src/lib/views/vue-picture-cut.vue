@@ -59,6 +59,12 @@ export default class VuePictureCut extends Vue {
   @Prop({ type: Number, required: false }) private initAngle: number | undefined;
   // 是否显示旋转控件
   @Prop({ type: Boolean, required: false }) private rotateControl!: boolean;
+  // 裁剪长边像素
+  @Prop({ type: Number, required: false }) private maxPixel: number | undefined;
+  // 裁剪压缩率
+  @Prop({ type: Number, required: false }) private encoderOptions: number | undefined;
+  // 裁剪压缩率
+  @Prop({ type: String, required: false }) private format: string | undefined;
   // 遮罩
   @Prop({
     type: Object,
@@ -91,6 +97,9 @@ export default class VuePictureCut extends Vue {
     if (this.src && photoMain) {
       photoMain.setSrc(this.src, this.initAngle);
     }
+    if (this.initAngle !== undefined) {
+      this.sliderAngle = this.initAngle % 180;
+    }
   }
 
   @Watch('src')
@@ -103,7 +112,7 @@ export default class VuePictureCut extends Vue {
   @Watch('initAngle')
   watchInitAngle (to: number | undefined): void {
     if (to === undefined) return;
-    this.sliderAngle = to % 360;
+    this.sliderAngle = to % 180;
   }
 
   @Watch('sliderAngle')
@@ -141,7 +150,7 @@ export default class VuePictureCut extends Vue {
   sureCut(): void{
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
-      const result = mask.clip();
+      const result = mask.clip(this.maxPixel, this.encoderOptions, this.format);
       if (result) {
         this.onChangeEvent(result.file, result.src);
       }

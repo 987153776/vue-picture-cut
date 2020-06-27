@@ -65,7 +65,7 @@ $_v_p_c_bg-color: #f3f4f9;
     font-size: 12px;
     border-radius: 2px;
     background-color: #fff;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,.3);
     cursor: pointer;
     &:active{
       background-color: #f4f5f6;
@@ -90,6 +90,8 @@ $_v_p_c_bg-color: #f3f4f9;
       z-index:1000;
       cursor: pointer;
       opacity: 0;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
     }
     &-box{
       height: 10px;

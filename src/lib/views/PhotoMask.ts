@@ -123,7 +123,7 @@ export default class PhotoMask implements PhotoBasic {
    * @param width
    * @param height
    */
-  reset(width: number, height: number) {
+  reset(width: number, height: number): void {
     this.width = width || 1;
     this.height = height || 1;
     const r = this._getMaskRect();
@@ -161,13 +161,14 @@ export default class PhotoMask implements PhotoBasic {
   set isRound(value: boolean) {
     this._isRound = value;
     this._draw(this.maskRect);
+    this.reset(this.maskRect.w, this.maskRect.h);
   }
 
   /**
    * 设置是否可拖动改变裁剪框比例
    * @param value
    */
-  setResize(value: boolean) {
+  setResize(value: boolean): void {
     if (!value) {
       this.touchEnd();
     }
@@ -176,8 +177,11 @@ export default class PhotoMask implements PhotoBasic {
 
   /**
    * 裁剪
+   * @maxPixel          裁剪长边像素
+   * @encoderOptions    裁剪压缩率(仅jpg)
+   * @format            裁剪格式
    */
-  clip(): ClipResult | null {
+  clip(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null {
     const photoMain = this.root.getEventList<PhotoMain>('PhotoMain');
     if (!photoMain || !photoMain.originalImg || !photoMain.img) {
       return null;
@@ -185,21 +189,29 @@ export default class PhotoMask implements PhotoBasic {
     const originalImg = photoMain.originalImg;
     const showRect = photoMain.showRect;
     const maskRect = this.maskRect;
-    const r = originalImg.width / showRect.w; // 缩放比例
-
-    const nmw = maskRect.w * r;
-    const nmh = maskRect.h * r;
+    let r; // 缩放比例
+    if (maxPixel) {
+      const k = maskRect.w / maskRect.h;
+      if (k < 1) {
+        r = maxPixel * k / maskRect.w;
+      } else {
+        r = maxPixel / maskRect.w;
+      }
+    } else {
+      r = originalImg.width / showRect.w;
+    }
+    const nmw = Math.round(maskRect.w * r);
+    const nmh = Math.round(maskRect.h * r);
     const newShow: RectFull = {
       x: (showRect.x - showRect.w / 2) * r,
       y: (showRect.y - showRect.h / 2) * r,
-      w: originalImg.width,
-      h: originalImg.height,
+      w: showRect.w * r,
+      h: showRect.h * r,
       r: showRect.r
     }
-
     const base64 = this._isRound ?
-      $tool.clipByRound(originalImg, nmw, nmh, newShow) :
-      $tool.clipBy(originalImg, nmw, nmh, newShow);
+      $tool.clipByRound(originalImg, nmw, nmh, newShow, encoderOptions, format) :
+      $tool.clipBy(originalImg, nmw, nmh, newShow, encoderOptions, format);
     return {
       src: base64,
       file: $tool.base64ToBlob(base64)
@@ -232,7 +244,7 @@ export default class PhotoMask implements PhotoBasic {
    * 动画
    * @private
    */
-  _animation(offX: number, offY: number, offW: number, offH: number) {
+  _animation(offX: number, offY: number, offW: number, offH: number): void {
     if (!offX && !offY && !offW && !offH) {
       return;
     }

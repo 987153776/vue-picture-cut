@@ -45,6 +45,7 @@ export interface WheelEvent2 {
   offsetY: number;
   wheelDelta?: number; // chrome & ie
   detail?: number; // firefox
+  preventDefault (): void;
 }
 
 export interface ParamsInterface {

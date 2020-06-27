@@ -31,7 +31,7 @@ export default class PhotoRoot{
   // 记录滚轮状态
   private wheelstatus = false;
 
-  init (el: HTMLDivElement, magnification = 1.5) {
+  init (el: HTMLDivElement, magnification = 1.5): void {
     this.root = el;
     this.width = el.offsetWidth;
     this.height = el.offsetHeight;
@@ -56,7 +56,7 @@ export default class PhotoRoot{
    * 添加对象到事件队列中
    * @param pe
    */
-  addEventList(pe: PhotoBasic) {
+  addEventList(pe: PhotoBasic): void {
     this.eventList.set(pe.className, pe);
   }
 
@@ -76,7 +76,7 @@ export default class PhotoRoot{
    * 从事件队列中移除对象
    * @param className
    */
-  deleteEventList(className: string) {
+  deleteEventList(className: string): void {
     this.eventList.delete(className);
   }
 
@@ -84,7 +84,7 @@ export default class PhotoRoot{
    * 添加对象到事件优先队列
    * @param pe
    */
-  addPriorityList(pe: PhotoBasic) {
+  addPriorityList(pe: PhotoBasic): void {
     this.priorityList.set(pe.className, pe);
   }
 
@@ -104,7 +104,7 @@ export default class PhotoRoot{
    * 从事件优先队列中移除对象
    * @param className
    */
-  deletePriorityList(className: string) {
+  deletePriorityList(className: string): void {
     this.priorityList.delete(className);
   }
 
@@ -112,7 +112,7 @@ export default class PhotoRoot{
    * 事件初始化
    * @private
    */
-  private _eventInit () {
+  private _eventInit (): void {
     this.root.addEventListener('touchstart', event =>  {
       const e = event || window.event;
       e.preventDefault();
@@ -153,6 +153,7 @@ export default class PhotoRoot{
     }, false);
     this.root.addEventListener('mousewheel', event => {
       const e = (event || window.event) as unknown as WheelEvent2;
+      e.preventDefault();
       const delta = e.wheelDelta || e.detail;
       this._mouseWheel(delta as number, {
         x: e.offsetX * this.magnification - this.core.x,
@@ -161,7 +162,7 @@ export default class PhotoRoot{
     }, false);
   }
 
-  private _touchStart(touches: TouchList) {
+  private _touchStart(touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchStart(cts));
@@ -179,7 +180,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _touchEnd (touches: TouchList) {
+  private _touchEnd (touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchEnd(cts));
@@ -188,7 +189,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _touchMove (touches: TouchList) {
+  private _touchMove (touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchMove(cts));
@@ -197,7 +198,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _mouseDown (e: MouseEvent) {
+  private _mouseDown (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchStart(cts));
@@ -215,7 +216,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _mouseUp (e: MouseEvent) {
+  private _mouseUp (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchEnd(cts));
@@ -224,7 +225,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _mouseMove (e: MouseEvent) {
+  private _mouseMove (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchMove(cts));
@@ -233,7 +234,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _mouseWheel (zoom: number, point: Point) {
+  private _mouseWheel (zoom: number, point: Point): void {
     clearTimeout(this.wheelTimeOut);
     const now = Date.now();
     const isStart = now - this.wheelTime > 350 && !this.wheelstatus;
@@ -251,7 +252,7 @@ export default class PhotoRoot{
     isStart || this._wheelChange(zoom, point);
   }
 
-  private _wheelStart(zoom: number, point: Point) {
+  private _wheelStart(zoom: number, point: Point): void {
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.wheelStart(zoom, point));
     } else {
@@ -268,7 +269,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _wheelChange(zoom: number, point: Point) {
+  private _wheelChange(zoom: number, point: Point): void {
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.wheelChange(zoom, point));
     } else {
@@ -276,7 +277,7 @@ export default class PhotoRoot{
     }
   }
 
-  private _wheelEnd(zoom: number, point: Point) {
+  private _wheelEnd(zoom: number, point: Point): void {
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.wheelEnd(zoom, point));
     } else {

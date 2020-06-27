@@ -1,7 +1,7 @@
 <template>
   <svg class="vue-picture-cut2_mask" preserveAspectRatio="none" :viewBox="viewBox">
     <path class="cls-1" :d="`M0,0 H${drawWidth} V${drawHeight} H0 V0 Z ${round}`"/>
-    <rect class="cls-3" v-bind="rect"
+    <rect v-if="resize || !isRound" class="cls-3" v-bind="rect"
           :style="{ 'stroke-dasharray': border, stroke: isRound ? 'rgba(255,255,255,.7)' : '#ff5500' }"/>
     <path v-if="isRound" class="cls-2" :d="round"/>
   </svg>

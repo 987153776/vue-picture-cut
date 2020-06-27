@@ -98,7 +98,7 @@ export default {
    * @param src
    * @returns {Promise<any>}
    */
-  loadImg (src: string) {
+  loadImg (src: string): Promise<HTMLImageElement> {
     return new Promise<HTMLImageElement>((resolve, reject) => {
       const image = new Image();
       image.addEventListener('load', () => {
@@ -130,11 +130,15 @@ export default {
     const { x, y, w, h, r } = showRect;
     canvas.width = width;
     canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+
     ctx.save();
     ctx.translate(width / 2, height / 2);
 
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(-width / 2, -height / 2, width, height);
+    if (format === 'image/jpeg' || format === 'image/jpg') {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(-width / 2, -height / 2, width, height);
+    }
 
     if (r / 360) {
       ctx.rotate(-r * Math.PI / 180);
@@ -165,11 +169,15 @@ export default {
     const { x, y, w, h, r } = showRect;
     canvas.width = width;
     canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+
     ctx.save();
     ctx.translate(width / 2, height / 2);
 
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(-width / 2, -height / 2, width, height);
+    if (format === 'image/jpeg' || format === 'image/jpg') {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(-width / 2, -height / 2, width, height);
+    }
 
     // 剪切椭圆形状
     ctx.beginPath();
