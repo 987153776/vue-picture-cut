@@ -164,6 +164,7 @@ export default class PhotoRoot{
 
   private _touchStart(touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
+    console.log(cts[0].x, cts[0].y)
     if (this.priorityList.size) {
       this.priorityList.forEach(pe => pe.touchStart(cts));
     } else {
@@ -293,8 +294,8 @@ export default class PhotoRoot{
   private _getTouchePoint (ct: Touch): TouchePoint {
     const elOffset = this._getClientPosition(this.root, {x: 0, y: 0});
     return {
-      x: (ct.clientX - elOffset.x) * this.magnification - this.core.x,
-      y: (ct.clientY - elOffset.y) * this.magnification - this.core.y,
+      x: (ct.pageX - elOffset.x) * this.magnification - this.core.x,
+      y: (ct.pageY - elOffset.y) * this.magnification - this.core.y,
       id: ct.identifier
     };
   }
@@ -322,6 +323,7 @@ export default class PhotoRoot{
     p.x += el.offsetLeft;
     p.y += el.offsetTop;
     if (el.tagName === 'HTML' || el.offsetParent === null) {
+
       return p;
     } else {
       return this._getClientPosition(el.offsetParent as HTMLElement, p);

@@ -170,9 +170,8 @@ export default class App extends Vue {
 
 .cut{
   width: 100%;
-  height: 70vh !important;
+  height: 400px !important;
   max-width: 1000px;
-  max-height: 500px;
   outline: 1px solid #000;
 }
 .download-img{
