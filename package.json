@@ -1,6 +1,6 @@
 {
   "name": "vue-picture-cut",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha.0",
   "description": "基于vue和typescript开发的一款图片剪裁处理工具",
   "main": "lib/vue-picture-cut.umd.min.js",
   "directories": {
@@ -14,6 +14,9 @@
   "author": "光年以外 <lightyear0720@vip.qq.com>",
   "license": "MIT",
   "private": false,
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/987153776/vue-picture-cut.git"
