@@ -146,6 +146,7 @@ export default class App extends Vue {
   line-height: 28px;
   height: 28px;
   margin-bottom: 20px;
+  color: #000;
   a{
     display: inline-block;
     line-height: 28px;
@@ -159,11 +160,11 @@ export default class App extends Vue {
     span{
       display: inline-block;
       margin-left: 5px;
-      font-size: 22px;
-      font-weight: 700;
       line-height: 32px;
       height: 32px;
       vertical-align: top;
+      font-weight: bolder;
+      font-size: 22px;
     }
   }
 }
