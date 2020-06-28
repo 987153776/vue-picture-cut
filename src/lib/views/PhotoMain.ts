@@ -32,6 +32,7 @@ export default class PhotoMain implements PhotoBasic{
   imgRect: Rect = { x: 0, y: 0, w: 0, h: 0};
   // 显示矩形
   showRect: RectFull = { x: 0, y: 0, w: 0, h: 0, r: 0 };
+  private _showRect?: RectFull;
   // 图片可移动范围
   private moveRect: Rect2 = { minX: null, minY: null, maxX: null, maxY: null };
   // 当前触点
@@ -72,7 +73,7 @@ export default class PhotoMain implements PhotoBasic{
    * @param angle
    * @param _n
    */
-  setSrc(src: string, angle = this.showRect.r, _n = 0) {
+  setSrc(src: string, angle = this.showRect.r, _n = 0): void {
     this.src = src;
     $tool.loadImg(src).then((img: HTMLImageElement) => {
       if (!_n) {
@@ -153,7 +154,7 @@ export default class PhotoMain implements PhotoBasic{
    * @param angle       // 角度
    * @param animation   // 是否动画
    */
-  setAngle (angle: number, animation = false) {
+  setAngle (angle: number, animation = false): void {
     if (this.img) {
       this.loadImgEd.forEach(v => {
         v && v({
@@ -172,7 +173,7 @@ export default class PhotoMain implements PhotoBasic{
    * 设置图片矩形
    * @param showRect
    */
-  setShowRect (showRect: RectFull) {
+  setShowRect (showRect: RectFull): void {
     if (this.img) {
       this.showRect = showRect;
       this._draw(this.imgRect, this.showRect);
@@ -183,7 +184,7 @@ export default class PhotoMain implements PhotoBasic{
    * 初始化矩形
    * @private
    */
-  private _initRect() {
+  private _initRect(): void {
     const img = this.img;
     if (!img) return;
     const pw = this.root.drawWidth;
@@ -212,7 +213,7 @@ export default class PhotoMain implements PhotoBasic{
    * 初始化图片可移动范围
    * @private
    */
-  private _initMoveRange(minX: number | null = null, minY: number | null = null, maxX: number | null = null, maxY: number | null = null) {
+  private _initMoveRange(minX: number | null = null, minY: number | null = null, maxX: number | null = null, maxY: number | null = null): void {
     if (minX === null || minY === null || maxX === null || maxY === null) {
       const {w, h} = this.imgRect;
       if (w === 0) return;
@@ -245,7 +246,7 @@ export default class PhotoMain implements PhotoBasic{
    * @param showRect  将要显示的矩形
    * @private
    */
-  private _draw(imgRect: Rect, showRect: RectFull) {
+  private _draw(imgRect: Rect, showRect: RectFull): void {
     this.clear();
     if (this.img) {
       const { x, y, w, h, r } = showRect;
@@ -313,7 +314,7 @@ export default class PhotoMain implements PhotoBasic{
   /**
    * 清除画布
    */
-  clear () {
+  clear (): void {
     this.ctx.clearRect(
       -this.root.core.x,
       -this.root.core.y,
@@ -573,16 +574,23 @@ export default class PhotoMain implements PhotoBasic{
    * @param endCallback 结束回调
    * @private
    */
-  doAnimation(offX: number, offY: number, offW: number, offH: number, offR: number, endCallback?: {(...arg: any[]): void}) {
+  doAnimation(offX: number, offY: number, offW: number, offH: number, offR: number, endCallback?: {(...arg: any[]): void}): void {
     if (!offX && !offY && !offW && !offH && !offR) {
       return;
     }
     const { x, y, w, h, r } = this.showRect;
+    this.showRect = {
+      x: x + offX,
+      y: y + offY,
+      w: w + offW,
+      h: h + offH,
+      r: r + offR
+    };
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
       change: i => {
-        this.showRect = {
+        this._showRect = {
           x: x + i * offX,
           y: y + i * offY,
           w: w + i * offW,
@@ -590,9 +598,13 @@ export default class PhotoMain implements PhotoBasic{
           r: r + i * offR
         }
         // 重新绘制画布
-        this._draw(this.imgRect, this.showRect);
+        this._draw(this.imgRect, this._showRect);
       },
       end: () => {
+        if (this._showRect) {
+          this.showRect = this._showRect;
+          this._showRect = undefined;
+        }
         endCallback && endCallback();
       }
     }).start();

@@ -43,7 +43,8 @@ export default class PhotoMask implements PhotoBasic {
   private resize: boolean;
   // 触点容错：5个像素
   private readonly faultTolerant: number;
-  private readonly maskRect: Rect;
+  private maskRect: Rect;
+  private _maskRect?: Rect;
   // 当前触点
   private touche: TouchePoint | null = null;
   private touchePosition: string | undefined = undefined;
@@ -249,15 +250,29 @@ export default class PhotoMask implements PhotoBasic {
       return;
     }
     const {x, y, w, h} = this.maskRect;
+    this.maskRect = {
+      x: x + offX,
+      y: y + offY,
+      w: w + offW,
+      h: h + offH
+    }
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
       change: i => {
-        this.maskRect.x = x + i * offX;
-        this.maskRect.y = y + i * offY;
-        this.maskRect.w = w + i * offW;
-        this.maskRect.h = h + i * offH;
-        this._draw(this.maskRect);
+        this._maskRect = {
+          x: x + i * offX,
+          y: y + i * offY,
+          w: w + i * offW,
+          h: h + i * offH
+        }
+        this._draw(this._maskRect);
+      },
+      end: () => {
+        if (this._maskRect) {
+          this.maskRect = this._maskRect;
+          this._maskRect = undefined;
+        }
       }
     }).start();
   }
