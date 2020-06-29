@@ -18,7 +18,7 @@ export {
 };
 
 export default {
-  install: (Vue: Vue.VueConstructor) => {
+  install: (Vue: Vue.VueConstructor): void => {
     Vue.component('vue-picture-cut', vuePictureCut);
     Vue.component('vue-picture-cut-canvas', vuePictureCutCanvas);
     Vue.component('vue-picture-cut-mask', vuePictureCutMask);

@@ -1,5 +1,5 @@
 <template>
-  <canvas class="vue-picture-cut2_canvas"/>
+  <canvas class="vue-picture-cut_canvas"/>
 </template>
 
 <script lang="ts">

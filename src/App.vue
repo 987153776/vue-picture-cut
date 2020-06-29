@@ -14,12 +14,17 @@
     <vue-picture-cut class="cut" :src="src"
                      :init-angle="form.initAngle"
                      :rotate-control="form.rotateControl"
-                     :max-pixel="form.maxPixel"
                      :msk-option="mskOption"
+                     :max-pixel="form.maxPixel"
                      :encoder-options="form.encoderOptions"
                      :format="form.format"
                      @on-change="cutChange">
-      <!--      <vue-picture-cut-menu slot="menu" @on-change="cutChange"/>-->
+      <vue-picture-cut-menu slot="menu"
+                            :cancel="false"
+                            :max-pixel="form.maxPixel"
+                            :encoder-options="form.encoderOptions"
+                            :format="form.format"
+                            @on-change="cutChange"/>
     </vue-picture-cut>
     <el-form style="margin-top: 15px;" ref="form" :model="form" label-width="110px" inline>
       <el-form-item label="预览:" label-width="70px">

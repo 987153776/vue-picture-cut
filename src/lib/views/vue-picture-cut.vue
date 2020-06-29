@@ -1,27 +1,27 @@
 <template>
-  <div class="vue-picture-cut2">
-    <div class="vue-picture-cut2_main" ref="main" :style="[ hasMenu || { bottom: '50px' } ]">
+  <div class="vue-picture-cut">
+    <div class="vue-picture-cut_main" ref="main" :style="[ hasMenu || { bottom: '50px' } ]">
       <vue-picture-cut-canvas :angle="initAngle"/>
       <slot>
         <vue-picture-cut-mask v-bind="mskOption"/>
       </slot>
     </div>
-    <div class="vue-picture-cut2_menu-box" :style="[ hasMenu || { height: '50px' } ]">
+    <div class="vue-picture-cut_menu-box" :style="[ hasMenu || { height: '50px' } ]">
       <slot name="menu">
-        <div class="vue-picture-cut2_default-menu">
-          <div class="vue-picture-cut2_slider"
+        <div class="vue-picture-cut_default-menu">
+          <div class="vue-picture-cut_slider"
                v-if="rotateControl">
             <input type="range" v-model="sliderAngle" :min="-180" :max="180"/>
-            <div class="vue-picture-cut2_slider-box">
-              <div class="vue-picture-cut2_slider-box-bar"
+            <div class="vue-picture-cut_slider-box">
+              <div class="vue-picture-cut_slider-box-bar"
                    :style="{left: sliderAngle * 100 / 361 + 50 + '%'}">
-                <div class="vue-picture-cut2_slider-box-tips">
+                <div class="vue-picture-cut_slider-box-tips">
                   {{ sliderAngle }}°
                 </div>
               </div>
             </div>
           </div>
-          <div v-show="src" class="vue-picture-cut2_button" @click="sureCut">确定</div>
+          <div v-show="src" class="vue-picture-cut_button" @click="sureCut">确定</div>
         </div>
       </slot>
     </div>
@@ -112,7 +112,11 @@ export default class VuePictureCut extends Vue {
   @Watch('initAngle')
   watchInitAngle (to: number | undefined): void {
     if (to === undefined) return;
-    this.sliderAngle = to % 180;
+    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    if (main) {
+      const angle2 = (main.showRect.r + to) % 360;
+      this.sliderAngle = angle2 > 180 ? angle2 - 360 : angle2 < -180 ? angle2 + 360 : angle2;
+    }
   }
 
   @Watch('sliderAngle')
@@ -163,6 +167,5 @@ export default class VuePictureCut extends Vue {
 <style lang="scss">
 @import "../styles/center";
 @import "../styles/1px";
-@import "../styles/font";
-@import "../styles/vue-picture-cut2.scss";
+@import "../styles/vue-picture-cut.scss";
 </style>

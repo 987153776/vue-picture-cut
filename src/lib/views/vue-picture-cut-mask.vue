@@ -1,9 +1,9 @@
 <template>
-  <svg class="vue-picture-cut2_mask" preserveAspectRatio="none" :viewBox="viewBox">
+  <svg class="vue-picture-cut_mask" preserveAspectRatio="none" :viewBox="viewBox">
     <path class="cls-1" :d="`M0,0 H${drawWidth} V${drawHeight} H0 V0 Z ${round}`"/>
-    <rect v-if="resize || !isRound" class="cls-3" v-bind="rect"
-          :style="{ 'stroke-dasharray': border, stroke: isRound ? 'rgba(255,255,255,.7)' : '#ff5500' }"/>
-    <path v-if="isRound" class="cls-2" :d="round"/>
+    <rect v-if="thisResize || !thisRound" class="cls-3" v-bind="rect"
+          :style="{ 'stroke-dasharray': border, stroke: thisRound ? 'rgba(255,255,255,.7)' : '#ff5500' }"/>
+    <path v-if="thisRound" class="cls-2" :d="round"/>
   </svg>
 </template>
 
@@ -33,6 +33,8 @@ export default class VuePictureCutMask extends Vue {
   round = 'M0,150 V+150 a150,150 0 1 0 0,-1';
   rect = {};
   border='10, 5';
+  thisRound = false;
+  thisResize = true;
 
   @Watch('width')
   watchWidth (to: number): void {
@@ -46,16 +48,20 @@ export default class VuePictureCutMask extends Vue {
 
   @Watch('isRound')
   watchIsRound (to: boolean): void {
+    this.thisRound = to;
     this.mask && (this.mask.isRound = to);
   }
 
   @Watch('resize')
   watchResize (to: boolean): void {
+    this.thisResize = to;
     this.mask && this.mask.setResize(to);
   }
 
   /*******生命周期********/
   protected mounted (): void {
+    this.thisRound = this.isRound;
+    this.thisResize = this.resize;
     setTimeout(() => {
       this.viewBox = `0 0 ${this.photoRoot.drawWidth} ${this.photoRoot.drawHeight}`;
       this.drawWidth = this.photoRoot.drawWidth;
@@ -65,8 +71,8 @@ export default class VuePictureCutMask extends Vue {
         this.width,
         this.height,
         this.resize,
-        (rect: Rect, touchePosition = false) => {
-          this.setPathOption(rect, touchePosition)
+        (rect: Rect, touchePosition = false, mask: PhotoMask) => {
+          this.setPathOption(rect, touchePosition, mask)
         }
       );
       this.mask.isRound = this.isRound;
@@ -74,7 +80,9 @@ export default class VuePictureCutMask extends Vue {
   }
 
   /*******事件********/
-  protected setPathOption(rect: Rect, touchePosition = false): void {
+  protected setPathOption(rect: Rect, touchePosition = false, mask: PhotoMask): void {
+    this.thisRound = mask.isRound;
+    this.thisResize = mask.getResize();
     let {x, y, w, h} = rect;
     x += this.photoRoot.core.x;
     y += this.photoRoot.core.y;
@@ -107,7 +115,7 @@ export default class VuePictureCutMask extends Vue {
 <style scoped>
 .cls-1 {
   fill-rule: evenodd;
-  fill: rgba(0,0,0,.4);
+  fill: rgba(0,0,0,.5);
 }
 .cls-2{
   stroke: #ff5500;

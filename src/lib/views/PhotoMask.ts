@@ -12,7 +12,7 @@ import {
 } from './interface';
 
 export interface Draw{
-  (maskRect: Rect, touchePosition?: boolean): void;
+  (maskRect: Rect, touchePosition: boolean, mask: PhotoMask): void;
 }
 
 const cursorConfig = new Map([
@@ -74,7 +74,7 @@ export default class PhotoMask implements PhotoBasic {
     this.faultTolerant = 8 * root.magnification;
     const mr = this.maskRect = this._getMaskRect();
     this._draw = draw;
-    draw(this.maskRect);
+    draw(this.maskRect, false, this);
     const photoMain = this.root.getEventList<PhotoMain>('PhotoMain');
     if (photoMain) {
       photoMain.loadImgEd.set(
@@ -161,7 +161,7 @@ export default class PhotoMask implements PhotoBasic {
 
   set isRound(value: boolean) {
     this._isRound = value;
-    this._draw(this.maskRect);
+    this._draw(this.maskRect, false, this);
     this.reset(this.maskRect.w, this.maskRect.h);
   }
 
@@ -174,6 +174,11 @@ export default class PhotoMask implements PhotoBasic {
       this.touchEnd();
     }
     this.resize = value;
+    this._draw(this.maskRect, false, this);
+  }
+
+  getResize(): boolean {
+    return this.resize;
   }
 
   /**
@@ -266,7 +271,7 @@ export default class PhotoMask implements PhotoBasic {
           w: w + i * offW,
           h: h + i * offH
         }
-        this._draw(this._maskRect);
+        this._draw(this._maskRect, false, this);
       },
       end: () => {
         if (this._maskRect) {
@@ -314,7 +319,7 @@ export default class PhotoMask implements PhotoBasic {
       if (this.touchePosition) {
         this.root.addPriorityList(this);
         this.touche = tp;
-        this._draw(this.maskRect, true);
+        this._draw(this.maskRect, true, this);
       }
     }
   }
@@ -333,7 +338,7 @@ export default class PhotoMask implements PhotoBasic {
       this.reset(this.maskRect.w, this.maskRect.h);
       this.root.deletePriorityList(this.className);
       this.touchePosition = undefined;
-      this._draw(this.maskRect, false);
+      this._draw(this.maskRect, false, this);
       this.root.cursor = 'default';
     }
   }
@@ -352,7 +357,7 @@ export default class PhotoMask implements PhotoBasic {
           }
         });
         this.touche = tp;
-        this._draw(this.maskRect, true);
+        this._draw(this.maskRect, true, this);
       }
     } else if (this.resize) {
       const touchePosition = this._isHover(tps[0].x, tps[0].y);
