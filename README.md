@@ -3,7 +3,7 @@
 基于`vue`和`typescript`开发的一款图片剪裁处理工具  
 优点：**原生、轻量、使用简单、功能全面、扩展性强**
 
-***2.0.0-alpha.1版本发布***
+***2.0.0-alpha.2版本发布***
 
 <a href="https://github.com/987153776/vue-picture-cut" target="_blank">github主页</a>  
 <a href="https://gitee.com/light-year/vue-picture-cut" target="_blank">码云主页</a>  
@@ -17,7 +17,7 @@
 ### 通过npm安装插件
 
 ```nodejs
-npm i vue-picture-cut@2.0.0-alpha.1
+npm i vue-picture-cut@2.0.0-alpha.2
 ```
 
 ### 在vue中使用
