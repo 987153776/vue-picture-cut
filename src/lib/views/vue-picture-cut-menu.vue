@@ -16,7 +16,7 @@
     </div>
     <div class="vue-picture-cut-menu_box">
       <div class="vue-picture-cut-menu_box-content">
-        <div class="vue-picture-cut-menu_box-list" :style="{width: 13 * 40 + 30 + 'px'}">
+        <div class="vue-picture-cut-menu_box-list" :style="{width: 13 * 40 + 38 + 'px'}">
           <div class="vue-picture-cut-menu_box-item v-p-icon_flip-v"></div>
           <div class="vue-picture-cut-menu_box-item v-p-icon_flip-h"></div>
           <span></span>
