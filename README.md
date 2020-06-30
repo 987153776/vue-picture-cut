@@ -182,7 +182,8 @@ createAnimation会返回一个Animation对象
 
 ### 3、自定义扩展
 
-***...待编辑***
+***...文档待编辑***
+**暂时可以参考`src/App.vue`和`src/lib/views/vue-picture-cut-menu.vue`**
 
 ## 三、希望大家都来用一下
 VuePictureCut 💗 you!
