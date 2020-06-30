@@ -469,12 +469,16 @@ export default class PhotoMain implements PhotoBasic{
   }
 
   private _touchStart2(tp1: TouchePoint, tp2: TouchePoint) {
+    const { r, sV, sH } = this.showRect;
     this.status = 'scale';
-    this.touchstartEvent = $tool.doubleTouche(tp1, tp2);
+    if ((!sV && sH) || (sV && !sH)) {
+      this.touchstartEvent = $tool.doubleTouche(tp2, tp1);
+    } else {
+      this.touchstartEvent = $tool.doubleTouche(tp1, tp2);
+    }
     const core = this.touchstartEvent.core;
     core.x *= this.showRect.sH ? -1 : 1;
     core.y *= this.showRect.sV ? -1 : 1;
-    const { r, sV, sH } = this.showRect;
     const offPoint = $tool.rotatePoint(core.x, core.y, ((!sV && sH) || (sV && !sH)) ? r : -r);
     this.touchstartPoint = this._getPointerLocation(offPoint);
     this.root.addPriorityList(this);
