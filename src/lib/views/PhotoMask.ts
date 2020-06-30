@@ -114,7 +114,9 @@ export default class PhotoMask implements PhotoBasic {
         y: showRect.y + offY,
         w: showRect.w + offW,
         h: showRect.h + offH,
-        r: showRect.r
+        r: showRect.r,
+        sV: showRect.sV,
+        sH: showRect.sH
       });
     }
   }
@@ -213,7 +215,9 @@ export default class PhotoMask implements PhotoBasic {
       y: (showRect.y - showRect.h / 2) * r,
       w: showRect.w * r,
       h: showRect.h * r,
-      r: showRect.r
+      r: showRect.r,
+      sV: showRect.sV,
+      sH: showRect.sH
     }
     const base64 = this._isRound ?
       $tool.clipByRound(originalImg, nmw, nmh, newShow, encoderOptions, format) :

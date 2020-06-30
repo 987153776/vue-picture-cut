@@ -127,7 +127,7 @@ export default {
           showRect: RectFull,
           encoderOptions = 0.8,
           format = 'image/jpeg'): string {
-    const { x, y, w, h, r } = showRect;
+    const { x, y, w, h, r, sH, sV } = showRect;
     canvas.width = width;
     canvas.height = height;
     ctx.clearRect(0, 0, width, height);
@@ -143,9 +143,11 @@ export default {
     if (r / 360) {
       ctx.rotate(-r * Math.PI / 180);
     }
+    ctx.scale(sH ? -1 : 1,sV ? -1 : 1);
 
     ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
 
+    ctx.scale(sH ? 1 : -1,sV ? 1 : -1);
     ctx.translate(-width / 2, -height / 2);
     ctx.restore();
     return canvas.toDataURL(format, encoderOptions);
@@ -166,7 +168,7 @@ export default {
                showRect: RectFull,
                encoderOptions = 0.8,
                format = 'image/jpeg'): string {
-    const { x, y, w, h, r } = showRect;
+    const { x, y, w, h, r, sH, sV } = showRect;
     canvas.width = width;
     canvas.height = height;
     ctx.clearRect(0, 0, width, height);
@@ -188,9 +190,11 @@ export default {
     if (r / 360) {
       ctx.rotate(-r * Math.PI / 180);
     }
+    ctx.scale(sH ? -1 : 1,sV ? -1 : 1);
 
     ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
 
+    ctx.scale(sH ? 1 : -1,sV ? 1 : -1);
     ctx.translate(-width / 2, -height / 2);
     ctx.restore();
     return canvas.toDataURL(format, encoderOptions);
@@ -222,7 +226,9 @@ export default {
         y: -nh / 2,
         w: nw,
         h: nh,
-        r: 0
+        r: 0,
+        sV: false,
+        sH: false
       }
       const base64 = this.clipBy(img, nw, nh, newShow, encoderOptions);
       return {

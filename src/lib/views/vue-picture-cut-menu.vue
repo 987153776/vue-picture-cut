@@ -17,8 +17,8 @@
     <div class="vue-picture-cut-menu_box">
       <div class="vue-picture-cut-menu_box-content">
         <div class="vue-picture-cut-menu_box-list" :style="{width: 13 * 40 + 38 + 'px'}">
-          <div class="vue-picture-cut-menu_box-item v-p-icon_flip-v"></div>
-          <div class="vue-picture-cut-menu_box-item v-p-icon_flip-h"></div>
+          <div class="vue-picture-cut-menu_box-item v-p-icon_flip-v" @click="setFlipV"></div>
+          <div class="vue-picture-cut-menu_box-item v-p-icon_flip-h" @click="setFlipH"></div>
           <span></span>
           <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-left" @click="rotate(90, true)"></div>
           <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-right" @click="rotate(-90, true)"></div>
@@ -135,6 +135,24 @@ export default class VuePictureCutMenu extends Vue {
       const angle2 = (main.showRect.r + angle) % 360;
       this.sliderAngle = angle2 > 180 ? angle2 - 360 : angle2 < -180 ? angle2 + 360 : angle2;
       main.setAngle(main.showRect.r + angle, animation);
+    }
+  }
+  /**
+   * 设置图片垂直翻折
+   */
+  setFlipV() {
+    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    if (main) {
+      main.setFlipV(!main.showRect.sV);
+    }
+  }
+  /**
+   * 设置图片水平翻折
+   */
+  setFlipH() {
+    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    if (main) {
+      main.setFlipH(!main.showRect.sH);
     }
   }
 }

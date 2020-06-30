@@ -31,7 +31,7 @@ export default class PhotoMain implements PhotoBasic{
   // 图片矩形
   imgRect: Rect = { x: 0, y: 0, w: 0, h: 0};
   // 显示矩形
-  showRect: RectFull = { x: 0, y: 0, w: 0, h: 0, r: 0 };
+  showRect: RectFull = { x: 0, y: 0, w: 0, h: 0, r: 0, sV: false, sH: false };
   private _showRect?: RectFull;
   // 图片可移动范围
   private moveRect: Rect2 = { minX: null, minY: null, maxX: null, maxY: null };
@@ -93,14 +93,16 @@ export default class PhotoMain implements PhotoBasic{
         this.loadImgEd.forEach(v => {
           v && v();
         });
-        const { x, y, w, h, r } = this.showRect;
-        const range = this._checkRange({x, y, w, h, r});
+        const { x, y, w, h, r, sV, sH } = this.showRect;
+        const range = this._checkRange({x, y, w, h, r, sV, sH});
         this.showRect = {
           x: x + range[0],
           y: y + range[1],
           w: w + range[2],
           h: h + range[3],
-          r
+          r,
+          sV,
+          sH
         };
       }
       this._draw(this.imgRect, this.showRect);
@@ -126,7 +128,7 @@ export default class PhotoMain implements PhotoBasic{
     this._initMoveRange(minX, minY, maxX, maxY);
     if (!this.img) return [0, 0, 0, 0];
     if (offPoint && zoom) {
-      const { x, y, w, h, r } = this.showRect;
+      const { x, y, w, h, r, sV, sH } = this.showRect;
       const offX = offPoint.x - x;
       const offY = offPoint.y - y;
       const offW = w * zoom - w;
@@ -135,7 +137,9 @@ export default class PhotoMain implements PhotoBasic{
         ...offPoint,
         w: w * zoom,
         h: h * zoom,
-        r
+        r,
+        sV,
+        sH
       });
       return [
         offX + range[0],
@@ -169,6 +173,45 @@ export default class PhotoMain implements PhotoBasic{
       });
     } else {
       this.showRect.r = angle;
+    }
+  }
+
+  /**
+   * 设置图片翻折
+   * @param sV  垂直翻折
+   * @param sH  水平翻折
+   */
+  setFlip (sV: boolean, sH: boolean) {
+    this.showRect.sV = sV;
+    this.showRect.sH = sH;
+    this.showRect.x = -this.showRect.x;
+    this.showRect.y = -this.showRect.y;
+    if (this.img) {
+      this._draw(this.imgRect, this.showRect);
+    }
+  }
+
+  /**
+   * 设置图片垂直翻折
+   * @param sV  垂直翻折
+   */
+  setFlipV (sV: boolean) {
+    this.showRect.sV = sV;
+    this.showRect.y = -this.showRect.y;
+    if (this.img) {
+      this._draw(this.imgRect, this.showRect);
+    }
+  }
+
+  /**
+   * 设置图片水平翻折
+   * @param sH  水平翻折
+   */
+  setFlipH (sH: boolean) {
+    this.showRect.sH = sH;
+    this.showRect.x = -this.showRect.x;
+    if (this.img) {
+      this._draw(this.imgRect, this.showRect);
     }
   }
 
@@ -208,7 +251,9 @@ export default class PhotoMain implements PhotoBasic{
       y: 0,
       w: cw,
       h: ch,
-      r: this.showRect.r
+      r: this.showRect.r,
+      sV: this.showRect.sV,
+      sH: this.showRect.sH
     };
   }
 
@@ -252,14 +297,17 @@ export default class PhotoMain implements PhotoBasic{
   private _draw(imgRect: Rect, showRect: RectFull): void {
     this.clear();
     if (this.img) {
-      const { x, y, w, h, r } = showRect;
+      const { x, y, w, h, r, sV, sH} = showRect;
       const ctx = this.ctx;
       ctx.save();
       ctx.rotate(-r * Math.PI / 180);
+      ctx.scale(sH ? -1 : 1,sV ? -1 : 1);
 
       ctx.drawImage(this.img,
         imgRect.x, imgRect.y, imgRect.w, imgRect.h,
         x - w / 2, y - h /2, w, h);
+
+      ctx.scale(sH ? 1 : -1,sV ? 1 : -1);
 
       if (this.root.debug) {
         ctx.strokeStyle = '#0f0';
@@ -365,7 +413,7 @@ export default class PhotoMain implements PhotoBasic{
       this._touchStart1(tp);
 
     } else if (this.touchList.length === 1) {
-      // 判断触点是否与重复
+      // 判断触点是否重复
       if (this.touchList[0].id !== tp.id) {
         this.touchList.push(tp);
         this._touchStart2(this.touchList[0], this.touchList[1]);
@@ -381,6 +429,8 @@ export default class PhotoMain implements PhotoBasic{
     this.status = 'scale';
     this.touchstartEvent = $tool.doubleTouche(point);
     const core = this.touchstartEvent.core;
+    core.x *= this.showRect.sH ? -1 : 1;
+    core.y *= this.showRect.sV ? -1 : 1;
     const offPoint = $tool.rotatePoint(core.x, core.y, -this.showRect.r);
     this.touchstartPoint = this._getPointerLocation(offPoint);
     this.root.addPriorityList(this);
@@ -410,6 +460,8 @@ export default class PhotoMain implements PhotoBasic{
   private _touchStart1(tp: TouchePoint) {
     this.status = 'move';
     this.touchstartEvent = $tool.doubleTouche(tp);
+    tp.x *= this.showRect.sH ? -1 : 1;
+    tp.y *= this.showRect.sV ? -1 : 1;
     const offPoint = $tool.rotatePoint(tp.x, tp.y, -this.showRect.r);
     this.touchstartPoint = this._getPointerLocation(offPoint);
   }
@@ -418,6 +470,8 @@ export default class PhotoMain implements PhotoBasic{
     this.status = 'scale';
     this.touchstartEvent = $tool.doubleTouche(tp1, tp2);
     const core = this.touchstartEvent.core;
+    core.x *= this.showRect.sH ? -1 : 1;
+    core.y *= this.showRect.sV ? -1 : 1;
     const offPoint = $tool.rotatePoint(core.x, core.y, -this.showRect.r);
     this.touchstartPoint = this._getPointerLocation(offPoint);
     this.root.addPriorityList(this);
@@ -456,6 +510,8 @@ export default class PhotoMain implements PhotoBasic{
    */
   private _move(core: Point): void {
     const pl = this.touchstartPoint;
+    core.x *= this.showRect.sH ? -1 : 1;
+    core.y *= this.showRect.sV ? -1 : 1;
     const offPoint = $tool.rotatePoint(core.x, core.y, -this.showRect.r);
     this.showRect.x = offPoint.x - pl.x;
     this.showRect.y = offPoint.y - pl.y;
@@ -485,14 +541,18 @@ export default class PhotoMain implements PhotoBasic{
     let pl = this.touchstartPoint;
     this.touchstartPoint = { x: pl.x * zoom, y: pl.y * zoom};
     pl = this.touchstartPoint;
-    const {w, h, r} = this.showRect;
+    const {w, h, r, sV, sH} = this.showRect;
+    core.x *= this.showRect.sH ? -1 : 1;
+    core.y *= this.showRect.sV ? -1 : 1;
     const offPoint = $tool.rotatePoint(core.x, core.y, -this.showRect.r);
     this.showRect = {
       x: offPoint.x - pl.x,
       y: offPoint.y - pl.y,
       w: w * zoom,
       h: h * zoom,
-      r: r + angle
+      r: r + angle,
+      sV,
+      sH
     };
   }
 
@@ -581,13 +641,15 @@ export default class PhotoMain implements PhotoBasic{
     if (!offX && !offY && !offW && !offH && !offR) {
       return;
     }
-    const { x, y, w, h, r } = this.showRect;
+    const { x, y, w, h, r, sV, sH} = this.showRect;
     this.showRect = {
       x: x + offX,
       y: y + offY,
       w: w + offW,
       h: h + offH,
-      r: r + offR
+      r: r + offR,
+      sV,
+      sH
     };
     this.animation = createAnimation({
       duration: 300,
@@ -598,7 +660,9 @@ export default class PhotoMain implements PhotoBasic{
           y: y + i * offY,
           w: w + i * offW,
           h: h + i * offH,
-          r: r + i * offR
+          r: r + i * offR,
+          sV,
+          sH
         }
         // 重新绘制画布
         this._draw(this.imgRect, this._showRect);

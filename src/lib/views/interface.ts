@@ -24,6 +24,14 @@ export interface RectFull extends Rect {
    * 旋转角度
    */
   r: number;
+  /**
+   * 垂直翻折
+   */
+  sV: boolean;
+  /**
+   * 水平翻折
+   */
+  sH: boolean;
 }
 
 export interface Round extends Point {
