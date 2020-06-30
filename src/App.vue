@@ -11,14 +11,19 @@
         <img height="28" width="95" src="https://gitee.com/static/images/logo-black.svg?t=158106664"/>
       </a>
     </div>
+    <!--基本使用-->
+<!--    <vue-picture-cut class="cut" :src="src"-->
+<!--                     :init-angle="form.initAngle"-->
+<!--                     :rotate-control="form.rotateControl"-->
+<!--                     :msk-option="mskOption"-->
+<!--                     :max-pixel="form.maxPixel"-->
+<!--                     :encoder-options="form.encoderOptions"-->
+<!--                     :format="form.format"-->
+<!--                     @on-change="cutChange"/>-->
+    <!--自定义菜单-->
     <vue-picture-cut class="cut" :src="src"
                      :init-angle="form.initAngle"
-                     :rotate-control="form.rotateControl"
-                     :msk-option="mskOption"
-                     :max-pixel="form.maxPixel"
-                     :encoder-options="form.encoderOptions"
-                     :format="form.format"
-                     @on-change="cutChange">
+                     :msk-option="mskOption">
       <vue-picture-cut-menu slot="menu"
                             :cancel="false"
                             :max-pixel="form.maxPixel"
