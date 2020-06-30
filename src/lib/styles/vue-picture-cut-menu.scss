@@ -15,9 +15,10 @@
     span{
       font-size: 14px;
       margin-right: 10px;
+      color: #666;
       position: absolute;
       top: 0;
-      left: -30px;
+      left: -33px;
     }
     &-box{
       width: 100%;
@@ -79,11 +80,25 @@
     width: 100%;
     height: 40px;
     line-height: 40px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     position: relative;
+    &-content{
+      width: 100%;
+      height: 70px;
+      padding: 0 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
     &-list{
       margin: 0 auto;
+      > span{
+        display: inline-block;
+        vertical-align: middle;
+        height: 15px;
+        width: 1px;
+        border-left: 1px solid #aaa;
+        margin: 0 5px;
+      }
     }
     &-item{
       display: inline-block;
@@ -91,23 +106,25 @@
       width: 40px;
       height: 40px;
       text-align: center;
-      font-size: 18px;
+      font-size: 22px;
       cursor: pointer;
       .__mask{
         display: inline-block;
+        vertical-align: middle;
         font-size: 10px;
-        line-height: 26px;
+        line-height: 24px;
         height: 26px;
         width: 26px;
         border: 1px solid #ccc;
+        color: #444;
         &._5_4{
-          height: 26px;
+          height: 24px;
           width: 30px;
-          line-height: 26px;
+          line-height: 24px;
         }
         &._4_5{
           height: 30px;
-          width: 26px;
+          width: 24px;
           line-height: 30px;
         }
       }

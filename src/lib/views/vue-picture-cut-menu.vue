@@ -15,37 +15,41 @@
       </div>
     </div>
     <div class="vue-picture-cut-menu_box">
-      <div class="vue-picture-cut-menu_box-list" :style="{width: 13 * 40 + 'px'}">
-        <div class="vue-picture-cut-menu_box-item v-p-icon_flip-v"></div>
-        <div class="vue-picture-cut-menu_box-item v-p-icon_flip-h"></div>
-        <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-left" @click="rotate(90, true)"></div>
-        <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-right" @click="rotate(-90, true)"></div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskResize">
-          <div class="__mask">自由</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSizeToOriginal">
-          <div class="__mask">原始</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(1,1)">
-          <div class="__mask">1:1</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(4,3)">
-          <div class="__mask _5_4">4:3</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(3,4)">
-          <div class="__mask _4_5">3:4</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(16,9)">
-          <div class="__mask _5_4">16:9</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(9,16)">
-          <div class="__mask _4_5">9:16</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(3,2)">
-          <div class="__mask _5_4">3:2</div>
-        </div>
-        <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(2,3)">
-          <div class="__mask _4_5">2:3</div>
+      <div class="vue-picture-cut-menu_box-content">
+        <div class="vue-picture-cut-menu_box-list" :style="{width: 13 * 40 + 30 + 'px'}">
+          <div class="vue-picture-cut-menu_box-item v-p-icon_flip-v"></div>
+          <div class="vue-picture-cut-menu_box-item v-p-icon_flip-h"></div>
+          <span></span>
+          <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-left" @click="rotate(90, true)"></div>
+          <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-right" @click="rotate(-90, true)"></div>
+          <span></span>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskResize">
+            <div class="__mask">自由</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSizeToOriginal">
+            <div class="__mask">原始</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(1,1)">
+            <div class="__mask">1:1</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(4,3)">
+            <div class="__mask _5_4">4:3</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(3,4)">
+            <div class="__mask _4_5">3:4</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(16,9)">
+            <div class="__mask _5_4">16:9</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(9,16)">
+            <div class="__mask _4_5">9:16</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(3,2)">
+            <div class="__mask _5_4">3:2</div>
+          </div>
+          <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(2,3)">
+            <div class="__mask _4_5">2:3</div>
+          </div>
         </div>
       </div>
     </div>

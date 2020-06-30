@@ -156,6 +156,9 @@ export default class PhotoMain implements PhotoBasic{
    */
   setAngle (angle: number, animation = false): void {
     if (this.img) {
+      if (animation && this.animation) {
+        this.animation.abort();
+      }
       this.loadImgEd.forEach(v => {
         v && v({
           showRect: {

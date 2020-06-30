@@ -29,7 +29,7 @@ import Vue from 'vue';
 import 'vue-picture-cut/lib/vue-picture-cut.css';
 import VuePictureCut from 'vue-picture-cut';
 
-Vue.user(VuePictureCut);
+Vue.use(VuePictureCut);
 ```
 
 2、或者在`.vue`文件中单独引用
@@ -61,7 +61,7 @@ Vue.user(VuePictureCut);
     methods: {
       inputChange(e) {
         const file = e.target.files[0];
-        this.src = URL.createObjectURL((file));
+        this.src = URL.createObjectURL(file);
       },
       /**
        * @param blob      BLOB对象
