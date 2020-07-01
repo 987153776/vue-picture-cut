@@ -4,7 +4,7 @@
 优点：**原生、轻量、使用简单、功能全面、扩展性强**  
 目前功能：**缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁**
 
-***2.0.0-alpha.2版本发布***
+***2.0.0-alpha.3版本发布***
 
 <a href="https://github.com/987153776/vue-picture-cut" target="_blank">github主页</a>  
 <a href="https://gitee.com/light-year/vue-picture-cut" target="_blank">码云主页</a>  
@@ -18,7 +18,7 @@
 ### 通过npm安装插件
 
 ```nodejs
-npm i vue-picture-cut@2.0.0-alpha.2
+npm i vue-picture-cut@2.0.0-alpha.3
 ```
 
 ### 在vue中使用
