@@ -184,8 +184,8 @@ export default class PhotoMain implements PhotoBasic{
   setFlip (sV: boolean, sH: boolean) {
     this.showRect.sV = sV;
     this.showRect.sH = sH;
-    this.showRect.x = -this.showRect.x;
-    this.showRect.y = -this.showRect.y;
+    this.showRect.x *= sH ? -1 : 1;
+    this.showRect.y *= sV ? -1 : 1;
     if (this.img) {
       this._draw(this.imgRect, this.showRect);
     }
@@ -197,7 +197,7 @@ export default class PhotoMain implements PhotoBasic{
    */
   setFlipV (sV: boolean) {
     this.showRect.sV = sV;
-    this.showRect.y = -this.showRect.y;
+    this.showRect.y *= sV ? -1 : 1;
     if (this.img) {
       this._draw(this.imgRect, this.showRect);
     }
@@ -209,7 +209,7 @@ export default class PhotoMain implements PhotoBasic{
    */
   setFlipH (sH: boolean) {
     this.showRect.sH = sH;
-    this.showRect.x = -this.showRect.x;
+    this.showRect.x *= sH ? -1 : 1;
     if (this.img) {
       this._draw(this.imgRect, this.showRect);
     }
@@ -429,10 +429,10 @@ export default class PhotoMain implements PhotoBasic{
     this.status = 'scale';
     this.touchstartEvent = $tool.doubleTouche(point);
     const core = this.touchstartEvent.core;
-    core.x *= this.showRect.sH ? -1 : 1;
-    core.y *= this.showRect.sV ? -1 : 1;
     const { r, sV, sH } = this.showRect;
-    const offPoint = $tool.rotatePoint(core.x, core.y, ((!sV && sH) || (sV && !sH)) ? r : -r);
+    const offPoint = $tool.rotatePoint(core.x, core.y, -r);
+    offPoint.x *= sH ? -1 : 1;
+    offPoint.y *= sV ? -1 : 1;
     this.touchstartPoint = this._getPointerLocation(offPoint);
     this.root.addPriorityList(this);
 
@@ -461,10 +461,10 @@ export default class PhotoMain implements PhotoBasic{
   private _touchStart1(tp: TouchePoint) {
     this.status = 'move';
     this.touchstartEvent = $tool.doubleTouche(tp);
-    tp.x *= this.showRect.sH ? -1 : 1;
-    tp.y *= this.showRect.sV ? -1 : 1;
     const { r, sV, sH } = this.showRect;
-    const offPoint = $tool.rotatePoint(tp.x, tp.y, ((!sV && sH) || (sV && !sH)) ? r : -r);
+    const offPoint = $tool.rotatePoint(tp.x, tp.y, -r);
+    offPoint.x *= sH ? -1 : 1;
+    offPoint.y *= sV ? -1 : 1;
     this.touchstartPoint = this._getPointerLocation(offPoint);
   }
 
@@ -477,9 +477,9 @@ export default class PhotoMain implements PhotoBasic{
       this.touchstartEvent = $tool.doubleTouche(tp1, tp2);
     }
     const core = this.touchstartEvent.core;
-    core.x *= this.showRect.sH ? -1 : 1;
-    core.y *= this.showRect.sV ? -1 : 1;
-    const offPoint = $tool.rotatePoint(core.x, core.y, ((!sV && sH) || (sV && !sH)) ? r : -r);
+    const offPoint = $tool.rotatePoint(core.x, core.y, -r);
+    offPoint.x *= sH ? -1 : 1;
+    offPoint.y *= sV ? -1 : 1;
     this.touchstartPoint = this._getPointerLocation(offPoint);
     this.root.addPriorityList(this);
   }
@@ -517,10 +517,10 @@ export default class PhotoMain implements PhotoBasic{
    */
   private _move(core: Point): void {
     const pl = this.touchstartPoint;
-    core.x *= this.showRect.sH ? -1 : 1;
-    core.y *= this.showRect.sV ? -1 : 1;
     const { r, sV, sH } = this.showRect;
-    const offPoint = $tool.rotatePoint(core.x, core.y, ((!sV && sH) || (sV && !sH)) ? r : -r);
+    const offPoint = $tool.rotatePoint(core.x, core.y, -r);
+    offPoint.x *= sH ? -1 : 1;
+    offPoint.y *= sV ? -1 : 1;
     this.showRect.x = offPoint.x - pl.x;
     this.showRect.y = offPoint.y - pl.y;
   }
@@ -550,9 +550,9 @@ export default class PhotoMain implements PhotoBasic{
     this.touchstartPoint = { x: pl.x * zoom, y: pl.y * zoom};
     pl = this.touchstartPoint;
     const {w, h, r, sV, sH} = this.showRect;
-    core.x *= this.showRect.sH ? -1 : 1;
-    core.y *= this.showRect.sV ? -1 : 1;
-    const offPoint = $tool.rotatePoint(core.x, core.y, ((!sV && sH) || (sV && !sH)) ? r : -r);
+    const offPoint = $tool.rotatePoint(core.x, core.y, -r);
+    offPoint.x *= sH ? -1 : 1;
+    offPoint.y *= sV ? -1 : 1;
     this.showRect = {
       x: offPoint.x - pl.x,
       y: offPoint.y - pl.y,

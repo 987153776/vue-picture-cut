@@ -181,7 +181,7 @@ export default class App extends Vue {
 
 .cut{
   width: 100%;
-  height: 450px !important;
+  height: 480px !important;
   max-width: 1000px;
   outline: 1px solid #000;
 }
