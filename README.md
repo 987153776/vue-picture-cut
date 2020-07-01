@@ -44,7 +44,6 @@ Vue.use(VuePictureCut);
 </template>
 
 <script>
-  import 'vue-picture-cut/lib/vue-picture-cut.css';
   import { VuePictureCut } from 'vue-picture-cut';
 
   export default {
@@ -76,6 +75,10 @@ Vue.use(VuePictureCut);
     // ...
   }
 </script>
+
+<style>
+  @import "~vue-picture-cut/lib/vue-picture-cut.css";
+</style>
 ```
 
 3、注意
