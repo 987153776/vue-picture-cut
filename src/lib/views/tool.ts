@@ -93,6 +93,9 @@ function rotatePoint(x: number, y: number, angle: number): Point{
 
 export default {
   rotatePoint,
+  cloneJSON<T>(obj: T): T {
+    return JSON.parse(JSON.stringify(obj)) as T;
+  },
   /**
    * 加载图片
    * @param src

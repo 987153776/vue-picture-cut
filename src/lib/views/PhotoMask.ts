@@ -143,6 +143,8 @@ export default class PhotoMask implements PhotoBasic {
         this.maskRect.y + this.maskRect.h / 2,
         -showRect.r
       );
+      rotatePoint.x *= showRect.sH ? -1 : 1;
+      rotatePoint.y *= showRect.sV ? -1 : 1;
       const offPoint: Point = {
         x: (showRect.x - rotatePoint.x) * zoom,
         y: (showRect.y - rotatePoint.y) * zoom,

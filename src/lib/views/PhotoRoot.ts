@@ -5,6 +5,7 @@ import {
   PhotoBasic,
   // TouchList
 } from './interface';
+import $tool from './tool';
 
 export default class PhotoRoot{
 
@@ -164,19 +165,18 @@ export default class PhotoRoot{
 
   private _touchStart(touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
-    console.log(cts[0].x, cts[0].y)
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchStart(cts));
+      this.priorityList.forEach(pe => pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts)));
     } else {
       const _pes: PhotoBasic[] = [];
       for (const pe of this.eventList.values()) {
-        pe.touchStart(cts);
+        pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts));
         if (!this.priorityList.has(pe.className)) {
           _pes.push(pe);
         }
       }
       if (_pes.length < this.eventList.size) {
-        _pes.forEach(pe => pe.touchEnd(cts));
+        _pes.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
       }
     }
   }
@@ -184,35 +184,35 @@ export default class PhotoRoot{
   private _touchEnd (touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchEnd(cts));
+      this.priorityList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
     } else {
-      this.eventList.forEach(pe => pe.touchEnd(cts));
+      this.eventList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
     }
   }
 
   private _touchMove (touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchMove(cts));
+      this.priorityList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
     } else {
-      this.eventList.forEach(pe => pe.touchMove(cts));
+      this.eventList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
     }
   }
 
   private _mouseDown (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchStart(cts));
+      this.priorityList.forEach(pe => pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts)));
     } else {
       const _pes: PhotoBasic[] = [];
       for (const pe of this.eventList.values()) {
-        pe.touchStart(cts);
+        pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts));
         if (!this.priorityList.has(pe.className)) {
           _pes.push(pe);
         }
       }
       if (_pes.length < this.eventList.size) {
-        _pes.forEach(pe => pe.touchEnd(cts));
+        _pes.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
       }
     }
   }
@@ -220,18 +220,18 @@ export default class PhotoRoot{
   private _mouseUp (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchEnd(cts));
+      this.priorityList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
     } else {
-      this.eventList.forEach(pe => pe.touchEnd(cts));
+      this.eventList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
     }
   }
 
   private _mouseMove (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchMove(cts));
+      this.priorityList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
     } else {
-      this.eventList.forEach(pe => pe.touchMove(cts));
+      this.eventList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
     }
   }
 
@@ -255,34 +255,34 @@ export default class PhotoRoot{
 
   private _wheelStart(zoom: number, point: Point): void {
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.wheelStart(zoom, point));
+      this.priorityList.forEach(pe => pe.wheelStart(zoom, $tool.cloneJSON<Point>(point)));
     } else {
       const _pes: PhotoBasic[] = [];
       for (const pe of this.eventList.values()) {
-        pe.wheelStart(zoom, point);
+        pe.wheelStart(zoom, $tool.cloneJSON<Point>(point));
         if (!this.priorityList.has(pe.className)) {
           _pes.push(pe);
         }
       }
       if (_pes.length < this.eventList.size) {
-        _pes.forEach(pe => pe.wheelEnd(zoom, point));
+        _pes.forEach(pe => pe.wheelEnd(zoom, $tool.cloneJSON<Point>(point)));
       }
     }
   }
 
   private _wheelChange(zoom: number, point: Point): void {
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.wheelChange(zoom, point));
+      this.priorityList.forEach(pe => pe.wheelChange(zoom, $tool.cloneJSON<Point>(point)));
     } else {
-      this.eventList.forEach(pe => pe.wheelChange(zoom, point));
+      this.eventList.forEach(pe => pe.wheelChange(zoom, $tool.cloneJSON<Point>(point)));
     }
   }
 
   private _wheelEnd(zoom: number, point: Point): void {
     if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.wheelEnd(zoom, point));
+      this.priorityList.forEach(pe => pe.wheelEnd(zoom, $tool.cloneJSON<Point>(point)));
     } else {
-      this.eventList.forEach(pe => pe.wheelEnd(zoom, point));
+      this.eventList.forEach(pe => pe.wheelEnd(zoom, $tool.cloneJSON<Point>(point)));
     }
   }
 
