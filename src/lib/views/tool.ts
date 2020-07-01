@@ -243,17 +243,17 @@ export default {
 
   /**
    * 将base64转Blob对象
-   * @param url
+   * @param base64
    * @param format
    */
-  base64ToBlob (url: string, format = 'image/jpeg'): Blob {
-    const code = atob(url.split(',')[1]);
+  base64ToBlob (base64: string, format = 'image/jpeg'): Blob | null {
+    const code = atob(base64.split(',')[1]);
     const aBuffer = new ArrayBuffer(code.length);
     const uBuffer = new Uint8Array(aBuffer);
     for (let i = 0, l = code.length; i < l; i++) {
       uBuffer[i] = code.charCodeAt(i) & 0xff;
     }
-    let blob = null;
+    let blob: Blob | null = null;
     try {
       blob = new Blob([uBuffer], {type: format});
     } catch (e) {

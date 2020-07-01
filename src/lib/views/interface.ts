@@ -63,7 +63,7 @@ export interface ParamsInterface {
 
 export interface ClipResult {
   src: string;
-  file: Blob;
+  file: Blob | null;
 }
 
 export interface CubeInterface {

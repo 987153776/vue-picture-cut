@@ -144,7 +144,7 @@ export default class VuePictureCut extends Vue {
 
   /*******事件********/
   @Emit('on-change')
-  onChangeEvent (blob: Blob, base64: string): {blob: Blob, base64: string} {
+  onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null, base64: string} {
     return {blob, base64};
   }
 

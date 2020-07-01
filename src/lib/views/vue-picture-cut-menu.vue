@@ -91,7 +91,7 @@ export default class VuePictureCutMenu extends Vue {
   }
   /*******事件********/
   @Emit('on-change')
-  onChangeEvent (blob: Blob, base64: string): {blob: Blob, base64: string} {
+  onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null, base64: string} {
     return {blob, base64};
   }
   /*******事件********/
@@ -106,7 +106,7 @@ export default class VuePictureCutMenu extends Vue {
     }
   }
   // 设置剪裁框
-  setMaskSize(w: number, h: number) {
+  setMaskSize(w: number, h: number): void {
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
       mask.reset(w, h);
@@ -114,21 +114,21 @@ export default class VuePictureCutMenu extends Vue {
     }
   }
   // 设置剪裁框
-  setMaskSizeToOriginal () {
+  setMaskSizeToOriginal (): void {
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       this.setMaskSize(main.imgRect.w, main.imgRect.h)
     }
   }
   // 设置剪裁框
-  setMaskResize (resize = true) {
+  setMaskResize (resize = true): void {
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
       mask.setResize(resize);
     }
   }
   // 旋转
-  rotate (angle: number, animation = false) {
+  rotate (angle: number, animation = false): void {
     if (angle % 36 === 0) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
@@ -140,7 +140,7 @@ export default class VuePictureCutMenu extends Vue {
   /**
    * 设置图片垂直翻折
    */
-  setFlipV() {
+  setFlipV(): void {
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       main.setFlipV(!main.showRect.sV);
@@ -149,7 +149,7 @@ export default class VuePictureCutMenu extends Vue {
   /**
    * 设置图片水平翻折
    */
-  setFlipH() {
+  setFlipH(): void {
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       main.setFlipH(!main.showRect.sH);
