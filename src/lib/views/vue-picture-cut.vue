@@ -64,7 +64,7 @@ export default class VuePictureCut extends Vue {
   @Prop({ type: Number, required: false }) private maxPixel: number | undefined;
   // 裁剪压缩率
   @Prop({ type: Number, required: false }) private encoderOptions: number | undefined;
-  // 裁剪压缩率
+  // 导出格式
   @Prop({ type: String, required: false }) private format: string | undefined;
   // 遮罩
   @Prop({
