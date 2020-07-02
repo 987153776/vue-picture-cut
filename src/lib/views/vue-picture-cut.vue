@@ -35,6 +35,7 @@ import PhotoMain from './PhotoMain';
 import PhotoMask from './PhotoMask';
 import VuePictureCutCanvas from './vue-picture-cut-canvas.vue';
 import VuePictureCutMask from './vue-picture-cut-mask.vue';
+import $tool from './tool';
 
 interface MskOption {
   width?: number;
@@ -84,18 +85,24 @@ export default class VuePictureCut extends Vue {
   hasMenu = false;
   // 角度
   sliderAngle = 0;
-  sliderHeight = '0';
-  sliderBottom = '0';
 
   photoRoot: PhotoRoot = new PhotoRoot();
+
+  reg = new RegExp('^(http://|https://|//)(?!' + location.host + '/)');
 
   @Provide()
   vuePictureCut = this.photoRoot;
 
   setImg(): void {
     const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    if (this.src && photoMain) {
-      photoMain.setSrc(this.src, this.initAngle);
+    let src = this.src;
+    if (src && photoMain) {
+      if (this.reg.test(src + '/')) {
+        $tool.loadCrossDomainImg(src)
+          .then(img => photoMain.setSrc(img, this.initAngle));
+      } else {
+        photoMain.setSrc(src, this.initAngle);
+      }
     }
     if (this.initAngle !== undefined) {
       this.sliderAngle = this.initAngle % 180;
@@ -137,9 +144,9 @@ export default class VuePictureCut extends Vue {
 
   protected mounted (): void {
     this.photoRoot.init(this.main, this.magnification);
-    this.setImg();
-    this.sliderHeight = this.main.offsetHeight * 0.8 + 'px';
-    this.sliderBottom = this.main.offsetHeight * 0.1 + 'px';
+    setTimeout(() => {
+      this.setImg();
+    }, 0);
   }
 
   /*******事件********/

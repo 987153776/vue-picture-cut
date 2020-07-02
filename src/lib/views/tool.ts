@@ -91,8 +91,59 @@ function rotatePoint(x: number, y: number, angle: number): Point{
   }
 }
 
+function arrayBuffer2String(arrayBuffer: ArrayBuffer, type: string): string {
+  const uInt8Array = new Uint8Array(arrayBuffer);
+  let i = uInt8Array.length;
+  const binaryString = new Array(i);
+  while (i--) {
+    binaryString[i] = String.fromCharCode(uInt8Array[i]);
+  }
+  const data = binaryString.join('');
+  const base64 = window.btoa(data);
+  return "data:" + type + ";base64," + base64;
+}
+
+/**
+ * 加载跨域图片
+ * @param src
+ */
+function loadCrossDomainImg (src: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', src, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function () {
+      if (this.status === 200) {
+        const blob = xhr.response;
+        const oFileReader = new FileReader();
+        oFileReader.addEventListener('loadend', function (e) {
+          if (e.target) {
+            if (typeof e.target.result === 'string') {
+              resolve(e.target.result);
+            } else if (e.target.result !== null) {
+              arrayBuffer2String(e.target.result, blob.type);
+            } else {
+              reject();
+            }
+          } else {
+            reject();
+          }
+        });
+        oFileReader.readAsDataURL(blob);
+      } else {
+        reject();
+      }
+    };
+    xhr.onerror = function (e) {
+      reject(e);
+    };
+    xhr.send();
+  });
+}
+
 export default {
   rotatePoint,
+  loadCrossDomainImg,
   cloneJSON<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj)) as T;
   },

@@ -45,7 +45,7 @@
                    action=""
                    accept="image/*"
                    :show-file-list="false"
-                   :on-change="inputChange">
+                   :on-error="inputChange">
           <el-button size="small" type="primary">选择</el-button>
         </el-upload>
       </el-form-item>
@@ -102,7 +102,7 @@ interface MskOption {
 @Component
 export default class App extends Vue {
 
-  private src: string | null = null;
+  private src: string | null = './demo.jpg';
   private blob: Blob | null = null;
   private base64: string | null = null;
 
@@ -131,7 +131,7 @@ export default class App extends Vue {
     return this.blob ? URL.createObjectURL(this.blob) : '';
   }
 
-  inputChange ({ raw }: { raw: File }): void{
+  inputChange (e: Error,{ raw }: { raw: File }): void{
     this.src = URL.createObjectURL(raw);
   }
 
