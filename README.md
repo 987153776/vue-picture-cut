@@ -87,7 +87,7 @@ Vue.use(VuePictureCut);
 
 ## 二、API
 
-#### 暴露的对象
+### 暴露的对象
 
 **全局引入时**
 ```javascript
@@ -110,8 +110,10 @@ import {
 组件：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`。
 工具类：`Bezier`、`createAnimation`、`Tool`。
 
-#### 1、VuePictureCut组件
+### 1、VuePictureCut组件
+
 **使用**
+
 ```vue
 <template>
 	<vue-picture-cut
@@ -130,35 +132,35 @@ import {
 
 **属性**
 
-1. `src`：
+1. `src`： 
 	**类型**：string  
 	**默认**：null  
 	**描述**：图片链接
-2. `magnification`：
+2. `magnification`： 
 	**类型**：number  
 	**默认**：1.5  
 	**描述**：画布绘制缩放率，大于0，值越大绘制的逻辑像素越高
-3. `initAngle`：
+3. `initAngle`： 
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：载入图片的初始旋转角度
-4. `rotateControl`：
+4. `rotateControl`： 
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：是否显示旋转控件。
-5. `maxPixel`：
+5. `maxPixel`： 
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
-6. `encoderOptions`：
+6. `encoderOptions`： 
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
-7. `format`：
+7. `format`： 
 	**类型**：string  
 	**默认**：false  
 	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。
-8. `mskOption`：
+8. `mskOption`： 
 	**类型**：object  
 	**默认**：`{ width: 1, height: 1, isRound: false, resize: true}`  
 	**描述**：  
@@ -169,15 +171,16 @@ import {
 
 **事件**
 
-1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件
-	blob：导出图片的Blob对象，可用于图片上传
-	base64：导出图片的base64字符串，可用于图片上传
+1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件  
+	blob：导出图片的Blob对象，可用于图片上传  
+	base64：导出图片的base64字符串，可用于图片上传  
 
 #### 2、VuePictureCutMask组件
 
 `VuePictureCutMask`是`VuePictureCut`默认slot插槽组件，是控制遮罩裁剪框相关的组件，使用它与不使用它效果一样。  
 
 **使用**
+
 ```vue
 <template>
 	<vue-picture-cut
@@ -203,19 +206,19 @@ import {
 
 **属性**
 
-1. `width`：
+1. `width`： 
 	**类型**：number  
 	**默认**：1  
 	**描述**：裁剪框比例宽
-2. `height`：
+2. `height`： 
 	**类型**：number  
 	**默认**：1  
 	**描述**：裁剪框比例高
-3. `isRound`：
+3. `isRound`： 
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：矩形true，椭圆false  
-4. `resize`：
+4. `resize`： 
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：裁剪框大小是否可通过拖动改变大小  
