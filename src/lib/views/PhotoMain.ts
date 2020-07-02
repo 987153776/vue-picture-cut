@@ -181,11 +181,18 @@ export default class PhotoMain implements PhotoBasic{
    * @param sV  垂直翻折
    * @param sH  水平翻折
    */
-  setFlip (sV: boolean, sH: boolean) {
+  setFlip (sV: boolean, sH: boolean): void {
+    const sh = this.showRect.sH;
+    const sv = this.showRect.sV;
+    if (sh === sH && sv === sV) return;
     this.showRect.sV = sV;
     this.showRect.sH = sH;
-    this.showRect.x *= sH ? -1 : 1;
-    this.showRect.y *= sV ? -1 : 1;
+    if (sh !== sH) {
+      this.showRect.x *= -1;
+    }
+    if (sv === sV) {
+      this.showRect.y *= -1;
+    }
     if (this.img) {
       this._draw(this.imgRect, this.showRect);
     }
@@ -195,9 +202,11 @@ export default class PhotoMain implements PhotoBasic{
    * 设置图片垂直翻折
    * @param sV  垂直翻折
    */
-  setFlipV (sV: boolean) {
+  setFlipV (sV: boolean): void {
+    const sv = this.showRect.sV;
+    if (sv === sV) return;
     this.showRect.sV = sV;
-    this.showRect.y *= sV ? -1 : 1;
+    this.showRect.y *= -1;
     if (this.img) {
       this._draw(this.imgRect, this.showRect);
     }
@@ -207,9 +216,11 @@ export default class PhotoMain implements PhotoBasic{
    * 设置图片水平翻折
    * @param sH  水平翻折
    */
-  setFlipH (sH: boolean) {
+  setFlipH (sH: boolean): void {
+    const sh = this.showRect.sH;
+    if (sh === sH) return;
     this.showRect.sH = sH;
-    this.showRect.x *= sH ? -1 : 1;
+    this.showRect.x *= -1;
     if (this.img) {
       this._draw(this.imgRect, this.showRect);
     }
