@@ -118,17 +118,17 @@ import {
 
 ```vue
 <template>
-	<vue-picture-cut
-		:src="src"
-		:magnification="magnification"
-		:init-angle="initAngle"
-		:rotate-control="rotateControl"
-		:msk-option="mskOption"
-		:max-pixel="maxPixel"
-		:encoder-options="encoderOptions"
-		:format="format"
-		@on-change="onChange"
-	/>
+  <vue-picture-cut
+    :src="src"
+    :magnification="magnification"
+    :init-angle="initAngle"
+    :rotate-control="rotateControl"
+    :msk-option="mskOption"
+    :max-pixel="maxPixel"
+    :encoder-options="encoderOptions"
+    :format="format"
+    @on-change="onChange"
+  />
 </template>
 ```
 
@@ -185,23 +185,23 @@ import {
 
 ```vue
 <template>
-	<vue-picture-cut
-		:src="src"
-		:magnification="magnification"
-		:init-angle="initAngle"
-		:rotate-control="rotateControl"
-		:max-pixel="maxPixel"
-		:encoder-options="encoderOptions"
-		:format="format"
-		@on-change="onChange"
-	>
-		<vue-picture-mask
-			:width="width"
-			:height="height"
-			:is-round="isRound"
-			:resize="resize"
-		/>
-	</vue-picture-cut>
+  <vue-picture-cut
+    :src="src"
+    :magnification="magnification"
+    :init-angle="initAngle"
+    :rotate-control="rotateControl"
+    :max-pixel="maxPixel"
+    :encoder-options="encoderOptions"
+    :format="format"
+    @on-change="onChange"
+  >
+    <vue-picture-mask
+      :width="width"
+      :height="height"
+      :is-round="isRound"
+      :resize="resize"
+    />
+  </vue-picture-cut>
 </template>
 ```
 
@@ -232,24 +232,24 @@ import {
 
 ```vue
 <template>
-	<vue-picture-cut
-		:src="src"
-		:magnification="magnification"
-		:init-angle="initAngle"
-		:rotate-control="rotateControl"
-		:msk-option="mskOption"
-		@on-change="cutChange"
-	>
-		<vue-picture-menu
-			slot="menu"
-			:cancel="false"
-			:max-pixel="maxPixel"
-			:encoder-options="encoderOptions"
-			:format="format"
-			@on-change="onChange"
-			@on-cancel="onCancel"
-		/>
-	</vue-picture-cut>
+  <vue-picture-cut
+    :src="src"
+    :magnification="magnification"
+    :init-angle="initAngle"
+    :rotate-control="rotateControl"
+    :msk-option="mskOption"
+    @on-change="cutChange"
+  >
+    <vue-picture-menu
+      slot="menu"
+      :cancel="false"
+      :max-pixel="maxPixel"
+      :encoder-options="encoderOptions"
+      :format="format"
+      @on-change="onChange"
+      @on-cancel="onCancel"
+    />
+  </vue-picture-cut>
 </template>
 ```
 
