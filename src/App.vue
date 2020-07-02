@@ -61,9 +61,9 @@
           <el-radio :label="true">可改变</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="😉旋转控件:">
-        <el-checkbox v-model="form.rotateControl"></el-checkbox>
-      </el-form-item>
+<!--      <el-form-item label="😉旋转控件:">-->
+<!--        <el-checkbox v-model="form.rotateControl"></el-checkbox>-->
+<!--      </el-form-item>-->
       <el-form-item label="😎初始角度:">
         <el-input-number v-model="form.initAngle" placeholder="auto"></el-input-number>
       </el-form-item>
