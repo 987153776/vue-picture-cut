@@ -112,17 +112,19 @@ import {
 
 ### 1、VuePictureCut组件
 
-**使用**
+**slot插槽：** `default`、`menu`
+
+**使用：**
 
 ```vue
 <template>
 	<vue-picture-cut
 		:src="src"
 		:magnification="magnification"
-		:init-angle="form.initAngle"
-		:rotate-control="form.rotateControl"
+		:init-angle="initAngle"
+		:rotate-control="rotateControl"
 		:msk-option="mskOption"
-		:max-pixel="form.maxPixel"
+		:max-pixel="maxPixel"
 		:encoder-options="encoderOptions"
 		:format="format"
 		@on-change="onChange"
@@ -130,46 +132,46 @@ import {
 </template>
 ```
 
-**属性**
+**属性：**
 
-1. `src`： 
+1. `src`：  
 	**类型**：string  
 	**默认**：null  
 	**描述**：图片链接
-2. `magnification`： 
+2. `magnification`：  
 	**类型**：number  
 	**默认**：1.5  
 	**描述**：画布绘制缩放率，大于0，值越大绘制的逻辑像素越高
-3. `initAngle`： 
+3. `initAngle`：  
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：载入图片的初始旋转角度
-4. `rotateControl`： 
+4. `rotateControl`：  
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：是否显示旋转控件。
-5. `maxPixel`： 
+5. `maxPixel`：  
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
-6. `encoderOptions`： 
+6. `encoderOptions`：  
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
-7. `format`： 
+7. `format`：  
 	**类型**：string  
 	**默认**：false  
 	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。
-8. `mskOption`： 
+8. `mskOption`：  
 	**类型**：object  
 	**默认**：`{ width: 1, height: 1, isRound: false, resize: true}`  
 	**描述**：  
-		width：number 裁剪框比例宽  
-		height：number 裁剪框比例高  
-		isRound：boolean 矩形true，椭圆false  
-		resize：boolean 裁剪框大小是否可通过拖动改变大小  
+	width：number 裁剪框比例宽  
+	height：number 裁剪框比例高  
+	isRound：boolean 矩形true，椭圆false  
+	resize：boolean 裁剪框大小是否可通过拖动改变大小  
 
-**事件**
+**事件：**
 
 1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件  
 	blob：导出图片的Blob对象，可用于图片上传  
@@ -179,20 +181,19 @@ import {
 
 `VuePictureCutMask`是`VuePictureCut`默认slot插槽组件，是控制遮罩裁剪框相关的组件，使用它与不使用它效果一样。  
 
-**使用**
+**使用：**
 
 ```vue
 <template>
 	<vue-picture-cut
 		:src="src"
 		:magnification="magnification"
-		:init-angle="form.initAngle"
-		:rotate-control="form.rotateControl"
-		:msk-option="mskOption"
-		:max-pixel="form.maxPixel"
-		:encoder-options="form.encoderOptions"
-		:format="form.format"
-		@on-change="cutChange"
+		:init-angle="initAngle"
+		:rotate-control="rotateControl"
+		:max-pixel="maxPixel"
+		:encoder-options="encoderOptions"
+		:format="format"
+		@on-change="onChange"
 	>
 		<vue-picture-mask
 			:width="width"
@@ -204,32 +205,82 @@ import {
 </template>
 ```
 
-**属性**
+**属性：**
 
-1. `width`： 
+1. `width`：  
 	**类型**：number  
 	**默认**：1  
 	**描述**：裁剪框比例宽
-2. `height`： 
+2. `height`：  
 	**类型**：number  
 	**默认**：1  
 	**描述**：裁剪框比例高
-3. `isRound`： 
+3. `isRound`：  
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：矩形true，椭圆false  
-4. `resize`： 
+4. `resize`：  
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：裁剪框大小是否可通过拖动改变大小  
 
-#### 事件Events
+#### 3、VuePictureCutMenu组件
 
-***...待编辑***
+菜单栏组件，效果参见Demo。  
 
-### 2、其他工具类
+**使用：**
 
-#### 2.1 Bezier对象
+```vue
+<template>
+	<vue-picture-cut
+		:src="src"
+		:magnification="magnification"
+		:init-angle="initAngle"
+		:rotate-control="rotateControl"
+		:msk-option="mskOption"
+		@on-change="cutChange"
+	>
+		<vue-picture-menu
+			slot="menu"
+			:cancel="false"
+			:max-pixel="maxPixel"
+			:encoder-options="encoderOptions"
+			:format="format"
+			@on-change="onChange"
+			@on-cancel="onCancel"
+		/>
+	</vue-picture-cut>
+</template>
+```
+
+**属性：**
+
+1. `cancel`：  
+	**类型**：boolean  
+	**默认**：false  
+	**描述**：是否显示取消按钮。
+2. `maxPixel`：  
+	**类型**：number  
+	**必须**：非必须  
+	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
+3. `encoderOptions`：  
+	**类型**：number  
+	**必须**：非必须  
+	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
+4. `format`：  
+	**类型**：string  
+	**默认**：false  
+	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
+
+**事件：**
+
+1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件，即点击确认按钮  
+	blob：导出图片的Blob对象，可用于图片上传  
+	base64：导出图片的base64字符串，可用于图片上传  
+
+2. `onCancel ()`：监听点击取消按钮  
+
+#### 4、Bezier对象
 
 ```javascript
   import { Bezier } from 'vue-picture-cut';
@@ -267,7 +318,7 @@ import {
 
 ParamsInterface为包含4个number类型的数组。
 
-#### 2.2 createAnimation方法
+#### 5、 createAnimation方法
 
 ```javascript
   import { createAnimation } from 'vue-picture-cut';
@@ -296,7 +347,7 @@ createAnimation会返回一个Animation对象
 | start | 开始动画 | —— | Animation对象本身 |
 | abort | 中止动画 | —— | —— |
 
-#### 2.3 Tool对象
+#### 6、 Tool对象
 
 ```javascript
   import { Tool } from 'vue-picture-cut';
@@ -316,8 +367,15 @@ createAnimation会返回一个Animation对象
 
 ### 3、自定义扩展
 
-***...文档待编辑***  
 暂时可以参考`src/App.vue`和`src/lib/views/vue-picture-cut-menu.vue`
+
+#### 3.1、自定义裁剪
+
+***...文档待编辑***  
+
+#### 3.2、自定义菜单栏
+
+***...文档待编辑***  
 
 ## 三、希望大家都来用一下
 VuePictureCut 💗 you!

@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="vue-picture-cut-menu_confirm">
-      <div v-show="cancel" class="__cancel">取消</div>
+      <div v-show="cancel" class="__cancel" @click="onCancelEvent">取消</div>
       <div class="__sure" :class="{'__center': !cancel}" @click="sureCut">确定</div>
     </div>
   </div>
@@ -93,6 +93,10 @@ export default class VuePictureCutMenu extends Vue {
   @Emit('on-change')
   onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null, base64: string} {
     return {blob, base64};
+  }
+  @Emit('on-cancel')
+  onCancelEvent (): void {
+    return;
   }
   /*******事件********/
   // 裁剪
