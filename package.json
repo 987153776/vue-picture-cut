@@ -9,7 +9,10 @@
   "keywords": [
     "vue",
     "canvas",
-    "TypeScript"
+    "JypeScript",
+    "TypeScript",
+    "剪裁",
+    "图像处理"
   ],
   "author": "光年以外 <lightyear0720@vip.qq.com>",
   "license": "MIT",
