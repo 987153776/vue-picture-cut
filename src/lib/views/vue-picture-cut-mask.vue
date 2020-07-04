@@ -40,25 +40,25 @@ export default class VuePictureCutMask extends Vue {
   thisRound = false;
   thisResize = true;
 
-  get TLHorn () {
+  get TLHorn (): string {
     const x = this.rect.x;
     const y = this.rect.y;
     return `M${x},${y} H${x} V${y + 15} H${x - 5} V${y + 15} H${x - 5} V${y - 5} H${x + 15} V${y - 5} H${x + 15} V${y} Z`;
   }
 
-  get TRHorn () {
+  get TRHorn (): string {
     const x = this.rect.x + this.rect.width;
     const y = this.rect.y;
     return `M${x},${y} H${x} V${y + 15} H${x + 5} V${y + 15} H${x + 5} V${y - 5} H${x - 15} V${y - 5} H${x - 15} V${y} Z`;
   }
 
-  get BLHorn () {
+  get BLHorn (): string {
     const x = this.rect.x;
     const y = this.rect.y + this.rect.height;
     return `M${x},${y} H${x} V${y - 15} H${x - 5} V${y - 15} H${x - 5} V${y + 5} H${x + 15} V${y + 5} H${x + 15} V${y} Z`;
   }
 
-  get BRHorn () {
+  get BRHorn (): string {
     const x = this.rect.x + this.rect.width;
     const y = this.rect.y + this.rect.height;
     return `M${x},${y} H${x} V${y - 15} H${x + 5} V${y - 15} H${x + 5} V${y + 5} H${x - 15} V${y + 5} H${x - 15} V${y} Z`;
