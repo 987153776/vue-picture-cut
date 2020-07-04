@@ -4,6 +4,10 @@
     <rect v-if="thisResize || !thisRound" class="cls-3" v-bind="rect"
           :style="{ 'stroke-dasharray': border, stroke: thisRound ? 'rgba(255,255,255,.7)' : '#ff5500' }"/>
     <path v-if="thisRound" class="cls-2" :d="round"/>
+    <path v-if="thisResize" class="cls-4" :d="TLHorn"/>
+    <path v-if="thisResize" class="cls-4" :d="TRHorn"/>
+    <path v-if="thisResize" class="cls-4" :d="BLHorn"/>
+    <path v-if="thisResize" class="cls-4" :d="BRHorn"/>
   </svg>
 </template>
 
@@ -31,10 +35,34 @@ export default class VuePictureCutMask extends Vue {
   drawWidth = 0;
   drawHeight = 0;
   round = 'M0,150 V+150 a150,150 0 1 0 0,-1';
-  rect = {};
+  rect = {x: 0, y: 0, width: 0, height: 0};
   border='10, 5';
   thisRound = false;
   thisResize = true;
+
+  get TLHorn () {
+    const x = this.rect.x;
+    const y = this.rect.y;
+    return `M${x},${y} H${x} V${y + 15} H${x - 5} V${y + 15} H${x - 5} V${y - 5} H${x + 15} V${y - 5} H${x + 15} V${y} Z`;
+  }
+
+  get TRHorn () {
+    const x = this.rect.x + this.rect.width;
+    const y = this.rect.y;
+    return `M${x},${y} H${x} V${y + 15} H${x + 5} V${y + 15} H${x + 5} V${y - 5} H${x - 15} V${y - 5} H${x - 15} V${y} Z`;
+  }
+
+  get BLHorn () {
+    const x = this.rect.x;
+    const y = this.rect.y + this.rect.height;
+    return `M${x},${y} H${x} V${y - 15} H${x - 5} V${y - 15} H${x - 5} V${y + 5} H${x + 15} V${y + 5} H${x + 15} V${y} Z`;
+  }
+
+  get BRHorn () {
+    const x = this.rect.x + this.rect.width;
+    const y = this.rect.y + this.rect.height;
+    return `M${x},${y} H${x} V${y - 15} H${x + 5} V${y - 15} H${x + 5} V${y + 5} H${x - 15} V${y + 5} H${x - 15} V${y} Z`;
+  }
 
   @Watch('width')
   watchWidth (to: number): void {
@@ -127,5 +155,10 @@ export default class VuePictureCutMask extends Vue {
   stroke-width: 2px;
   stroke-dasharray: 10, 5;
   fill:rgba(0,0,0,0);
+}
+.cls-4{
+  stroke: rgba(255,255,255,.8);
+  stroke-width: 2px;
+  fill: rgba(255,255,255,.5);
 }
 </style>
