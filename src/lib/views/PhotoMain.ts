@@ -233,7 +233,7 @@ export default class PhotoMain implements PhotoBasic{
    * @param zoom  缩放系数，大于1(放大)，大于0小于1(缩小)
    */
   scale(zoom: number): void{
-    if (!this.img || zoom < 0) return;
+    if (!this.img || zoom < 0 || zoom === 1) return;
     this.scaleTimer !== null && clearTimeout(this.scaleTimer);
     this.animation?.abort();
     const point = { x: this.showRect.x, y: this.showRect.y};

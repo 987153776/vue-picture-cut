@@ -21,7 +21,7 @@
 ### 通过npm安装插件
 
 ```nodejs
-npm i vue-picture-cut@2.0.0-beta.0
+npm i vue-picture-cut@2.0.0-beta.1
 ```
 
 ### 在vue中使用
