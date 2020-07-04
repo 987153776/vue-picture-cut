@@ -227,6 +227,17 @@ export default class PhotoMain implements PhotoBasic{
   }
 
   /**
+   * 缩放
+   * @param toBigger  true(放大)，false(缩小)
+   */
+  scale(toBigger: boolean): void{
+    if (!this.img) return;
+    const zoom = toBigger ? 1.08 : 0.92593;
+    this._scaleByZoom(zoom, { x: 0, y: 0});
+    this._draw(this.imgRect, this.showRect);
+  }
+
+  /**
    * 设置图片矩形
    * @param showRect
    */
