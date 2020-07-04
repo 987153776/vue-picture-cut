@@ -46,6 +46,8 @@ export default class PhotoMain implements PhotoBasic{
 
   private animation: AnimationInterface | undefined = undefined;
 
+  private scaleTimer: number | null = null
+
   /**
    * 供外部使用，注入的方法会在每次加载图片后执行
    */
@@ -228,13 +230,18 @@ export default class PhotoMain implements PhotoBasic{
 
   /**
    * 缩放
-   * @param toBigger  true(放大)，false(缩小)
+   * @param zoom  缩放系数，大于1(放大)，大于0小于1(缩小)
    */
-  scale(toBigger: boolean): void{
-    if (!this.img) return;
-    const zoom = toBigger ? 1.08 : 0.92593;
+  scale(zoom: number): void{
+    if (!this.img || zoom < 0) return;
+    this.scaleTimer !== null && clearTimeout(this.scaleTimer);
+    this.animation?.abort();
     this._scaleByZoom(zoom, { x: 0, y: 0});
     this._draw(this.imgRect, this.showRect);
+    this.scaleTimer = setTimeout(() => {
+      const [offX, offY, offW, offH] = this._checkRange();
+      this.doAnimation(offX, offY, offW, offH, 0);
+    }, 300);
   }
 
   /**

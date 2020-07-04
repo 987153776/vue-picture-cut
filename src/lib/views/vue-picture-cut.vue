@@ -93,22 +93,6 @@ export default class VuePictureCut extends Vue {
   @Provide()
   vuePictureCut = this.photoRoot;
 
-  setImg(): void {
-    const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    let src = this.src;
-    if (src && photoMain) {
-      if (this.reg.test(src + '/')) {
-        $tool.loadCrossDomainImg(src)
-          .then(img => photoMain.setSrc(img, this.initAngle));
-      } else {
-        photoMain.setSrc(src, this.initAngle);
-      }
-    }
-    if (this.initAngle !== undefined) {
-      this.sliderAngle = this.initAngle % 180;
-    }
-  }
-
   @Watch('src')
   watchSrc (to: string | null): void {
     if (to) {
@@ -157,6 +141,22 @@ export default class VuePictureCut extends Vue {
 
   /**********方法**********/
 
+  setImg(): void {
+    const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    let src = this.src;
+    if (src && photoMain) {
+      if (this.reg.test(src + '/')) {
+        $tool.loadCrossDomainImg(src)
+          .then(img => photoMain.setSrc(img, this.initAngle));
+      } else {
+        photoMain.setSrc(src, this.initAngle);
+      }
+    }
+    if (this.initAngle !== undefined) {
+      this.sliderAngle = this.initAngle % 180;
+    }
+  }
+
   // 默认裁剪
   sureCut(): void{
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
@@ -166,6 +166,12 @@ export default class VuePictureCut extends Vue {
         this.onChangeEvent(result.file, result.src);
       }
     }
+  }
+
+  // 缩放
+  scale(zoom: number): void{
+    const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    photoMain?.scale(zoom);
   }
 
 }

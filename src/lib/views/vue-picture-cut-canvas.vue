@@ -14,19 +14,19 @@ export default class VuePictureCutCanvas extends Vue {
   // 旋转
   @Prop({ type: Number, required: false}) private angle: number | undefined;
 
-  PhotoMain: PhotoMain | null = null;
+  photoMain: PhotoMain | null = null;
 
   @Watch('angle')
   watchAngle (to: number | undefined): void {
-    if (this.PhotoMain && to !== undefined) {
-      this.PhotoMain.setAngle(to, true);
+    if (this.photoMain && to !== undefined) {
+      this.photoMain.setAngle(to, true);
     }
   }
 
   /*******生命周期********/
   protected mounted (): void {
     setTimeout(() => {
-      this.PhotoMain = new PhotoMain(
+      this.photoMain = new PhotoMain(
         this.$el as HTMLCanvasElement,
         this.photoRoot
       );
