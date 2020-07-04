@@ -121,6 +121,7 @@ import {
 ```vue
 <template>
   <vue-picture-cut
+    ref="pictureCut"
     :src="src"
     :magnification="magnification"
     :init-angle="initAngle"
@@ -143,7 +144,7 @@ import {
 2. `magnification`：  
 	**类型**：number  
 	**默认**：1.5  
-	**描述**：画布绘制缩放率，大于0，值越大绘制的逻辑像素越高
+	**描述**：画布绘制缩放率，取值大于0，值越大绘制的逻辑像素越高
 3. `initAngle`：  
 	**类型**：number  
 	**必须**：非必须  
@@ -178,6 +179,11 @@ import {
 1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件  
 	blob：导出图片的Blob对象，可用于图片上传  
 	base64：导出图片的base64字符串，可用于图片上传  
+	
+**方法：**
+
+1. `this.$refs['pictureCut'].scale(zoom)`：缩放图片  
+    参数zoom：缩放后的尺寸和当前尺寸的比例，取值大于0，0到1之间缩小，大于1放大。  
 
 #### 2、VuePictureCutMask组件
 
