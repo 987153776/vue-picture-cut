@@ -21,7 +21,7 @@
 <!--                     :format="form.format"-->
 <!--                     @on-change="cutChange"/>-->
     <!--自定义菜单-->
-    <vue-picture-cut class="cut" :src="src"
+    <vue-picture-cut class="cut" ref="pictureCut" :src="src"
                      :init-angle="form.initAngle"
                      :msk-option="mskOption">
       <vue-picture-cut-menu slot="menu"
@@ -61,9 +61,11 @@
           <el-radio :label="true">可改变</el-radio>
         </el-radio-group>
       </el-form-item>
-<!--      <el-form-item label="😉旋转控件:">-->
-<!--        <el-checkbox v-model="form.rotateControl"></el-checkbox>-->
-<!--      </el-form-item>-->
+      <el-form-item label="😉缩放系数:">
+        <el-input-number v-model="form.zoom" :min="0" :step="0.05"></el-input-number>
+        <el-button size="mini" type="primary" style="margin-left: 10px"
+                   @click="$refs['pictureCut'].scale(form.zoom)">执行缩放</el-button>
+      </el-form-item>
       <el-form-item label="😎初始角度:">
         <el-input-number v-model="form.initAngle" placeholder="auto"></el-input-number>
       </el-form-item>
@@ -110,6 +112,7 @@ export default class App extends Vue {
     isRound: true,
     resize: true,
     rotateControl: true,
+    zoom: .96,
     initAngle: undefined,
     width: 4,
     height: 5,

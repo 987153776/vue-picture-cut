@@ -236,12 +236,14 @@ export default class PhotoMain implements PhotoBasic{
     if (!this.img || zoom < 0) return;
     this.scaleTimer !== null && clearTimeout(this.scaleTimer);
     this.animation?.abort();
-    this._scaleByZoom(zoom, { x: 0, y: 0});
+    const point = { x: this.showRect.x, y: this.showRect.y};
+    this.touchstartPoint = {x: 0, y: 0};
+    this._scaleByZoom(zoom, point);
     this._draw(this.imgRect, this.showRect);
     this.scaleTimer = setTimeout(() => {
       const [offX, offY, offW, offH] = this._checkRange();
       this.doAnimation(offX, offY, offW, offH, 0);
-    }, 300);
+    }, 400);
   }
 
   /**
