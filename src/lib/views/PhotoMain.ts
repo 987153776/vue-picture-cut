@@ -236,7 +236,7 @@ export default class PhotoMain implements PhotoBasic{
     if (!this.img || zoom < 0 || zoom === 1) return;
     this.scaleTimer !== null && clearTimeout(this.scaleTimer);
     this.animation?.abort();
-    const point = { x: this.showRect.x, y: this.showRect.y};
+    const point = $tool.rotatePoint(this.showRect.x, this.showRect.y, this.showRect.r);
     this.touchstartPoint = {x: 0, y: 0};
     this._scaleByZoom(zoom, point);
     this._draw(this.imgRect, this.showRect);
