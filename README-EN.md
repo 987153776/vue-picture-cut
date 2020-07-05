@@ -167,30 +167,30 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 7. `format`：  
 	**type**：string  
 	**default**：false  
-	**describe**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。
+	**describe**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
 8. `mskOption`：  
 	**type**：object  
 	**default**：`{ width: 1, height: 1, isRound: false, resize: true}`  
 	**describe**：  
-	width：number 裁剪框比例宽  
-	height：number 裁剪框比例高  
-	isRound：boolean 矩形true，椭圆false  
-	resize：boolean 裁剪框大小是否可通过拖动改变大小  
+	width：{number} Crop box width ratio.  
+	height：{number} Crop box height ratio.  
+	isRound：{boolean} rectangle - true，ellipse - false.  
+	resize：{boolean} Can the crop box size be changed by dragging.  
 
 **Event：**
 
-1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件  
-	blob：导出图片的Blob对象，可用于图片上传  
-	base64：导出图片的base64字符串，可用于图片上传  
+1. `onChange ({ blob, base64 })`：Listen to the event that the picture is finally cropped and exported.  
+	blob：Export the Blob object of the picture, which can be used to upload the picture.  
+	base64：Export the Base64 string of the picture, which can be used to upload the picture.  
 	
 **Method：**
 
-1. `this.$refs['pictureCut'].scale(zoom)`：缩放图片  
-    参数zoom：缩放后的尺寸和当前尺寸的比例，取值大于0，0到1之间缩小，大于1放大。  
+1. `this.$refs['pictureCut'].scale(zoom)`：Zoom picture  
+    zoom：The scale of the scaled size to the current size. The value is greater than 0. Between 0 and 1 is to reduce, and greater than 1 to enlarge.  
 
 #### 2、VuePictureCutMask Components
 
-`VuePictureCutMask`是`VuePictureCut`默认slot插槽组件，是控制遮罩裁剪框相关的组件，使用它与不使用它效果一样。  
+`VuePictureCutMask` is the default slot component of `VuePictureCut`. It is related to the control mask crop box. Using it has the same effect as not using it.  
 
 **Using：**
 
@@ -221,23 +221,23 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 1. `width`：  
 	**type**：number  
 	**default**：1  
-	**describe**：裁剪框比例宽
+	**describe**：Crop box width ratio.  
 2. `height`：  
 	**type**：number  
 	**default**：1  
-	**describe**：裁剪框比例高
+	**describe**：Crop box height ratio.  
 3. `isRound`：  
 	**type**：boolean  
 	**default**：false  
-	**describe**：矩形true，椭圆false  
+	**describe**：rectangle - true，ellipse - false.  
 4. `resize`：  
 	**type**：boolean  
 	**default**：false  
-	**describe**：裁剪框大小是否可通过拖动改变大小  
+	**describe**：Can the crop box size be changed by dragging.  
 
 #### 3、VuePictureCutMenu组件
 
-菜单栏组件，效果参见Demo。  
+Menu bar component, see demo for effect.    
 
 **Using：**
 
@@ -269,27 +269,27 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 1. `cancel`：  
 	**type**：boolean  
 	**default**：false  
-	**describe**：是否显示取消按钮。
+	**describe**：Whether to display the '取消' button.  
 2. `maxPixel`：  
 	**type**：number  
 	**required**：false  
-	**describe**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
+	**describe**：Export the pixels on the longer side of the picture. When the value is not transferred, it is adaptive according to the actual image size.  
 3. `encoderOptions`：  
 	**type**：number  
 	**required**：false  
-	**describe**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
+	**describe**：Compression ratio of exported pictures. When the value is not transferred, it is calculated as 0.8, and the value range is 0 ~ 1.  
 4. `format`：  
 	**type**：string  
 	**required**：false  
-	**describe**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
+	**describe**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
 
 **Event：**
 
-1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件，即点击确认按钮  
-	blob：导出图片的Blob对象，可用于图片上传  
-	base64：导出图片的base64字符串，可用于图片上传  
+1. `onChange ({ blob, base64 })`：Listen to the event that the picture is finally cropped and exported.  
+	blob：Export the Blob object of the picture, which can be used to upload the picture.  
+	base64：Export the Base64 string of the picture, which can be used to upload the picture.  
 
-2. `onCancel ()`：监听点击取消按钮  
+2. `onCancel ()`：Listen to '取消' button click event.  
 
 #### 4、Bezier Object
 
@@ -365,28 +365,29 @@ createAnimation会返回一个Animation对象
 
   Tool.loadImg('http://xxx.xxx.xxx/xxx.jpg')
   .then(image => {
-    // 加载图片成功
-    // image为Image对象
+    // Image loaded successfully
+    // image: Image Object
   }, image => {
-    // 加载图片失败
+    // Failed to load picture
   });
 ```
 
-##### 包含方法
+##### Method
 
-***...待编辑***
+***...Waiting for editing***
 
-### 3、自定义扩展
+### 3、Custom extension
 
-暂时可以参考`src/App.vue`和`src/lib/views/vue-picture-cut-menu.vue`
+For the time being, please refer to `src/App.vue` and `src/lib/views/vue-picture-cut-menu.vue`
 
-#### 3.1、自定义裁剪
+#### 3.1、Custom crop
 
-***...文档待编辑***  
+***...Waiting for editing***  
 
-#### 3.2、自定义菜单栏
+#### 3.2、Customize the menu bar
 
-***...文档待编辑***  
+***...Waiting for editing***  
 
-## 三、希望大家都来用一下
+## 三、Welcome
+
 VuePictureCut 💗 you!
