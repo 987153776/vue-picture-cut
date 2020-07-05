@@ -4,7 +4,7 @@
 ![download](https://badgen.net/npm/dw/vue-picture-cut?cache=1800)
 ![license](https://badgen.net/npm/license/vue-picture-cut)
 
-中文 | [English](./blob/master/README.md)
+中文 | [English](./README-EN.md)
 
 基于`vue`和`typescript`开发的一款图片剪裁处理工具  
 优点：**原生、轻量、使用简单、功能全面、扩展性强**  

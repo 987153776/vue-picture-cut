@@ -4,7 +4,7 @@
 ![download](https://badgen.net/npm/dw/vue-picture-cut?cache=1800)
 ![license](https://badgen.net/npm/license/vue-picture-cut)
 
-[中文](../../../) | English
+[中文](./README.md) | English
 
 An image clipping tool based on `vue` and `typescript`.    
 Advantage：**It is original, light weight, simple to use, comprehensive function and strong expansibility**  
