@@ -1,7 +1,8 @@
 # vue-picture-cut 2.x
 
-![npm](https://badgen.net/npm/v/vue-picture-cut)
-![npm@beta](https://badgen.net/badge/npm@beta/v2.0.0-beta.3/cyan)
+![npm](https://badgen.net/npm/v/vue-picture-cut?cache=1800)
+![npm@beta](https://badgen.net/npm/v/vue-picture-cut/beta?cache=1800)
+![download](https://badgen.net/npm/dw/vue-picture-cut?cache=1800)
 ![license](https://badgen.net/npm/license/vue-picture-cut)
 
 基于`vue`和`typescript`开发的一款图片剪裁处理工具  
