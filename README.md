@@ -1,7 +1,7 @@
 # vue-picture-cut 2.x
 
 ![npm](https://badgen.net/npm/v/vue-picture-cut)
-![npm@beta](https://badgen.net/npm/v/vue-picture-cut/beta?_1)
+![npm@beta](https://badgen.net/npm/v/vue-picture-cut/beta?_2)
 ![license](https://badgen.net/npm/license/vue-picture-cut)
 
 基于`vue`和`typescript`开发的一款图片剪裁处理工具  
@@ -21,7 +21,7 @@
 ### 通过npm安装插件
 
 ```nodejs
-npm i vue-picture-cut@2.0.0-beta.2
+npm i vue-picture-cut@2.0.0-beta.3
 ```
 
 ### 在vue中使用
