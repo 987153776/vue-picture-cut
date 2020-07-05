@@ -88,8 +88,6 @@ export default class VuePictureCut extends Vue {
 
   photoRoot: PhotoRoot = new PhotoRoot();
 
-  reg = new RegExp('^(http://|https://|//)(?!' + location.host + '/)');
-
   @Provide()
   vuePictureCut = this.photoRoot;
 
@@ -145,12 +143,7 @@ export default class VuePictureCut extends Vue {
     const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     let src = this.src;
     if (src && photoMain) {
-      if (this.reg.test(src + '/')) {
-        $tool.loadCrossDomainImg(src)
-          .then(img => photoMain.setSrc(img, this.initAngle));
-      } else {
-        photoMain.setSrc(src, this.initAngle);
-      }
+      photoMain.setSrc(src, this.initAngle);
     }
     if (this.initAngle !== undefined) {
       this.sliderAngle = this.initAngle % 180;
