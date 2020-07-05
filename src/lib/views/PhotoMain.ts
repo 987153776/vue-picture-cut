@@ -477,23 +477,22 @@ export default class PhotoMain implements PhotoBasic{
 
   wheelStart(zoom: number, point: Point): void {
     if (!this.img) return;
-    this.animation?.abort();
-
     this.status = 'scale';
-    this.touchstartEvent = $tool.doubleTouche(point);
-    const core = this.touchstartEvent.core;
-    const offPoint = this._changePointByImage(core);
-    this.touchstartPoint = this._getPointerLocation(offPoint);
-    this.root.addPriorityList(this);
-
-    zoom = zoom > 0 ? 1.08 : 0.92593;
-    this._scaleByZoom(zoom, point);
-    this._draw(this.imgRect, this.showRect);
+    this.wheelChange(zoom, point);
   }
 
   wheelChange(zoom: number, point: Point): void {
     if (!this.img) return;
-    zoom = zoom > 0 ? 1.08 : 0.92593;
+    this.animation?.abort();
+
+    this.touchstartEvent = $tool.doubleTouche(point);
+    const core = this.touchstartEvent.core;
+    const offPoint = this._changePointByImage(core);
+    this.touchstartPoint = this._getPointerLocation(offPoint);
+    this.root.setPriority(this);
+
+    zoom = 1 + zoom * 0.0005;
+    zoom = zoom > 1.08 ? 1.08 : zoom < 0.92593 ? 0.92593 : zoom;
     this._scaleByZoom(zoom, point);
     this._draw(this.imgRect, this.showRect);
   }
@@ -505,7 +504,7 @@ export default class PhotoMain implements PhotoBasic{
     this.touchstartPoint = {x: 0, y: 0};
     const [offX, offY, offW, offH] = this._checkRange();
     this.doAnimation(offX, offY, offW, offH, 0);
-    this.root.deletePriorityList(this.className);
+    this.root.deletePriority(this.className);
   }
 
   private _touchStart1(tp: TouchePoint) {
@@ -526,12 +525,12 @@ export default class PhotoMain implements PhotoBasic{
     const core = this.touchstartEvent.core;
     const offPoint = this._changePointByImage(core);
     this.touchstartPoint = this._getPointerLocation(offPoint);
-    this.root.addPriorityList(this);
+    this.root.setPriority(this);
   }
 
   private _touchMove1(tp: TouchePoint) {
     if (this.status === 'move') {
-      this.root.addPriorityList(this);
+      this.root.setPriority(this);
       this.touchList[0] = tp;
       this._move(tp);
       this._draw(this.imgRect, this.showRect);

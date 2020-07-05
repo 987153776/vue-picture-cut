@@ -323,7 +323,7 @@ export default class PhotoMask implements PhotoBasic {
       const tp = tps[0];
       this.touchePosition = this._isHover(tp.x, tp.y);
       if (this.touchePosition) {
-        this.root.addPriorityList(this);
+        this.root.setPriority(this);
         this.touche = tp;
         this._draw(this.maskRect, true, this);
       }
@@ -342,7 +342,7 @@ export default class PhotoMask implements PhotoBasic {
         this.maskRect.h *= -1;
       }
       this.reset(this.maskRect.w, this.maskRect.h);
-      this.root.deletePriorityList(this.className);
+      this.root.deletePriority(this.className);
       this.touchePosition = undefined;
       this._draw(this.maskRect, false, this);
       this.root.cursor = 'default';

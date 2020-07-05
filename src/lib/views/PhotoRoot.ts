@@ -25,7 +25,7 @@ export default class PhotoRoot{
   // 事件队列
   eventList: Map<string, PhotoBasic> = new Map<string, PhotoBasic>();
   // 事件优先队列
-  priorityList: Map<string, PhotoBasic> = new Map<string, PhotoBasic>();
+  priorityEvent: PhotoBasic | null = null;
   // 记录滚轮触发时间
   private wheelTime = 0;
   private wheelTimeOut = 0;
@@ -85,18 +85,18 @@ export default class PhotoRoot{
    * 添加对象到事件优先队列
    * @param pe
    */
-  addPriorityList(pe: PhotoBasic): void {
-    this.priorityList.set(pe.className, pe);
+  setPriority(pe: PhotoBasic): void {
+    if (!this.priorityEvent) {
+      this.priorityEvent = pe;
+    }
   }
 
   /**
    * 从事件优先队列中获取对象
-   * @param className
    */
-  getPriorityList<T>(className: string): T | null {
-    const t = this.priorityList.get(className);
-    if (t) {
-      return t as unknown as T;
+  getPriority<T>(): T | null {
+    if (this.priorityEvent) {
+      return this.priorityEvent as unknown as T;
     }
     return null;
   }
@@ -105,8 +105,10 @@ export default class PhotoRoot{
    * 从事件优先队列中移除对象
    * @param className
    */
-  deletePriorityList(className: string): void {
-    this.priorityList.delete(className);
+  deletePriority(className: string): void {
+    if (this.priorityEvent && this.priorityEvent.className === className) {
+      this.priorityEvent = null;
+    }
   }
 
   /**
@@ -165,17 +167,19 @@ export default class PhotoRoot{
 
   private _touchStart(touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts)));
+    if (this.priorityEvent) {
+      this.priorityEvent.touchStart($tool.cloneJSON<TouchePoint[]>(cts));
     } else {
       const _pes: PhotoBasic[] = [];
       for (const pe of this.eventList.values()) {
         pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts));
-        if (!this.priorityList.has(pe.className)) {
+        if (!this.priorityEvent) {
           _pes.push(pe);
+        } else {
+          break;
         }
       }
-      if (_pes.length < this.eventList.size) {
+      if (this.priorityEvent) {
         _pes.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
       }
     }
@@ -183,8 +187,8 @@ export default class PhotoRoot{
 
   private _touchEnd (touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
+    if (this.priorityEvent) {
+      this.priorityEvent.touchEnd($tool.cloneJSON<TouchePoint[]>(cts));
     } else {
       this.eventList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
     }
@@ -192,8 +196,8 @@ export default class PhotoRoot{
 
   private _touchMove (touches: TouchList): void {
     const cts = Array.from(touches).map((t: Touch) => this._getTouchePoint(t));
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
+    if (this.priorityEvent) {
+      this.priorityEvent.touchMove($tool.cloneJSON<TouchePoint[]>(cts));
     } else {
       this.eventList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
     }
@@ -201,17 +205,19 @@ export default class PhotoRoot{
 
   private _mouseDown (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts)));
+    if (this.priorityEvent) {
+      this.priorityEvent.touchStart($tool.cloneJSON<TouchePoint[]>(cts));
     } else {
       const _pes: PhotoBasic[] = [];
       for (const pe of this.eventList.values()) {
         pe.touchStart($tool.cloneJSON<TouchePoint[]>(cts));
-        if (!this.priorityList.has(pe.className)) {
+        if (!this.priorityEvent) {
           _pes.push(pe);
+        } else {
+          break;
         }
       }
-      if (_pes.length < this.eventList.size) {
+      if (this.priorityEvent) {
         _pes.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
       }
     }
@@ -219,8 +225,8 @@ export default class PhotoRoot{
 
   private _mouseUp (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
+    if (this.priorityEvent) {
+      this.priorityEvent.touchEnd($tool.cloneJSON<TouchePoint[]>(cts));
     } else {
       this.eventList.forEach(pe => pe.touchEnd($tool.cloneJSON<TouchePoint[]>(cts)));
     }
@@ -228,8 +234,8 @@ export default class PhotoRoot{
 
   private _mouseMove (e: MouseEvent): void {
     const cts = [this._getMousePoint(e)];
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
+    if (this.priorityEvent) {
+      this.priorityEvent.touchMove($tool.cloneJSON<TouchePoint[]>(cts));
     } else {
       this.eventList.forEach(pe => pe.touchMove($tool.cloneJSON<TouchePoint[]>(cts)));
     }
@@ -238,7 +244,7 @@ export default class PhotoRoot{
   private _mouseWheel (zoom: number, point: Point): void {
     clearTimeout(this.wheelTimeOut);
     const now = Date.now();
-    const isStart = now - this.wheelTime > 350 && !this.wheelstatus;
+    const isStart = now - this.wheelTime > 400 && !this.wheelstatus;
     if (isStart) {
       // 滚轮开始
       this.wheelstatus = true;
@@ -249,38 +255,40 @@ export default class PhotoRoot{
       // 滚轮结束
       this.wheelstatus = false;
       this._wheelEnd(zoom, point);
-    }, 350);
+    }, 400);
     isStart || this._wheelChange(zoom, point);
   }
 
   private _wheelStart(zoom: number, point: Point): void {
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.wheelStart(zoom, $tool.cloneJSON<Point>(point)));
+    if (this.priorityEvent) {
+      this.priorityEvent.wheelStart(zoom, $tool.cloneJSON<Point>(point));
     } else {
       const _pes: PhotoBasic[] = [];
       for (const pe of this.eventList.values()) {
         pe.wheelStart(zoom, $tool.cloneJSON<Point>(point));
-        if (!this.priorityList.has(pe.className)) {
+        if (!this.priorityEvent) {
           _pes.push(pe);
+        } else {
+          break;
         }
       }
-      if (_pes.length < this.eventList.size) {
+      if (this.priorityEvent) {
         _pes.forEach(pe => pe.wheelEnd(zoom, $tool.cloneJSON<Point>(point)));
       }
     }
   }
 
   private _wheelChange(zoom: number, point: Point): void {
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.wheelChange(zoom, $tool.cloneJSON<Point>(point)));
+    if (this.priorityEvent) {
+      this.priorityEvent.wheelChange(zoom, $tool.cloneJSON<Point>(point));
     } else {
       this.eventList.forEach(pe => pe.wheelChange(zoom, $tool.cloneJSON<Point>(point)));
     }
   }
 
   private _wheelEnd(zoom: number, point: Point): void {
-    if (this.priorityList.size) {
-      this.priorityList.forEach(pe => pe.wheelEnd(zoom, $tool.cloneJSON<Point>(point)));
+    if (this.priorityEvent) {
+      this.priorityEvent.wheelEnd(zoom, $tool.cloneJSON<Point>(point));
     } else {
       this.eventList.forEach(pe => pe.wheelEnd(zoom, $tool.cloneJSON<Point>(point)));
     }
