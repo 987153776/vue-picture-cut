@@ -4,31 +4,31 @@
 ![download](https://badgen.net/npm/dw/vue-picture-cut?cache=1800)
 ![license](https://badgen.net/npm/license/vue-picture-cut)
 
-中文 | [English](./blob/master/README.md)
+[中文](../../../) | English
 
-基于`vue`和`typescript`开发的一款图片剪裁处理工具  
-优点：**原生、轻量、使用简单、功能全面、扩展性强**  
-目前功能：**缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁**  
-关于缩放：鼠标（鼠标滚轮缩放）、触屏（双指缩放）
+An image clipping tool based on `vue` and `typescript`.    
+Advantage：**It is original, light weight, simple to use, comprehensive function and strong expansibility**  
+Feature：**Scale, flip, rotate, edge check, rectangle clip, ellipse clip**  
+About zoom: mouse (mouse wheel zoom), touch screen (double finger zoom)  
 
-<a href="https://github.com/987153776/vue-picture-cut" target="_blank">github主页</a>  
-<a href="https://gitee.com/light-year/vue-picture-cut" target="_blank">码云主页</a>  
-<a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/dist/index.html" target="_blank">demo演示(github)</a>  
-<a href="https://light-year.gitee.io/vue-picture-cut/" target="_blank">demo演示(码云)</a>  
+<a href="https://github.com/987153776/vue-picture-cut" target="_blank">github homepage</a>  
+<a href="https://gitee.com/light-year/vue-picture-cut" target="_blank">gitee homepage</a>  
+<a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/dist/index.html" target="_blank">demo(github)</a>  
+<a href="https://light-year.gitee.io/vue-picture-cut/" target="_blank">demo(gitee)</a>  
 
-<a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩0.x版本点这里</a>【此版本bug太多，不再维护】
+<a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩Version 0.x is here</a>【This version has too many bugs and is no longer maintained】
 
-## 一、使用方法
+## 一、Usage
 
-### 通过npm安装插件
+### Install
 
 ```nodejs
 npm i vue-picture-cut
 ```
 
-### 在vue中使用
+### Using in Vue
 
-1、在`main.js`中全局引用
+1、In` main.js `Global reference in
 
 ```javascript
 import Vue from 'vue';
@@ -38,7 +38,7 @@ import VuePictureCut from 'vue-picture-cut';
 Vue.use(VuePictureCut);
 ```
 
-2、或者在`.vue`文件中单独引用
+2、Or use it alone in the `.vue` file  
 
 ```vue
 <template>
@@ -69,8 +69,8 @@ Vue.use(VuePictureCut);
         this.src = URL.createObjectURL(file);
       },
       /**
-       * @param blob      BLOB对象
-       * @param base64    base64字符串
+       * @param blob      BLOB object
+       * @param base64    Base64 string
        */
       cutChange({ blob, base64 }) {
         this.blob = blob;
@@ -86,22 +86,22 @@ Vue.use(VuePictureCut);
 </style>
 ```
 
-3、注意
+3、Attention
 
-**组件在使用时，宽高跟随父级标签，所以需要设置父级标签的宽高。**
+**When components are used, the width and height follow the parent label, so it is necessary to set the width and height of the parent label.**
 
 ## 二、API
 
-### 暴露的对象
+### Exposed objects
 
-**全局引入时**
+**When importing globally**
 ```javascript
 import VuePictureCut from 'vue-picture-cut';
 Vue.use(VuePictureCut);
 ```
-此时会注册：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`三个组件。
+This will register：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`three components。
 
-**独立引用**
+**Separate using**
 ```javascript
 import {
   VuePictureCut,
@@ -112,14 +112,14 @@ import {
   Tool
 } from 'vue-picture-cut';
 ```
-组件：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`。
-工具类：`Bezier`、`createAnimation`、`Tool`。
+Components：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`。
+Tools：`Bezier`、`createAnimation`、`Tool`。
 
-### 1、VuePictureCut组件
+### 1、VuePictureCut Components
 
-**slot插槽：** `default`、`menu`
+**Slots：** `default`、`menu`
 
-**使用：**
+**Using：**
 
 ```vue
 <template>
@@ -138,61 +138,61 @@ import {
 </template>
 ```
 
-**属性：**
+**Attribute：**
 
 1. `src`：  
-	**类型**：string  
-	**默认**：null  
-	**描述**：图片链接
+	**type**：string  
+	**default**：null  
+	**describe**：pictures linking  
 2. `magnification`：  
-	**类型**：number  
-	**默认**：1.5  
-	**描述**：画布绘制缩放率，取值大于0，值越大绘制的逻辑像素越高
+	**type**：number  
+	**default**：1.5  
+	**describe**：Canvas drawing zoom rate，and the value is greater than 0，The higher the value, the higher the logical pixels drawn.  
 3. `initAngle`：  
-	**类型**：number  
-	**必须**：非必须  
-	**描述**：载入图片的初始旋转角度
+	**type**：number  
+	**required**：false  
+	**describe**：Initial rotation angle of loaded image  
 4. `rotateControl`：  
-	**类型**：boolean  
-	**默认**：false  
-	**描述**：是否显示旋转控件。
+	**type**：boolean  
+	**default**：false  
+	**describe**：Whether to display the rotation control.  
 5. `maxPixel`：  
-	**类型**：number  
-	**必须**：非必须  
-	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
+	**type**：number  
+	**required**：false  
+	**describe**：Export the pixels on the longer side of the picture. When the value is not transferred, it is adaptive according to the actual image size.  
 6. `encoderOptions`：  
-	**类型**：number  
-	**必须**：非必须  
-	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
+	**type**：number  
+	**required**：false  
+	**describe**：Compression ratio of exported pictures. When the value is not transferred, it is calculated as 0.8, and the value range is 0 ~ 1.  
 7. `format`：  
-	**类型**：string  
-	**默认**：false  
-	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。
+	**type**：string  
+	**default**：false  
+	**describe**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。
 8. `mskOption`：  
-	**类型**：object  
-	**默认**：`{ width: 1, height: 1, isRound: false, resize: true}`  
-	**描述**：  
+	**type**：object  
+	**default**：`{ width: 1, height: 1, isRound: false, resize: true}`  
+	**describe**：  
 	width：number 裁剪框比例宽  
 	height：number 裁剪框比例高  
 	isRound：boolean 矩形true，椭圆false  
 	resize：boolean 裁剪框大小是否可通过拖动改变大小  
 
-**事件：**
+**Event：**
 
 1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件  
 	blob：导出图片的Blob对象，可用于图片上传  
 	base64：导出图片的base64字符串，可用于图片上传  
 	
-**方法：**
+**Method：**
 
 1. `this.$refs['pictureCut'].scale(zoom)`：缩放图片  
     参数zoom：缩放后的尺寸和当前尺寸的比例，取值大于0，0到1之间缩小，大于1放大。  
 
-#### 2、VuePictureCutMask组件
+#### 2、VuePictureCutMask Components
 
 `VuePictureCutMask`是`VuePictureCut`默认slot插槽组件，是控制遮罩裁剪框相关的组件，使用它与不使用它效果一样。  
 
-**使用：**
+**Using：**
 
 ```vue
 <template>
@@ -216,30 +216,30 @@ import {
 </template>
 ```
 
-**属性：**
+**Attribute：**
 
 1. `width`：  
-	**类型**：number  
-	**默认**：1  
-	**描述**：裁剪框比例宽
+	**type**：number  
+	**default**：1  
+	**describe**：裁剪框比例宽
 2. `height`：  
-	**类型**：number  
-	**默认**：1  
-	**描述**：裁剪框比例高
+	**type**：number  
+	**default**：1  
+	**describe**：裁剪框比例高
 3. `isRound`：  
-	**类型**：boolean  
-	**默认**：false  
-	**描述**：矩形true，椭圆false  
+	**type**：boolean  
+	**default**：false  
+	**describe**：矩形true，椭圆false  
 4. `resize`：  
-	**类型**：boolean  
-	**默认**：false  
-	**描述**：裁剪框大小是否可通过拖动改变大小  
+	**type**：boolean  
+	**default**：false  
+	**describe**：裁剪框大小是否可通过拖动改变大小  
 
 #### 3、VuePictureCutMenu组件
 
 菜单栏组件，效果参见Demo。  
 
-**使用：**
+**Using：**
 
 ```vue
 <template>
@@ -264,26 +264,26 @@ import {
 </template>
 ```
 
-**属性：**
+**Attribute：**
 
 1. `cancel`：  
-	**类型**：boolean  
-	**默认**：false  
-	**描述**：是否显示取消按钮。
+	**type**：boolean  
+	**default**：false  
+	**describe**：是否显示取消按钮。
 2. `maxPixel`：  
-	**类型**：number  
-	**必须**：非必须  
-	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
+	**type**：number  
+	**required**：false  
+	**describe**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
 3. `encoderOptions`：  
-	**类型**：number  
-	**必须**：非必须  
-	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
+	**type**：number  
+	**required**：false  
+	**describe**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
 4. `format`：  
-	**类型**：string  
-	**默认**：false  
-	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
+	**type**：string  
+	**required**：false  
+	**describe**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
 
-**事件：**
+**Event：**
 
 1. `onChange ({ blob, base64 })`：监听图片最终裁剪导出的事件，即点击确认按钮  
 	blob：导出图片的Blob对象，可用于图片上传  
@@ -291,7 +291,7 @@ import {
 
 2. `onCancel ()`：监听点击取消按钮  
 
-#### 4、Bezier对象
+#### 4、Bezier Object
 
 ```javascript
   import { Bezier } from 'vue-picture-cut';
@@ -358,7 +358,7 @@ createAnimation会返回一个Animation对象
 | start | 开始动画 | —— | Animation对象本身 |
 | abort | 中止动画 | —— | —— |
 
-#### 6、 Tool对象
+#### 6、 Tool Object
 
 ```javascript
   import { Tool } from 'vue-picture-cut';
