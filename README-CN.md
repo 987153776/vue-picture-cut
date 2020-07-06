@@ -270,6 +270,8 @@ import {
       :encoder-options="encoderOptions"
       :format="format"
       :theme="theme"
+      confirm-name="Ok"
+      cancel-name="cancel"
       @on-change="onChange"
       @on-cancel="onCancel"
     />
@@ -295,10 +297,18 @@ import {
 	**类型**：string  
 	**默认**：false  
 	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
-3. `theme`：  
+5. `theme`：  
 	**类型**：string  
 	**默认**：'default'  
 	**描述**：菜单栏主题。取值：'default'、'dark'、'gray'  
+6. `confirmName`：  
+	**类型**：string  
+	**默认**：'Ok'  
+	**描述**：确定按钮的文字  
+7. `cancelName`：  
+	**类型**：string  
+	**默认**：'cancel'  
+	**描述**：取消按钮的文字  
 
 **事件：**
 

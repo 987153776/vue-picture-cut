@@ -59,14 +59,14 @@
       </div>
     </div>
     <div class="vue-picture-cut-menu_confirm">
-      <div v-show="cancel" class="__cancel" @click="onCancelEvent">取消</div>
-      <div class="__sure" :class="{'__center': !cancel}" @click="sureCut">确定</div>
+      <div v-show="cancel" class="__cancel" @click="onCancelEvent">{{ cancelName }}</div>
+      <div class="__sure" :class="{'__center': !cancel}" @click="sureCut">{{ confirmName }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Inject, Emit, Watch, Prop} from 'vue-property-decorator';
+import {Component, Vue, Inject, Emit, Watch, Prop} from 'vue-property-decorator';
 import PhotoMask from "@/lib/views/PhotoMask";
 import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMain from "@/lib/views/PhotoMain";
@@ -85,6 +85,8 @@ export default class VuePictureCutMenu extends Vue {
   @Prop({ type: String, required: false }) private format: string | undefined;
   // 是否需要关闭按钮
   @Prop({ type: Boolean, default: true}) private cancel!: boolean;
+  @Prop({ type: String, default: 'Cancel'}) private cancelName!: string;
+  @Prop({ type: String, default: 'Ok'}) private confirmName!: string;
 
   private sliderAngle = 0;
 

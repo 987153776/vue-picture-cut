@@ -18,7 +18,7 @@ About zoom: mouse (mouse wheel zoom), touch screen (double finger zoom)
 
 <a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩Version 0.x is here</a>【This version has too many bugs and is no longer maintained】
 
-## 一、Usage
+## Ⅰ、Usage
 
 ### Install
 
@@ -90,7 +90,7 @@ Vue.use(VuePictureCut);
 
 **When components are used, the width and height follow the parent label, so it is necessary to set the width and height of the parent label.**
 
-## 二、API
+## Ⅱ、API
 
 ### Exposed objects
 
@@ -269,6 +269,9 @@ Menu bar component, see demo for effect.
       :max-pixel="maxPixel"
       :encoder-options="encoderOptions"
       :format="format"
+      :theme="theme"
+      confirm-name="Ok"
+      cancel-name="cancel"
       @on-change="onChange"
       @on-cancel="onCancel"
     />
@@ -281,7 +284,7 @@ Menu bar component, see demo for effect.
 1. `cancel`：  
 	**type**：boolean  
 	**default**：false  
-	**describe**：Whether to display the '取消' button.  
+	**describe**：Whether to display the 'cancel' button.  
 2. `maxPixel`：  
 	**type**：number  
 	**required**：false  
@@ -294,6 +297,18 @@ Menu bar component, see demo for effect.
 	**type**：string  
 	**required**：false  
 	**describe**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
+5. `theme`：  
+    **类型**：string  
+    **默认**：'default'  
+    **描述**：Menu bar theme. Value：'default'、'dark'、'gray'.  
+6. `confirmName`：  
+	**类型**：string  
+	**默认**：'Ok'  
+	**描述**：Text for 'confirm' button.  
+7. `cancelName`：  
+	**类型**：string  
+	**默认**：'cancel'  
+	**描述**：Text for 'cancel' button.  
 
 **Event：**
 
