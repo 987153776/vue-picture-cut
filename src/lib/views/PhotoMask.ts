@@ -367,7 +367,7 @@ export default class PhotoMask implements PhotoBasic {
       }
     } else if (this.resize) {
       const touchePosition = this._isHover(tps[0].x, tps[0].y);
-      this.root.cursor = touchePosition && cursorConfig.get(touchePosition) || 'default';
+      this.root.cursor = touchePosition && cursorConfig.get(touchePosition) || 'move';
     }
   }
 

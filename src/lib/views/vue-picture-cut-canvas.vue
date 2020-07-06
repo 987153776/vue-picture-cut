@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Inject, Prop, PropSync, Watch, Emit} from 'vue-property-decorator';
+import {Component, Vue, Inject, Prop, PropSync, Watch} from 'vue-property-decorator';
 import PhotoRoot from "./PhotoRoot";
 import PhotoMain from "./PhotoMain";
 
