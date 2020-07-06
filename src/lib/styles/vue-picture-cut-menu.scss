@@ -1,10 +1,119 @@
 @import "../styles/font/index.css";
 
+$themes:(
+  // 暗黑
+  dark-theme: (
+    bgColor: #000,
+    color: #aaa,
+    sliderBarColor: rgba(102, 102, 102,.6),
+    sliderBarShadow: rgba(255,255,255,.1),
+    sliderButtonColor: #666,
+    sliderButtonShadow: rgba(255,255,255,.3),
+    sliderTipsBg: rgba(85, 85, 85, 0.8),
+    sliderTipsColor: #aaa,
+    sliderTipsShadow: rgba(255,255,255,.1),
+    boxColor: #aaa,
+    boxBorderColor: #666
+  ),
+  // 灰色
+  gray-theme: (
+    bgColor: #35362e,
+    color: #aaa,
+    sliderBarColor: rgba(136, 136, 136, 0.6),
+    sliderBarShadow: rgba(255,255,255,.1),
+    sliderButtonColor: #888,
+    sliderButtonShadow: rgba(255,255,255,.3),
+    sliderTipsBg: rgba(136, 136, 136, 0.7),
+    sliderTipsColor: #ccc,
+    sliderTipsShadow: rgba(255,255,255,.1),
+    boxColor: #aaa,
+    boxBorderColor: #666
+  ),
+  // 白色
+  default-theme: (
+    bgColor: #f4f5f6,
+    color: #666,
+    sliderBarColor: rgba(255,255,255,.6),
+    sliderBarShadow: rgba(0,0,0,.3),
+    sliderButtonColor: #fff,
+    sliderButtonShadow: rgba(0,0,0,.8),
+    sliderTipsBg: rgba(255,255,255,.6),
+    sliderTipsColor: #666,
+    sliderTipsShadow: rgba(0,0,0,.3),
+    boxColor: #444,
+    boxBorderColor: #aaa
+  )
+);
+
+@mixin root-theme($k1, $k2, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} {
+      @if $important {
+        background-color: map-get($map: $theme, $key: $k1) !important;
+        color: map-get($map: $theme, $key: $k2) !important;
+      } @else {
+        background-color: map-get($map: $theme, $key: $k1);
+        color: map-get($map: $theme, $key: $k2);
+      }
+    }
+  }
+}
+
+@mixin font-theme($k, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        color: map-get($map: $theme, $key: $k) !important;
+      } @else {
+        color: map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@mixin border-theme($k, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        border-color: map-get($map: $theme, $key: $k) !important;
+      } @else {
+        border-color: map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@mixin background-theme($k, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        background-color: map-get($map: $theme, $key: $k) !important;
+      } @else {
+        background-color: map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@mixin box-shadow-theme($h, $v, $blur, $spread, $k, $important:false) {
+  @each $themename,
+  $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        box-shadow: $h $v $blur $spread map-get($map: $theme, $key: $k) !important;
+      }
+      @else {
+        box-shadow: $h $v $blur $spread map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@include root-theme('bgColor', 'color');
 .vue-picture-cut-menu{
   display: block;
   height: 100%;
   width: 100%;
-  background-color: #f4f5f6;
   user-select: none;
   box-sizing: border-box;
   * {
@@ -19,7 +128,7 @@
     span{
       font-size: 14px;
       margin-right: 10px;
-      color: #666;
+      @include font-theme('color');
       position: absolute;
       top: 0;
       left: -33px;
@@ -48,8 +157,8 @@
         height: 3px;
         width: 100%;
         border-radius: 5px;
-        background-color: rgba(255,255,255,.6);
-        box-shadow: 0 0 3px 0 rgba(0,0,0,.3);
+        @include background-theme('sliderBarColor');
+        @include box-shadow-theme(0, 0, 3px, 0, 'sliderBarShadow');
         position: relative;
       }
       &-button{
@@ -57,16 +166,17 @@
         width: 16px;
         border-radius: 50%;
         background-color: #fff;
-        box-shadow: 0 0 3px 0 rgba(0,0,0,.8);
+        @include background-theme('sliderButtonColor');
+        @include box-shadow-theme(0, 0, 3px, 0, 'sliderButtonShadow');
         margin-left: -8px;
         position: absolute;
         left: 0;
         top: -6px;
       }
       &-tips{
-        background-color: rgba(255,255,255,.6);
-        box-shadow: 0 0 3px 0 rgba(0,0,0,.3);
-        color: #666;
+        @include background-theme('sliderTipsBg');
+        @include box-shadow-theme(0, 0, 3px, 0, 'sliderTipsShadow');
+        @include font-theme('sliderTipsColor');
         height: 20px;
         font-size: 12px;
         text-align: center;
@@ -85,6 +195,7 @@
     height: 40px;
     line-height: 40px;
     overflow: hidden;
+    @include font-theme('boxColor');
     position: relative;
     &-content{
       width: 100%;
@@ -101,6 +212,7 @@
         height: 15px;
         width: 1px;
         border-left: 1px solid #aaa;
+        @include border-theme('boxBorderColor');
         margin: 0 7px;
       }
     }
@@ -119,8 +231,8 @@
         line-height: 24px;
         height: 26px;
         width: 26px;
-        border: 1px solid #ccc;
-        color: #444;
+        border: 1px solid #444;
+        @include border-theme('boxBorderColor');
         &._5_4{
           height: 24px;
           width: 30px;

@@ -1,5 +1,10 @@
 <template>
-  <div class="vue-picture-cut-menu">
+  <div class="vue-picture-cut-menu dark-theme"
+       :class="[
+         ['default', 'dark', 'gray'].indexOf(theme) > -1 ?
+         theme + '-theme' :
+         'default-theme'
+         ]">
     <div class="vue-picture-cut-menu_slider">
       <div class="vue-picture-cut-menu_slider-box">
         <span>旋转</span>
@@ -71,6 +76,7 @@ export default class VuePictureCutMenu extends Vue {
   @Inject({from: 'vuePictureCut', default: 'photoRoot'})
   photoRoot!: PhotoRoot;
 
+  @Prop({ type: String, default: 'default'}) theme!: string;
   // 裁剪长边像素
   @Prop({ type: Number, required: false }) private maxPixel: number | undefined;
   // 裁剪压缩率

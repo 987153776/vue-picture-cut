@@ -30,6 +30,7 @@
                             :max-pixel="form.maxPixel"
                             :encoder-options="form.encoderOptions"
                             :format="form.format"
+                            :theme="form.menuTheme"
                             @on-change="cutChange"/>
     </vue-picture-cut>
     <el-form style="margin-top: 15px;" ref="form" :model="form" label-width="110px" inline>
@@ -50,14 +51,21 @@
           <el-button size="small" type="primary">选择</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item label="🙄画布背景色:">
+      <el-form-item label="😱画布背景色:">
         <el-color-picker v-model="form.backgroundColor" show-alpha></el-color-picker>
       </el-form-item>
-      <el-form-item label="🙄遮罩颜色:">
+      <el-form-item label="😴遮罩颜色:">
         <el-color-picker v-model="form.maskColor" show-alpha></el-color-picker>
       </el-form-item>
-      <el-form-item label="🙄裁剪框颜色:">
+      <el-form-item label="🤔裁剪框颜色:">
         <el-color-picker v-model="form.maskBorderColor" show-alpha></el-color-picker>
+      </el-form-item>
+      <el-form-item label="🤗菜单栏主题:" label-width="124px">
+        <el-select v-model="form.menuTheme" placeholder="请选择" style="width: 110px">
+          <el-option label="default" value="default"/>
+          <el-option label="dark" value="dark"/>
+          <el-option label="gray" value="gray"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="😁裁剪框形状:">
         <el-radio-group v-model="form.isRound">
@@ -92,7 +100,7 @@
         <el-input-number :min="0" :max="1" :step="0.1" v-model="form.encoderOptions" placeholder="0.8"></el-input-number>
       </el-form-item>
       <el-form-item label="😍裁剪图片格式:" label-width="124px">
-        <el-select v-model="form.format" placeholder="请选择">
+        <el-select v-model="form.format" placeholder="请选择" style="width: 110px">
           <el-option label="jpeg格式" value="image/jpeg"/>
           <el-option label="png格式" value="image/png"/>
         </el-select>
@@ -124,6 +132,7 @@ export default class App extends Vue {
     backgroundColor: undefined,
     maskColor: undefined,
     maskBorderColor: undefined,
+    menuTheme: 'default',
     isRound: true,
     resize: true,
     rotateControl: true,
