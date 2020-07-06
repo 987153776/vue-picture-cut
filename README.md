@@ -298,17 +298,17 @@ Menu bar component, see demo for effect.
 	**required**：false  
 	**describe**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
 5. `theme`：  
-    **类型**：string  
-    **默认**：'default'  
-    **描述**：Menu bar theme. Value：'default'、'dark'、'gray'.  
+    **type**：string  
+    **default**：'default'  
+    **describe**：Menu bar theme. Value：'default'、'dark'、'gray'.  
 6. `confirmName`：  
-	**类型**：string  
-	**默认**：'Ok'  
-	**描述**：Text for 'confirm' button.  
+	**type**：string  
+	**default**：'Ok'  
+	**describe**：Text for 'confirm' button.  
 7. `cancelName`：  
-	**类型**：string  
-	**默认**：'cancel'  
-	**描述**：Text for 'cancel' button.  
+	**type**：string  
+	**default**：'cancel'  
+	**describe**：Text for 'cancel' button.  
 
 **Event：**
 
