@@ -85,7 +85,7 @@ export default class PhotoMain implements PhotoBasic{
       if (!_n) {
         this.originalImg = img;
       }
-      const result = $tool.clipByMax(img, 1500, .7);
+      const result = $tool.clipByMax(img, 1500);
       if (result) {
         this.setSrc(result.src, angle, ++_n);
         return;
