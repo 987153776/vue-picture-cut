@@ -271,7 +271,10 @@ import {
       :format="format"
       :theme="theme"
       confirm-name="Ok"
-      cancel-name="cancel"
+      cancel-name="Cancel"
+      size-auto-name="auto"
+      size-raw-name="raw"
+      menu-rotate-name="Rotate"
       @on-change="onChange"
       @on-cancel="onCancel"
     />
@@ -309,6 +312,18 @@ import {
 	**类型**：string  
 	**默认**：'cancel'  
 	**描述**：取消按钮的文字  
+8. `sizeAutoName`：  
+	**类型**：string  
+	**默认**：'auto'  
+	**描述**：菜单栏按钮文字  
+9. `sizeRawName`：  
+	**类型**：string  
+	**默认**：'raw'  
+	**描述**：菜单栏按钮文字  
+10. `menuRotateName`：  
+	**类型**：string  
+	**默认**：'Rotate'  
+	**描述**：菜单栏按钮文字  
 
 **事件：**
 

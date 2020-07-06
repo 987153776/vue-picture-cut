@@ -272,6 +272,9 @@ Menu bar component, see demo for effect.
       :theme="theme"
       confirm-name="Ok"
       cancel-name="cancel"
+      size-auto-name="auto"
+      size-raw-name="raw"
+      menu-rotate-name="Rotate"
       @on-change="onChange"
       @on-cancel="onCancel"
     />
@@ -309,6 +312,18 @@ Menu bar component, see demo for effect.
 	**type**：string  
 	**default**：'cancel'  
 	**describe**：Text for 'cancel' button.  
+8. `sizeAutoName`：  
+	**type**：string  
+	**default**：'auto'  
+	**describe**：Menu bar button text.  
+9. `sizeRawName`：  
+	**type**：string  
+	**default**：'raw'  
+	**describe**：Menu bar button text.  
+10. `menuRotateName`：  
+	**type**：string  
+	**default**：'Rotate'  
+	**describe**：Menu bar button text.  
 
 **Event：**
 
