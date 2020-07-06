@@ -47,7 +47,7 @@
                    action=""
                    accept="image/*"
                    :show-file-list="false"
-                   :on-error="inputChange">
+                   :before-upload="inputChange">
           <el-button size="small" type="primary">选择</el-button>
         </el-upload>
       </el-form-item>
@@ -160,8 +160,9 @@ export default class App extends Vue {
     return this.blob ? URL.createObjectURL(this.blob) : '';
   }
 
-  inputChange (e: Error,{ raw }: { raw: File }): void{
-    this.src = URL.createObjectURL(raw);
+  inputChange (file: File): boolean {
+    this.src = URL.createObjectURL(file);
+    return false;
   }
 
   cutChange({ blob, base64 }: {blob: Blob; base64: string}): void{
