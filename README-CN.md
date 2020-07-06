@@ -176,6 +176,8 @@ import {
 	height：number 裁剪框比例高  
 	isRound：boolean 矩形true，椭圆false  
 	resize：boolean 裁剪框大小是否可通过拖动改变大小  
+	color：string 遮罩颜色
+	borderColor：string 裁剪框颜色  
 
 **事件：**
 
@@ -211,6 +213,8 @@ import {
       :height="height"
       :is-round="isRound"
       :resize="resize"
+      :color="color"
+      :border-color="borderColor"
     />
   </vue-picture-cut>
 </template>
@@ -234,6 +238,14 @@ import {
 	**类型**：boolean  
 	**默认**：false  
 	**描述**：裁剪框大小是否可通过拖动改变大小  
+5. `color`：  
+	**类型**：string  
+	**必须**：非必须  
+	**描述**：遮罩颜色  
+6. `borderColor`：  
+	**类型**：string  
+	**必须**：非必须  
+	**描述**：裁剪框颜色  
 
 #### 3、VuePictureCutMenu组件
 
@@ -257,6 +269,7 @@ import {
       :max-pixel="maxPixel"
       :encoder-options="encoderOptions"
       :format="format"
+      :theme="theme"
       @on-change="onChange"
       @on-cancel="onCancel"
     />
@@ -269,19 +282,23 @@ import {
 1. `cancel`：  
 	**类型**：boolean  
 	**默认**：false  
-	**描述**：是否显示取消按钮。
+	**描述**：是否显示取消按钮。  
 2. `maxPixel`：  
 	**类型**：number  
 	**必须**：非必须  
-	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
+	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。  
 3. `encoderOptions`：  
 	**类型**：number  
 	**必须**：非必须  
-	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
+	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。  
 4. `format`：  
 	**类型**：string  
 	**默认**：false  
 	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
+3. `theme`：  
+	**类型**：string  
+	**默认**：'default'  
+	**描述**：菜单栏主题。取值：'default'、'dark'、'gray'  
 
 **事件：**
 

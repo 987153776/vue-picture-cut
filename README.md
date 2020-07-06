@@ -176,6 +176,8 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 	height：{number} Crop box height ratio.  
 	isRound：{boolean} rectangle - true，ellipse - false.  
 	resize：{boolean} Can the crop box size be changed by dragging.  
+	color：string 遮罩颜色
+	borderColor：string 裁剪框颜色  
 
 **Event：**
 
@@ -211,6 +213,8 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
       :height="height"
       :is-round="isRound"
       :resize="resize"
+      :color="color"
+      :border-color="borderColor"
     />
   </vue-picture-cut>
 </template>
@@ -234,8 +238,16 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 	**type**：boolean  
 	**default**：false  
 	**describe**：Can the crop box size be changed by dragging.  
+5. `color`：  
+	**type**：string  
+	**required**：false  
+	**describe**：Mask color.  
+6. `borderColor`：  
+	**type**：string  
+	**required**：false  
+	**describe**：Crop box color.  
 
-#### 3、VuePictureCutMenu组件
+#### 3、VuePictureCutMenu Components
 
 Menu bar component, see demo for effect.    
 
