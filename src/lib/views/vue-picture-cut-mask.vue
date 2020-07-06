@@ -3,7 +3,7 @@
     <path class="cls-1" :fill="color || 'rgba(0,0,0,.5)'"
           :d="`M0,0 H${drawWidth} V${drawHeight} H0 V0 Z ${round}`"/>
     <rect v-if="thisResize || !thisRound" class="cls-3" v-bind="rect"
-          :style="{ 'stroke-dasharray': border, stroke: thisRound ? 'rgba(255,255,255,.7)' : '#ff5500' }"/>
+          :style="{ 'stroke-dasharray': border, stroke: thisRound ? 'rgba(255,255,255,.7)' : borderColor || '#ff5500' }"/>
     <path v-if="thisRound" class="cls-2" :stroke="borderColor || '#ff5500'" :d="round"/>
     <path v-if="thisResize" class="cls-4" :d="TLHorn"/>
     <path v-if="thisResize" class="cls-4" :d="TRHorn"/>
