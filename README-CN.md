@@ -176,7 +176,7 @@ import {
 	height：number 裁剪框比例高  
 	isRound：boolean 矩形true，椭圆false  
 	resize：boolean 裁剪框大小是否可通过拖动改变大小  
-	color：string 遮罩颜色
+	color：string 遮罩颜色  
 	borderColor：string 裁剪框颜色  
 
 **事件：**
