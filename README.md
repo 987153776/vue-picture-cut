@@ -176,8 +176,8 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 	height：{number} Crop box height ratio.  
 	isRound：{boolean} rectangle - true，ellipse - false.  
 	resize：{boolean} Can the crop box size be changed by dragging.  
-	color：string 遮罩颜色
-	borderColor：string 裁剪框颜色  
+	color：{string} Mask color.  
+	borderColor：{string} Crop box color.  
 
 **Event：**
 
