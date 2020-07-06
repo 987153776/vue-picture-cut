@@ -316,7 +316,7 @@ Menu bar component, see demo for effect.
 	blob：Export the Blob object of the picture, which can be used to upload the picture.  
 	base64：Export the Base64 string of the picture, which can be used to upload the picture.  
 
-2. `onCancel ()`：Listen to '取消' button click event.  
+2. `onCancel ()`：Listen to 'cancel' button click event.  
 
 #### 4、Bezier Object
 
