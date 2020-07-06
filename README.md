@@ -329,34 +329,34 @@ Menu bar component, see demo for effect.
   console.log(y);
 ```
 
-##### (1) 静态属性BEZIER，是一个键值对，包含一些预设值
+##### (1) Static attribute 'BEZIER'，a key value pair, contains some default preset.  
 
-| 键 | 值 | 说明 |
+| key | value | describe |
 | ---- | ---- | ---- |
-| linear | \[0.0, 0.0, 1.0, 1.0\] | 线性过渡 |
-| ease | \[0.25, 0.1, 0.25, 1.0\] | 平滑过渡 |
-| ease-in | \[0.42, 0, 1.0, 1.0\] | 由慢到快 |
-| ease-out | \[0, 0, 0.58, 1.0\] | 由快到慢 |
-| ease-in-out | \[0.42, 0, 0.58, 1.0\] | 由慢到快再到慢 |
+| linear | \[0.0, 0.0, 1.0, 1.0\] | Linear transition |
+| ease | \[0.25, 0.1, 0.25, 1.0\] | Smooth transition |
+| ease-in | \[0.42, 0, 1.0, 1.0\] | From slow to fast |
+| ease-out | \[0, 0, 0.58, 1.0\] | From fast to slow |
+| ease-in-out | \[0.42, 0, 0.58, 1.0\] | From slow to fast and then to slow |
 
-##### (2) 构造函数
+##### (2) constructor  
 
-一个无参的构造函数，内部调用了`setOptByString('ease')`方法
+`setOptByString('ease')` parameterless constructor that internally calls the a method.  
 
-##### (3) 方法
+##### (3) Method
 
-| 方法名 | 说明 | 参数 | 返回值 |
+| name | describe | params | return |
 | ---- | ---- | ---- | ---- |
-| setOpt | 设置贝塞尔曲线类型 | (arg: string , ParamsInterface = 'ease') | Bezier对象本身 |
-| setOptByString | 设置贝塞尔曲线类型 | BEZIER预设值(arg = 'ease') | Bezier对象本身 |
-| setOptByArr | 设置贝塞尔曲线类型 | (x1: number, y1: number, x2: number, y2: number) | Bezier对象本身 |
-| getPoint | 返回x坐标对应的y坐标值 | (x: number) 0~1之间 | 对应y坐标，0~1之间 |
+| setOpt | Set Bezier curve type. | (arg: string , ParamsInterface = 'ease') | Bezier itself. |
+| setOptByString | Set Bezier curve type. | BEZIER preset(arg = 'ease') | Bezier itself. |
+| setOptByArr | Set Bezier curve type. | (x1: number, y1: number, x2: number, y2: number) | Bezier itself. |
+| getPoint | Returns the Y coordinate value corresponding to the X coordinate. | (x: number) Between 0 and 1. | Corresponding y coordinate. |
 
-##### (4) 参数ParamsInterface说明
+##### (4) Params ParamsInterface description.
 
-ParamsInterface为包含4个number类型的数组。
+ParamsInterface is an array containing four number types.  
 
-#### 5、 createAnimation方法
+#### 5、 createAnimation method
 
 ```javascript
   import { createAnimation } from 'vue-picture-cut';
@@ -364,26 +364,26 @@ ParamsInterface为包含4个number类型的数组。
   const animation = createAnimation(option);
 ```
 
-createAnimation会返回一个Animation对象
+'createAnimation' returns a 'Animation' object.  
 
-##### (1) 参数option
+##### (1) Params option
 
-| 参数 | 说明 | 类型 | 可选值 | 必需 | 默认值 |
+| key | describe | type | value | required | default |
 | ---- | ---- | ---- | ---- | ---- | ---- |
-| duration | 动画持续时间，单位毫秒 | number | —— | false | 1000 |
-| timing | 动画的过渡类型 | string、number[] | Bezier.BEZIER中的值，或者ParamsInterface类型 | false | ease |
-| delay | 动画的延迟时间，单位毫秒 | number | —— | false | 0 |
-| iteration | 动画循环次数，infinite为无限循环 | number、string | 'infinite'或正整数 | false | 0 |
-| direction | 动画在循环中是否反向运动 | string | normal(默认，正向运动)；reverse(反向运行)；alternate(先正向，后反向，并交替)；alternate-reverse(先反向，后正向，并交替)。 | false | normal |
-| change | 回调函数，接收参数x，x在0~1之间，动画在这里处理 | Function | —— | false | —— |
-| end | 回调函数，动画结束时执行 | Function | —— | false | —— |
+| duration | Animation duration in milliseconds. | number | —— | false | 1000 |
+| timing | Transition type of animation. | string、number[] | Bezier.BEZIER preset，or ParamsInterface | false | ease |
+| delay | The delay time of the animation, in milliseconds. | number | —— | false | 0 |
+| iteration | The number of animation cycles, 'infinite' is infinite. | number、string | 'infinite'或正整数 | false | 0 |
+| direction | Does the animation reverse in the loop. | string | normal(default. Forward motion)；reverse(Reverse operation)；alternate(First forward, then reverse, and alternate)；alternate-reverse(Reverse first, then forward, and alternate)。 | false | normal |
+| change | Callback function, receive parameter x, X between 0 ~ 1, animation is processed here. | Function | —— | false | —— |
+| end | Callback function, executed at the end of the animation. | Function | —— | false | —— |
 
-##### (2) Animation对象方法
+##### (2) Animation object method
 
-| 方法名 | 说明 | 参数 | 返回值 |
+| name | describe | params | return |
 | ---- | ---- | ---- | ---- |
-| start | 开始动画 | —— | Animation对象本身 |
-| abort | 中止动画 | —— | —— |
+| start | Start animation. | —— | Animation itself. |
+| abort | Abort animation. | —— | —— |
 
 #### 6、 Tool Object
 
