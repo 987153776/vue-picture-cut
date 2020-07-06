@@ -373,7 +373,7 @@ ParamsInterface is an array containing four number types.
 | duration | Animation duration in milliseconds. | number | —— | false | 1000 |
 | timing | Transition type of animation. | string、number[] | Bezier.BEZIER preset，or ParamsInterface | false | ease |
 | delay | The delay time of the animation, in milliseconds. | number | —— | false | 0 |
-| iteration | The number of animation cycles, 'infinite' is infinite. | number、string | 'infinite'或正整数 | false | 0 |
+| iteration | The number of animation cycles, 'infinite' is infinite. | number、string | 'infinite' or positive integer | false | 0 |
 | direction | Does the animation reverse in the loop. | string | normal(default. Forward motion)；reverse(Reverse operation)；alternate(First forward, then reverse, and alternate)；alternate-reverse(Reverse first, then forward, and alternate)。 | false | normal |
 | change | Callback function, receive parameter x, X between 0 ~ 1, animation is processed here. | Function | —— | false | —— |
 | end | Callback function, executed at the end of the animation. | Function | —— | false | —— |
