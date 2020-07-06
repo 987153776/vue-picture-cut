@@ -1,9 +1,10 @@
 <template>
   <svg class="vue-picture-cut_mask" preserveAspectRatio="none" :viewBox="viewBox">
-    <path class="cls-1" :d="`M0,0 H${drawWidth} V${drawHeight} H0 V0 Z ${round}`"/>
+    <path class="cls-1" :fill="color || 'rgba(0,0,0,.5)'"
+          :d="`M0,0 H${drawWidth} V${drawHeight} H0 V0 Z ${round}`"/>
     <rect v-if="thisResize || !thisRound" class="cls-3" v-bind="rect"
           :style="{ 'stroke-dasharray': border, stroke: thisRound ? 'rgba(255,255,255,.7)' : '#ff5500' }"/>
-    <path v-if="thisRound" class="cls-2" :d="round"/>
+    <path v-if="thisRound" class="cls-2" :stroke="borderColor || '#ff5500'" :d="round"/>
     <path v-if="thisResize" class="cls-4" :d="TLHorn"/>
     <path v-if="thisResize" class="cls-4" :d="TRHorn"/>
     <path v-if="thisResize" class="cls-4" :d="BLHorn"/>
@@ -22,6 +23,10 @@ export default class VuePictureCutMask extends Vue {
   @Inject({from: 'vuePictureCut', default: 'photoRoot'})
   photoRoot!: PhotoRoot;
 
+  // 前景色
+  @Prop({ type: String, default: 'rgba(0,0,0,.5)' }) private color?: string;
+  // 裁剪框颜色
+  @Prop({ type: String, default: '#ff5500' }) private borderColor?: string;
   // 裁剪框（圆的外切矩形）宽高比
   @Prop({ type: Number, default: 1 }) private width!: number;
   @Prop({ type: Number, default: 1 }) private height!: number;
@@ -143,10 +148,8 @@ export default class VuePictureCutMask extends Vue {
 <style scoped>
 .cls-1 {
   fill-rule: evenodd;
-  fill: rgba(0,0,0,.5);
 }
 .cls-2{
-  stroke: #ff5500;
   stroke-width: 2px;
   stroke-dasharray: 10, 5;
   fill: rgba(0,0,0,0);

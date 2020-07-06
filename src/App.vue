@@ -23,7 +23,8 @@
     <!--自定义菜单-->
     <vue-picture-cut class="cut" ref="pictureCut" :src="src"
                      :init-angle="form.initAngle"
-                     :msk-option="mskOption">
+                     :msk-option="mskOption"
+                     :background-color="form.backgroundColor">
       <vue-picture-cut-menu slot="menu"
                             :cancel="false"
                             :max-pixel="form.maxPixel"
@@ -48,6 +49,15 @@
                    :on-error="inputChange">
           <el-button size="small" type="primary">选择</el-button>
         </el-upload>
+      </el-form-item>
+      <el-form-item label="🙄画布背景色:">
+        <el-color-picker v-model="form.backgroundColor" show-alpha></el-color-picker>
+      </el-form-item>
+      <el-form-item label="🙄遮罩颜色:">
+        <el-color-picker v-model="form.maskColor" show-alpha></el-color-picker>
+      </el-form-item>
+      <el-form-item label="🙄裁剪框颜色:">
+        <el-color-picker v-model="form.maskBorderColor" show-alpha></el-color-picker>
       </el-form-item>
       <el-form-item label="😁裁剪框形状:">
         <el-radio-group v-model="form.isRound">
@@ -99,6 +109,8 @@ interface MskOption {
   height?: number;
   isRound?: boolean;
   resize?: boolean;
+  color?: string;
+  borderColor?: string;
 }
 
 @Component
@@ -109,6 +121,9 @@ export default class App extends Vue {
   private base64: string | null = null;
 
   private form = {
+    backgroundColor: undefined,
+    maskColor: undefined,
+    maskBorderColor: undefined,
     isRound: true,
     resize: true,
     rotateControl: true,
@@ -126,7 +141,9 @@ export default class App extends Vue {
       width: this.form.width || 1,
       height: this.form.height || 1,
       isRound: this.form.isRound,
-      resize: this.form.resize
+      resize: this.form.resize,
+      color: this.form.maskColor,
+      borderColor: this.form.maskBorderColor
     }
   }
 

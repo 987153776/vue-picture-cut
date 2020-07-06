@@ -1,5 +1,7 @@
 <template>
-  <div class="vue-picture-cut">
+  <div class="vue-picture-cut"
+       :class="{'_default': !backgroundColor}"
+       :style="{'background-color': backgroundColor || '#fff'}">
     <div class="vue-picture-cut_main" ref="main" :style="[ hasMenu || { bottom: '50px' } ]">
       <div v-show="loading" class="vue-picture-cut_main-loading">loading...</div>
       <vue-picture-cut-canvas :loading.sync="loading" :angle="initAngle"/>
@@ -52,6 +54,8 @@ interface MskOption {
 })
 export default class VuePictureCut extends Vue {
 
+  // 背景色
+  @Prop({ type: String, required: false }) private backgroundColor?: string;
   // 缩放率
   @Prop({ type: Number, default: 1.5 }) private magnification!: number;
   // 图片

@@ -253,7 +253,11 @@ export default class PhotoMain implements PhotoBasic{
     }, 500);
   }
 
-  onLoading(callback: (loading: boolean) => void) {
+  /**
+   * 监听图片加载过程
+   * @param callback
+   */
+  onLoading(callback: (loading: boolean) => void): void{
     this.loadingEvent = callback;
   }
 
