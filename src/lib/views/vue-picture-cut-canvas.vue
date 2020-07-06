@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Inject, Prop, Watch} from 'vue-property-decorator';
+import {Component, Vue, Inject, Prop, PropSync, Watch, Emit} from 'vue-property-decorator';
 import PhotoRoot from "./PhotoRoot";
 import PhotoMain from "./PhotoMain";
 
@@ -13,6 +13,8 @@ export default class VuePictureCutCanvas extends Vue {
   photoRoot!: PhotoRoot;
   // 旋转
   @Prop({ type: Number, required: false}) private angle: number | undefined;
+
+  @PropSync('loading', { type: Boolean, default: false}) private _loading!: boolean;
 
   photoMain: PhotoMain | null = null;
 
@@ -30,6 +32,9 @@ export default class VuePictureCutCanvas extends Vue {
         this.$el as HTMLCanvasElement,
         this.photoRoot
       );
+      this.photoMain.onLoading(loading => {
+        this._loading = loading
+      })
     }, 0);
   }
 }

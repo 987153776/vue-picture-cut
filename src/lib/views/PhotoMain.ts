@@ -48,6 +48,8 @@ export default class PhotoMain implements PhotoBasic{
 
   private scaleTimer: number | null = null
 
+  private loadingEvent?: (loading: boolean) => void;
+
   /**
    * 供外部使用，注入的方法会在每次加载图片后执行
    */
@@ -76,7 +78,9 @@ export default class PhotoMain implements PhotoBasic{
    * @param _n
    */
   setSrc(src: string, angle = this.showRect.r, _n = 0): void {
+    this.clear();
     this.src = src;
+    this.loadingEvent && this.loadingEvent(true);
     $tool.loadImg(src).then((img: HTMLImageElement) => {
       if (!_n) {
         this.originalImg = img;
@@ -109,6 +113,9 @@ export default class PhotoMain implements PhotoBasic{
       }
       this._draw(this.imgRect, this.showRect);
       this.showRect.r = angle;
+      this.loadingEvent && this.loadingEvent(false);
+    }, () => {
+      this.loadingEvent && this.loadingEvent(false);
     });
   }
 
@@ -244,6 +251,10 @@ export default class PhotoMain implements PhotoBasic{
       const [offX, offY, offW, offH] = this._checkRange();
       this.doAnimation(offX, offY, offW, offH, 0);
     }, 500);
+  }
+
+  onLoading(callback: (loading: boolean) => void) {
+    this.loadingEvent = callback;
   }
 
   /**

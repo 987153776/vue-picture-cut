@@ -1,7 +1,8 @@
 <template>
   <div class="vue-picture-cut">
     <div class="vue-picture-cut_main" ref="main" :style="[ hasMenu || { bottom: '50px' } ]">
-      <vue-picture-cut-canvas :angle="initAngle"/>
+      <div v-show="loading" class="vue-picture-cut_main-loading">loading...</div>
+      <vue-picture-cut-canvas :loading.sync="loading" :angle="initAngle"/>
       <slot>
         <vue-picture-cut-mask v-bind="mskOption"/>
       </slot>
@@ -35,7 +36,6 @@ import PhotoMain from './PhotoMain';
 import PhotoMask from './PhotoMask';
 import VuePictureCutCanvas from './vue-picture-cut-canvas.vue';
 import VuePictureCutMask from './vue-picture-cut-mask.vue';
-import $tool from './tool';
 
 interface MskOption {
   width?: number;
@@ -81,6 +81,7 @@ export default class VuePictureCut extends Vue {
 
   @Ref() private main!: HTMLDivElement;
 
+  loading = false;
   // 是否有菜单组件
   hasMenu = false;
   // 角度
