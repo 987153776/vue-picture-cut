@@ -10,6 +10,11 @@
       <a href="https://gitee.com/light-year/vue-picture-cut" target="_blank" type="primary">
         <img height="28" width="95" src="https://gitee.com/static/images/logo-black.svg?t=158106664"/>
       </a>
+      <div class="language">
+        <span :class="{active: language === 'EN'}" @click="language = 'EN'">English</span>
+        <i></i>
+        <span :class="{active: language === 'ZN'}" @click="language = 'ZN'">中文</span>
+      </div>
     </div>
     <!--基本使用-->
 <!--    <vue-picture-cut class="cut" :src="src"-->
@@ -26,83 +31,87 @@
                      :msk-option="mskOption"
                      :background-color="form.backgroundColor">
       <vue-picture-cut-menu slot="menu"
-                            :cancel="false"
                             :max-pixel="form.maxPixel"
                             :encoder-options="form.encoderOptions"
                             :format="form.format"
                             :theme="form.menuTheme"
+                            :size-auto-name="config(language, 'auto')"
+                            :size-raw-name="config(language, 'raw')"
+                            :menu-rotate-name="config(language, 'Rotate')"
+                            :cancel-name="config(language, 'Cancel')"
+                            :confirm-name="config(language, 'Ok')"
                             @on-change="cutChange"/>
     </vue-picture-cut>
-    <el-form style="margin-top: 15px;" ref="form" :model="form" label-width="110px" inline>
-      <el-form-item label="预览:" label-width="70px">
+    <el-form style="margin-top: 15px;" ref="form" :model="form" label-width="140px" inline>
+      <el-form-item :label="config(language, 'preview') + ':'" label-width="70px">
         <a class="download-img"
            :download="'vue-picture-cut.' + form.format.replace('image/', '')"
            :href="base64"
            :style="{'background-image': `url(${newSrc})`}">
-          点击下载
+          {{ config(language, 'download') }}
         </a>
       </el-form-item>
-      <el-form-item label="🙄选择图片:">
+      <el-form-item :label="'🙄' + config(language, 'Select Picture') + ':'">
         <el-upload class="upload-demo"
                    action=""
                    accept="image/*"
                    :show-file-list="false"
                    :before-upload="inputChange">
-          <el-button size="small" type="primary">选择</el-button>
+          <el-button size="small" type="primary">{{ config(language, 'Select') }}</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item label="😱画布背景色:">
+      <el-form-item :label="'😱' + config(language, 'Canvas bgColor') + ':'">
         <el-color-picker v-model="form.backgroundColor" show-alpha></el-color-picker>
       </el-form-item>
-      <el-form-item label="😴遮罩颜色:">
+      <el-form-item :label="'😴' + config(language, 'Mask color') + ':'">
         <el-color-picker v-model="form.maskColor" show-alpha></el-color-picker>
       </el-form-item>
-      <el-form-item label="🤔裁剪框颜色:">
+      <el-form-item :label="'🤔' + config(language, 'CropBox color') + ':'">
         <el-color-picker v-model="form.maskBorderColor" show-alpha></el-color-picker>
       </el-form-item>
-      <el-form-item label="🤗菜单栏主题:" label-width="124px">
-        <el-select v-model="form.menuTheme" placeholder="请选择" style="width: 110px">
+      <el-form-item :label="'🤗' + config(language, 'Menu theme') + ':'" label-width="124px">
+        <el-select v-model="form.menuTheme" :placeholder="config(language, 'Please select')" style="width: 110px">
           <el-option label="default" value="default"/>
           <el-option label="dark" value="dark"/>
           <el-option label="gray" value="gray"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="😁裁剪框形状:">
+      <el-form-item :label="'😁' + config(language, 'CropBox shape') + ':'">
         <el-radio-group v-model="form.isRound">
-          <el-radio :label="false">矩形</el-radio>
-          <el-radio :label="true">椭圆</el-radio>
+          <el-radio :label="false">{{ config(language, 'Rectangle') }}</el-radio>
+          <el-radio :label="true">{{ config(language, 'Ellipse') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="😂裁剪框尺寸:">
+      <el-form-item :label="'😂' + config(language, 'CropBox size') + ':'">
         <el-radio-group v-model="form.resize">
-          <el-radio :label="false">不可改变</el-radio>
-          <el-radio :label="true">可改变</el-radio>
+          <el-radio :label="false">{{ config(language, 'Unchangeable') }}</el-radio>
+          <el-radio :label="true">{{ config(language, 'Changeable') }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="😉缩放系数:">
+      <el-form-item :label="'😉' + config(language, 'Scaling factor') + ':'">
         <el-input-number v-model="form.zoom" :min="0" :step="0.05"></el-input-number>
         <el-button size="mini" type="primary" style="margin-left: 10px"
-                   @click="$refs['pictureCut'].scale(form.zoom)">执行缩放</el-button>
+                   @click="$refs['pictureCut'].scale(form.zoom)">{{ config(language, 'Perform zoom') }}</el-button>
       </el-form-item>
-      <el-form-item label="😎初始角度:">
+      <el-form-item :label="'😎' + config(language, 'Initial angle') + ':'">
         <el-input-number v-model="form.initAngle" placeholder="auto"></el-input-number>
       </el-form-item>
-      <el-form-item label="😙裁剪比例宽:">
+      <el-form-item :label="'😙' + config(language, 'Cropped width') + ':'">
         <el-input-number :min="1" v-model="form.width" placeholder="1"></el-input-number>
       </el-form-item>
-      <el-form-item label="😪裁剪比例高:">
+      <el-form-item :label="'😪' + config(language, 'Cropped height') + ':'">
         <el-input-number :min="1" v-model="form.height" placeholder="1"></el-input-number>
       </el-form-item>
-      <el-form-item label="🤑裁剪长边像素:" label-width="124px">
+      <el-form-item :label="'🤑' + config(language, 'Max pixels') + ':'" label-width="124px">
         <el-input-number :min="1" v-model="form.maxPixel" placeholder="auto"></el-input-number>
       </el-form-item>
-      <el-form-item label="👑图片压缩率:">
+      <el-form-item :label="'👑' + config(language, 'compressibility') + ':'">
         <el-input-number :min="0" :max="1" :step="0.1" v-model="form.encoderOptions" placeholder="0.8"></el-input-number>
       </el-form-item>
-      <el-form-item label="😍裁剪图片格式:" label-width="124px">
-        <el-select v-model="form.format" placeholder="请选择" style="width: 110px">
-          <el-option label="jpeg格式" value="image/jpeg"/>
-          <el-option label="png格式" value="image/png"/>
+      <el-form-item :label="'😍' + config(language, 'Export format') + ':'" label-width="124px">
+        <el-select v-model="form.format" :placeholder="config(language, 'Please select')" style="width: 110px">
+          <el-option label="jpeg" value="image/jpeg"/>
+          <el-option label="png" value="image/png"/>
         </el-select>
       </el-form-item>
     </el-form>
@@ -111,6 +120,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import config from './language';
 
 interface MskOption {
   width?: number;
@@ -124,6 +134,8 @@ interface MskOption {
 @Component
 export default class App extends Vue {
 
+  private config = config;
+  private language = 'EN';
   private src: string | null = './demo.jpg';
   private blob: Blob | null = null;
   private base64: string | null = null;
@@ -205,6 +217,30 @@ export default class App extends Vue {
       vertical-align: top;
       font-weight: bolder;
       font-size: 22px;
+    }
+  }
+  .language{
+    float: right;
+    span{
+      color: #2af;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+      &.active{
+        color: #333;
+        cursor: default;
+        &:hover{
+          text-decoration: none;
+        }
+      }
+    }
+    i{
+      display: inline-block;
+      width: 2px;
+      height: 10px;
+      border-left: 2px solid #aaa;
+      margin: 0 8px;
     }
   }
 }

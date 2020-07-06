@@ -123,7 +123,7 @@ $themes:(
     height: 40px;
     line-height: 16px;
     text-align: center;
-    padding: 13px 15px 0 53px;
+    padding: 13px 15px 0 60px;
     position: relative;
     span{
       font-size: 14px;
@@ -131,7 +131,7 @@ $themes:(
       @include font-theme('color');
       position: absolute;
       top: 0;
-      left: -33px;
+      left: -40px;
     }
     &-box{
       width: 100%;
@@ -232,6 +232,7 @@ $themes:(
         height: 26px;
         width: 26px;
         border: 1px solid #444;
+        border-radius: 2px;
         @include border-theme('boxBorderColor');
         &._5_4{
           height: 24px;

@@ -7,7 +7,7 @@
          ]">
     <div class="vue-picture-cut-menu_slider">
       <div class="vue-picture-cut-menu_slider-box">
-        <span>旋转</span>
+        <span>{{ menuRotateName }}</span>
         <input type="range" v-model="sliderAngle" :min="-180" :max="180"/>
         <div class="vue-picture-cut-menu_slider-box-bar">
           <div class="vue-picture-cut-menu_slider-box-button"
@@ -29,10 +29,10 @@
           <div class="vue-picture-cut-menu_box-item v-p-icon_rotate-right" @click="rotate(-90, true)"></div>
           <span></span>
           <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskResize">
-            <div class="__mask">自由</div>
+            <div class="__mask">{{ sizeAutoName }}</div>
           </div>
           <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSizeToOriginal">
-            <div class="__mask">原始</div>
+            <div class="__mask">{{ sizeRawName }}</div>
           </div>
           <div class="vue-picture-cut-menu_box-item __mask" @click="setMaskSize(1,1)">
             <div class="__mask">1:1</div>
@@ -87,6 +87,9 @@ export default class VuePictureCutMenu extends Vue {
   @Prop({ type: Boolean, default: true}) private cancel!: boolean;
   @Prop({ type: String, default: 'Cancel'}) private cancelName!: string;
   @Prop({ type: String, default: 'Ok'}) private confirmName!: string;
+  @Prop({ type: String, default: 'auto'}) private sizeAutoName!: string;
+  @Prop({ type: String, default: 'raw'}) private sizeRawName!: string;
+  @Prop({ type: String, default: 'Rotate'}) private menuRotateName!: string;
 
   private sliderAngle = 0;
 
