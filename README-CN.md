@@ -430,5 +430,5 @@ createAnimation会返回一个Animation对象
 
 ***...文档待编辑***  
 
-## 三、希望大家都来用一下
+## Ⅲ、希望大家都来用一下
 VuePictureCut 💗 you!
