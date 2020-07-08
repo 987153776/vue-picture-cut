@@ -5,9 +5,9 @@ $themes:(
   dark-theme: (
     bgColor: #000,
     color: #aaa,
-    sliderBarColor: rgba(102, 102, 102,.6),
+    sliderBarColor: rgba(136, 136, 136, 0.6),
     sliderBarShadow: rgba(255,255,255,.1),
-    sliderButtonColor: #666,
+    sliderButtonColor: #888,
     sliderButtonShadow: rgba(255,255,255,.3),
     sliderTipsBg: rgba(85, 85, 85, 0.8),
     sliderTipsColor: #aaa,
@@ -18,15 +18,15 @@ $themes:(
   // 灰色
   gray-theme: (
     bgColor: #35362e,
-    color: #aaa,
-    sliderBarColor: rgba(136, 136, 136, 0.6),
+    color: #bbb,
+    sliderBarColor: rgba(170, 170, 170, 0.6),
     sliderBarShadow: rgba(255,255,255,.1),
-    sliderButtonColor: #888,
+    sliderButtonColor: #aaa,
     sliderButtonShadow: rgba(255,255,255,.3),
     sliderTipsBg: rgba(136, 136, 136, 0.7),
     sliderTipsColor: #ccc,
     sliderTipsShadow: rgba(255,255,255,.1),
-    boxColor: #aaa,
+    boxColor: #bbb,
     boxBorderColor: #666
   ),
   // 白色
@@ -123,7 +123,7 @@ $themes:(
     height: 40px;
     line-height: 16px;
     text-align: center;
-    padding: 13px 15px 0 60px;
+    padding: 13px 15px 0 65px;
     position: relative;
     span{
       font-size: 14px;
@@ -131,7 +131,7 @@ $themes:(
       @include font-theme('color');
       position: absolute;
       top: 0;
-      left: -40px;
+      left: -45px;
     }
     &-box{
       width: 100%;

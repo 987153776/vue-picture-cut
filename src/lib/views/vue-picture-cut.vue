@@ -2,18 +2,22 @@
   <div class="vue-picture-cut"
        :class="{'_default': !backgroundColor}"
        :style="{'background-color': backgroundColor || '#fff'}">
-    <div class="vue-picture-cut_main" ref="main" :style="[ hasMenu || { bottom: '50px' } ]">
+    <div class="vue-picture-cut_main" ref="main"
+         :class="[menuPosition]"
+         :style="mainPosition">
       <div v-show="loading" class="vue-picture-cut_main-loading">loading...</div>
       <vue-picture-cut-canvas :loading.sync="loading" :angle="initAngle"/>
       <slot>
         <vue-picture-cut-mask v-bind="mskOption"/>
       </slot>
     </div>
-    <div class="vue-picture-cut_menu-box" :style="[ hasMenu || { height: '50px' } ]">
+    <div class="vue-picture-cut_menu-box"
+         :class="[menuPosition]"
+         :style="memuPosition">
       <slot name="menu">
-        <div class="vue-picture-cut_default-menu">
-          <div class="vue-picture-cut_slider"
-               v-if="rotateControl">
+        <div class="vue-picture-cut_default-menu"
+             v-if="thickness > 0">
+          <div class="vue-picture-cut_slider" v-if="rotateControl">
             <input type="range" v-model="sliderAngle" :min="-180" :max="180"/>
             <div class="vue-picture-cut_slider-box">
               <div class="vue-picture-cut_slider-box-bar"
@@ -24,7 +28,7 @@
               </div>
             </div>
           </div>
-          <div v-show="src" class="vue-picture-cut_button" @click="sureCut">确定</div>
+          <div v-show="src" class="vue-picture-cut_button" @click="sureCut">ok</div>
         </div>
       </slot>
     </div>
@@ -62,8 +66,6 @@ export default class VuePictureCut extends Vue {
   @Prop({ type: String, default: null }) private src!: string | null;
   // 旋转
   @Prop({ type: Number, required: false }) private initAngle: number | undefined;
-  // 是否显示旋转控件
-  @Prop({ type: Boolean, required: false }) private rotateControl!: boolean;
   // 裁剪长边像素
   @Prop({ type: Number, required: false }) private maxPixel: number | undefined;
   // 裁剪压缩率
@@ -82,6 +84,12 @@ export default class VuePictureCut extends Vue {
       }
     }
   }) private mskOption!: MskOption;
+  // 是否显示旋转控件
+  @Prop({ type: Boolean, required: false }) private rotateControl!: boolean;
+  // 菜单栏宽度/高度
+  @Prop({ type: Number, required: false }) private menuThickness!: number;
+  // 菜单栏位置
+  @Prop({ type: String, default: 'bottom' }) private menuPosition!: string;
 
   @Ref() private main!: HTMLDivElement;
 
@@ -95,6 +103,66 @@ export default class VuePictureCut extends Vue {
 
   @Provide()
   vuePictureCut = this.photoRoot;
+
+  get thickness () {
+    if (this.menuThickness === void 0 || this.menuThickness < 0) {
+      return this.hasMenu ? 120 : 50;
+    }
+    return this.menuThickness;
+  }
+
+  get mainPosition() {
+    const thickness = this.thickness + 'px';
+    const position = {
+      top: '0',
+      left: '0',
+      right: '0',
+      bottom: '0'
+    }
+    if (this.menuPosition === 'top') {
+      position.top = thickness;
+    } else if (this.menuPosition === 'left') {
+      position.left = thickness;
+    } else if (this.menuPosition === 'right') {
+      position.right = thickness;
+    } else {
+      position.bottom = thickness;
+    }
+    return position;
+  }
+
+  get memuPosition() {
+    const thickness = this.thickness + 'px';
+    if (this.menuPosition === 'top') {
+      return {
+        top: '0',
+        left: '0',
+        right: '0',
+        height: thickness
+      }
+    } else if (this.menuPosition === 'left') {
+      return {
+        top: '0',
+        left: '0',
+        bottom: '0',
+        width: thickness
+      }
+    } else if (this.menuPosition === 'right') {
+      return {
+        top: '0',
+        right: '0',
+        bottom: '0',
+        width: thickness
+      }
+    } else {
+      return {
+        left: '0',
+        right: '0',
+        bottom: '0',
+        height: thickness
+      }
+    }
+  }
 
   @Watch('src')
   watchSrc (to: string | null): void {
