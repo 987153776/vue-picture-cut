@@ -11,12 +11,12 @@
         <vue-picture-cut-mask v-bind="mskOption"/>
       </slot>
     </div>
-    <div class="vue-picture-cut_menu-box"
+    <div v-show="thickness > 0"
+         class="vue-picture-cut_menu-box"
          :class="[menuPosition]"
          :style="memuPosition">
       <slot name="menu">
-        <div class="vue-picture-cut_default-menu"
-             v-if="thickness > 0">
+        <div class="vue-picture-cut_default-menu">
           <div class="vue-picture-cut_slider" v-if="rotateControl">
             <input type="range" v-model="sliderAngle" :min="-180" :max="180"/>
             <div class="vue-picture-cut_slider-box">

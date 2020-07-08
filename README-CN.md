@@ -128,11 +128,13 @@ import {
     :src="src"
     :magnification="magnification"
     :init-angle="initAngle"
-    :rotate-control="rotateControl"
     :msk-option="mskOption"
     :max-pixel="maxPixel"
     :encoder-options="encoderOptions"
     :format="format"
+    :rotate-control="rotateControl"
+    :menu-position="menuPosition"
+    :menu-thickness="menuThickness"
     @on-change="onChange"
   />
 </template>
@@ -143,32 +145,28 @@ import {
 1. `src`：  
 	**类型**：string  
 	**默认**：null  
-	**描述**：图片链接
+	**描述**：图片链接  
 2. `magnification`：  
 	**类型**：number  
 	**默认**：1.5  
-	**描述**：画布绘制缩放率，取值大于0，值越大绘制的逻辑像素越高
+	**描述**：画布绘制缩放率，取值大于0，值越大绘制的逻辑像素越高  
 3. `initAngle`：  
 	**类型**：number  
 	**必须**：非必须  
-	**描述**：载入图片的初始旋转角度
-4. `rotateControl`：  
-	**类型**：boolean  
-	**默认**：false  
-	**描述**：是否显示旋转控件。
-5. `maxPixel`：  
+	**描述**：载入图片的初始旋转角度  
+4. `maxPixel`：  
 	**类型**：number  
 	**必须**：非必须  
-	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。
-6. `encoderOptions`：  
+	**描述**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。  
+5. `encoderOptions`：  
 	**类型**：number  
 	**必须**：非必须  
-	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。
-7. `format`：  
+	**描述**：导出图片的压缩率，不传时按0.8计算，取值范围0~1。  
+6. `format`：  
 	**类型**：string  
 	**默认**：false  
-	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。
-8. `mskOption`：  
+	**描述**：导出图片的格式，不传时导出格式为“image/jpeg”，其值可以为“image/png”等浏览器支持格式。  
+7. `mskOption`：  
 	**类型**：object  
 	**默认**：`{ width: 1, height: 1, isRound: false, resize: true}`  
 	**描述**：  
@@ -178,6 +176,18 @@ import {
 	resize：boolean 裁剪框大小是否可通过拖动改变大小  
 	color：string 遮罩颜色  
 	borderColor：string 裁剪框颜色  
+8. `rotateControl`：  
+	**类型**：boolean  
+	**默认**：false  
+	**描述**：是否显示旋转控件。  
+9. `menuPosition`：  
+	**类型**：string  
+	**默认**：bottom  
+	**描述**：菜单栏位置，取值：top、bottom、left、right。  
+10. `menuThickness`：  
+	**类型**：number  
+	**必须**：非必须  
+	**描述**：菜单栏高度，取值大于0，等于0时隐藏菜单栏。  
 
 **事件：**
 

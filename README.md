@@ -128,11 +128,13 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
     :src="src"
     :magnification="magnification"
     :init-angle="initAngle"
-    :rotate-control="rotateControl"
     :msk-option="mskOption"
     :max-pixel="maxPixel"
     :encoder-options="encoderOptions"
     :format="format"
+    :rotate-control="rotateControl"
+    :menu-position="menuPosition"
+    :menu-thickness="menuThickness"
     @on-change="onChange"
   />
 </template>
@@ -152,23 +154,19 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 	**type**：number  
 	**required**：false  
 	**describe**：Initial rotation angle of loaded image  
-4. `rotateControl`：  
-	**type**：boolean  
-	**default**：false  
-	**describe**：Whether to display the rotation control.  
-5. `maxPixel`：  
+4. `maxPixel`：  
 	**type**：number  
 	**required**：false  
 	**describe**：Export the pixels on the longer side of the picture. When the value is not transferred, it is adaptive according to the actual image size.  
-6. `encoderOptions`：  
+5. `encoderOptions`：  
 	**type**：number  
 	**required**：false  
 	**describe**：Compression ratio of exported pictures. When the value is not transferred, it is calculated as 0.8, and the value range is 0 ~ 1.  
-7. `format`：  
+6. `format`：  
 	**type**：string  
 	**default**：false  
 	**describe**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
-8. `mskOption`：  
+7. `mskOption`：  
 	**type**：object  
 	**default**：`{ width: 1, height: 1, isRound: false, resize: true}`  
 	**describe**：  
@@ -178,6 +176,18 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 	resize：{boolean} Can the crop box size be changed by dragging.  
 	color：{string} Mask color.  
 	borderColor：{string} Crop box color.  
+8. `rotateControl`：  
+	**type**：boolean  
+	**default**：false  
+	**describe**：Whether to display the rotation control.  
+9. `menuPosition`：  
+	**type**：string  
+	**default**：bottom  
+	**describe**：Location of menu bar. Value：top、bottom、left、right.  
+10. `menuThickness`：  
+	**type**：number  
+	**required**：false  
+	**describe**：Height of menu bar. The value is greater than 0. Hide menu bar when equal to 0.  
 
 **Event：**
 
