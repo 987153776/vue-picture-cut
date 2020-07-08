@@ -187,7 +187,7 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 10. `menuThickness`：  
 	**type**：number  
 	**required**：false  
-	**describe**：Height of menu bar. The value is greater than 0. Hide menu bar when equal to 0.  
+	**describe**：When 'menuPosition' is equal to 'top' or 'bottom', it represents the height of the menu bar. When 'menuPosition' equals 'left' or 'right', it represents the width of the menu bar. The value is greater than 0. Hide menu bar when equal to 0.  
 
 **Event：**
 

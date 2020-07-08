@@ -187,7 +187,7 @@ import {
 10. `menuThickness`：  
 	**类型**：number  
 	**必须**：非必须  
-	**描述**：菜单栏高度，取值大于0，等于0时隐藏菜单栏。  
+	**描述**：menuPosition取top、bottom时表示菜单栏高度，menuPosition取left、right时表示菜单栏高度宽度，取值大于0，等于0时隐藏菜单栏。  
 
 **事件：**
 
