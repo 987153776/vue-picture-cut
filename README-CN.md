@@ -16,7 +16,7 @@
 <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/dist/index.html" target="_blank">demo演示(github)</a>  
 <a href="https://light-year.gitee.io/vue-picture-cut/" target="_blank">demo演示(码云)</a>  
 
-<a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩0.x版本点这里</a>【此版本bug太多，不再维护】
+<a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩0.x版本点这里</a>【此版本bug太多，不再维护】  
 
 🚀 **[【升级日志】](./CHANGELOG.md)**  
 
@@ -428,6 +428,11 @@ createAnimation会返回一个Animation对象
 
 ##### 包含方法
 
+1. `loadImg (src: string): Promise<HTMLImageElement>`  
+**描述**：载入图片  
+**参数 src**：图片的链接  
+**返回 Promise<HTMLImageElement>**：略  
+
 2. `rotatePoint(x: number, y: number, angle: number): Point`  
 **描述**：将一个点绕原点旋转angle度后，计算新的点的坐标  
 **参数 x**：点的x坐标  
@@ -435,12 +440,55 @@ createAnimation会返回一个Animation对象
 **参数 angle**：旋转角度  
 **返回 Point**：{x: number, y: number}  新的点  
 
-3. `rotatePoint(x: number, y: number, angle: number): Point`  
-**描述**：将一个点绕原点旋转angle度后，计算新的点的坐标  
-**参数 x**：点的x坐标  
-**参数 y**：点的y坐标  
-**参数 angle**：旋转角度  
-**返回 Point**：{x: number, y: number}  新的点  
+3. `clipBy (img: HTMLImageElement, width: number, height: number, showRect: RectFull, encoderOptions = 0.8, format = 'image/jpeg', pathDone?: PathDone): string`  
+**描述**：根据坐标剪裁图像  
+**参数 img**：Image对象  
+**参数 width**：导出图片的宽度（px）  
+**参数 height**：导出图片的高度（px）  
+**参数 showRect**：RectFull对象  
+**参数 encoderOptions**：压缩率  
+**参数 format**：导出图片的格式'image/jpeg'、'image/png'等  
+**参数 pathDone**：自定义路径的方法PathDone   
+**返回 String**：base64  
+
+3. `clipByRound (img: HTMLImageElement, width: number, height: number, showRect: RectFull, encoderOptions = 0.8, format = 'image/jpeg'): string`  
+**描述**：根据坐标内切圆剪裁图像  
+**参数 img**：略  
+**参数 width**：略  
+**参数 height**：略  
+**参数 showRect**：略  
+**参数 encoderOptions**：略  
+**参数 format**：略  
+**返回 String**：base64  
+
+3. `clipByMax (img: HTMLImageElement, max = 2000, encoderOptions = 1): ClipResult | void`  
+**描述**：若图片宽或高大于max，则压缩图片  
+**参数 img**：略  
+**参数 max**：略  
+**参数 encoderOptions**：略  
+**返回 ClipResult | void**：返回ClipResult对象或undefined  
+
+4. `base64ToBlob (base64: string, format = 'image/jpeg'): Blob | null`  
+**描述**：将base64转Blob对象  
+**参数 base64**：略  
+**参数 format**：base64的格式  
+**返回 Blob | null**：返回Blob对象或null  
+
+5. `getEllipseRectByRect(w: number, h: number, angle: number): Rect`  
+**描述**：将一个正矩形的内切椭圆旋转angle度，计算该椭圆的外接正矩形。(假设矩形中心为原点)  
+**参数 w**：初始正矩形宽  
+**参数 h**：初始正矩形高  
+**参数 angle**：逆时针旋转角度  
+**返回 Rect**：返回Rect对象  
+
+6. `getRectByRect(w: number, h: number, angle: number): Rect`  
+**描述**：将一个正矩形旋转angle度，计算该矩形的外接正矩形。(假设矩形中心为原点)  
+**参数 w**：初始正矩形宽  
+**参数 h**：初始正矩形高  
+**参数 angle**：逆时针旋转角度  
+**返回 Rect**：返回Rect对象  
+
+#### 7、 内部对象说明
 
 ***...待编辑***
 

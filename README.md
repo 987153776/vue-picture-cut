@@ -18,6 +18,8 @@ About zoom: mouse (mouse wheel zoom), touch screen (double finger zoom)
 
 <a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩Version 0.x is here</a>【This version has too many bugs and is no longer maintained】
 
+🚀 **[【Update Log】](./CHANGELOG.md)**  
+
 ## Ⅰ、Usage
 
 ### Install
