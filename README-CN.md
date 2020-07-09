@@ -9,7 +9,7 @@
 基于`vue`和`typescript`开发的一款图片剪裁处理工具  
 优点：**原生、轻量、使用简单、功能全面、扩展性强**  
 目前功能：**缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁**  
-关于缩放：鼠标（鼠标滚轮缩放）、触屏（双指缩放）
+关于缩放：鼠标（鼠标滚轮缩放）、触屏（双指缩放） 
 
 <a href="https://github.com/987153776/vue-picture-cut" target="_blank">github主页</a>  
 <a href="https://gitee.com/light-year/vue-picture-cut" target="_blank">码云主页</a>  
@@ -17,6 +17,8 @@
 <a href="https://light-year.gitee.io/vue-picture-cut/" target="_blank">demo演示(码云)</a>  
 
 <a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩0.x版本点这里</a>【此版本bug太多，不再维护】
+
+:rocket **[Update log](./CHANGELOG.md)**  
 
 ## 一、使用方法
 
@@ -419,12 +421,26 @@ createAnimation会返回一个Animation对象
   .then(image => {
     // 加载图片成功
     // image为Image对象
-  }, image => {
+  }, () => {
     // 加载图片失败
   });
 ```
 
 ##### 包含方法
+
+2. `rotatePoint(x: number, y: number, angle: number): Point`  
+**描述**：将一个点绕原点旋转angle度后，计算新的点的坐标  
+**参数 x**：点的x坐标  
+**参数 y**：点的y坐标  
+**参数 angle**：旋转角度  
+**返回 Point**：{x: number, y: number}  新的点  
+
+3. `rotatePoint(x: number, y: number, angle: number): Point`  
+**描述**：将一个点绕原点旋转angle度后，计算新的点的坐标  
+**参数 x**：点的x坐标  
+**参数 y**：点的y坐标  
+**参数 angle**：旋转角度  
+**返回 Point**：{x: number, y: number}  新的点  
 
 ***...待编辑***
 
