@@ -18,7 +18,7 @@
 
 <a href="https://github.com/987153776/vue-picture-cut/tree/1.0">💩💩💩0.x版本点这里</a>【此版本bug太多，不再维护】
 
-:rocket **[Update log](./CHANGELOG.md)**  
+🚀 **[【升级日志】](./CHANGELOG.md)**  
 
 ## 一、使用方法
 
