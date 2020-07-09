@@ -135,3 +135,14 @@ export interface DoubleToucheEvent{
    */
   angle: number;
 }
+
+/**
+ *
+ */
+export interface PathDone {
+  (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number
+  ): void;
+}

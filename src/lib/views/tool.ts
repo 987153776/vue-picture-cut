@@ -5,7 +5,8 @@ import {
   TouchePoint,
   Win,
   DoubleToucheEvent,
-  ClipResult
+  ClipResult,
+  PathDone
 } from './interface';
 
 // 剪裁用
@@ -171,8 +172,9 @@ export default {
    * @param width           // 裁剪宽
    * @param height          // 裁剪高
    * @param showRect        // 显示图片的矩形
-   * @param encoderOptions
-   * @param format
+   * @param encoderOptions  // 压缩率
+   * @param format          // 导出格式
+   * @param pathDone        // 绘制剪裁路径
    * @returns {string}
    */
   clipBy (img: HTMLImageElement,
@@ -180,7 +182,8 @@ export default {
           height: number,
           showRect: RectFull,
           encoderOptions = 0.8,
-          format = 'image/jpeg'): string {
+          format = 'image/jpeg',
+          pathDone?: PathDone): string {
     const { x, y, w, h, r, sH, sV } = showRect;
     canvas.width = width;
     canvas.height = height;
@@ -193,6 +196,8 @@ export default {
       ctx.fillStyle = '#fff';
       ctx.fillRect(-width / 2, -height / 2, width, height);
     }
+
+    pathDone && pathDone(ctx, width, height);
 
     if (r / 360) {
       ctx.rotate(-r * Math.PI / 180);
@@ -222,36 +227,15 @@ export default {
                showRect: RectFull,
                encoderOptions = 0.8,
                format = 'image/jpeg'): string {
-    const { x, y, w, h, r, sH, sV } = showRect;
-    canvas.width = width;
-    canvas.height = height;
-    ctx.clearRect(0, 0, width, height);
-
-    ctx.save();
-    ctx.translate(width / 2, height / 2);
-
-    if (format === 'image/jpeg' || format === 'image/jpg') {
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(-width / 2, -height / 2, width, height);
-    }
-
-    // 剪切椭圆形状
-    ctx.beginPath();
-    ellipsePath(ctx, 0, 0, width, height);
-    ctx.clip();
-    ctx.closePath();
-
-    if (r / 360) {
-      ctx.rotate(-r * Math.PI / 180);
-    }
-    ctx.scale(sH ? -1 : 1,sV ? -1 : 1);
-
-    ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
-
-    ctx.scale(sH ? 1 : -1,sV ? 1 : -1);
-    ctx.translate(-width / 2, -height / 2);
-    ctx.restore();
-    return canvas.toDataURL(format, encoderOptions);
+    return this.clipBy(
+      img, width, height, showRect, encoderOptions, format,
+      (ctx) => {
+        // 剪切椭圆形状
+        ctx.beginPath();
+        ellipsePath(ctx, 0, 0, width, height);
+        ctx.clip();
+        ctx.closePath();
+      });
   },
 
   /**
