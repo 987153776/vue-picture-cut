@@ -8,8 +8,13 @@
 ## 2.0.1 (2020-07-06)
 
 #### :rocket: New Features
+* `VuePictureCut`
+  * Attribute: `backgroundColor` 改变控件背景色
+* `VuePictureCutMask`
+  * Attribute: `color` 改变遮罩颜色
+  * Attribute: `borderColor` 改变裁剪框颜色
 * `VuePictureCutMenu`
-  * API: `theme` 新增变更主题的接口
+  * Attribute: `theme` 改变主题色
 
 #### :house: Optimize
 * `VuePictureCut`

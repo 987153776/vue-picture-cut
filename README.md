@@ -137,6 +137,7 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
     :rotate-control="rotateControl"
     :menu-position="menuPosition"
     :menu-thickness="menuThickness"
+    :background-color="backgroundColor"
     @on-change="onChange"
   />
 </template>
@@ -190,6 +191,10 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 	**type**：number  
 	**required**：false  
 	**describe**：When 'menuPosition' is equal to 'top' or 'bottom', it represents the height of the menu bar. When 'menuPosition' equals 'left' or 'right', it represents the width of the menu bar. The value is greater than 0. Hide menu bar when equal to 0.  
+11. `backgroundColor`：  
+	**type**：string  
+	**required**：false  
+	**describe**：The background color of the component. 
 
 **Event：**
 
@@ -218,6 +223,7 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
     :max-pixel="maxPixel"
     :encoder-options="encoderOptions"
     :format="format"
+    :background-color="backgroundColor"
     @on-change="onChange"
   >
     <vue-picture-mask

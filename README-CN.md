@@ -137,6 +137,7 @@ import {
     :rotate-control="rotateControl"
     :menu-position="menuPosition"
     :menu-thickness="menuThickness"
+    :background-color="backgroundColor"
     @on-change="onChange"
   />
 </template>
@@ -190,6 +191,10 @@ import {
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：menuPosition取top、bottom时表示菜单栏高度，menuPosition取left、right时表示菜单栏高度宽度，取值大于0，等于0时隐藏菜单栏。  
+11. `backgroundColor`：  
+	**类型**：string  
+	**必须**：非必须  
+	**描述**：组件背景色。  
 
 **事件：**
 
@@ -218,6 +223,7 @@ import {
     :max-pixel="maxPixel"
     :encoder-options="encoderOptions"
     :format="format"
+    :background-color="backgroundColor"
     @on-change="onChange"
   >
     <vue-picture-mask
