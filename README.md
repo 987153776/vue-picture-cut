@@ -350,6 +350,10 @@ Menu bar component, see demo for effect.
 	**type**：string  
 	**default**：'Rotate'  
 	**describe**：Menu bar button text.  
+11. `root`：  
+	**type**：object  
+	**required**：If it is not used externally through slot mode, it must be passed.  
+	**describe**：The value is an instance of 'VuePictureCut'。  
 
 **Event：**
 

@@ -1,3 +1,15 @@
+## 2.0.3 (2020-07-11)
+
+#### :rocket: New Features
+* `VuePictureCutMenu`
+  * Attribute: `root` 传递`VuePictureCutMenu`实例后，可以不通过slot方式在外部使用。
+
+#### :house: Optimize
+* `Tool`
+  * `clipBy`、`clipByRound`方法优化。
+* `VuePictureCutMenu`
+  * 主题样式优化。
+
 ## 2.0.2 (2020-07-08)
 
 #### :rocket: New Features
