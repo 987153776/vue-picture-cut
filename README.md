@@ -123,6 +123,9 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 
 **Using：**
 
+[/demo/demo1.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo1.html)  
+[/demo/demo2.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo2.html)
+
 ```vue
 <template>
   <vue-picture-cut
@@ -213,6 +216,8 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 
 **Using：**
 
+[/demo/demo3.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo3.html)  
+
 ```vue
 <template>
   <vue-picture-cut
@@ -270,6 +275,9 @@ Tools：`Bezier`、`createAnimation`、`Tool`。
 Menu bar component, see demo for effect.    
 
 **Using：**
+
+[/demo/demo4.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo4.html)  
+[/demo/demo5.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo5.html)  
 
 ```vue
 <template>

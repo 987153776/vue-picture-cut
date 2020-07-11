@@ -121,7 +121,10 @@ import {
 
 **slot插槽：** `default`、`menu`
 
-**使用：**
+**使用：**  
+
+[/demo/demo1.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo1.html)  
+[/demo/demo2.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo2.html)
 
 ```vue
 <template>
@@ -213,6 +216,8 @@ import {
 
 **使用：**
 
+[/demo/demo3.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo3.html)  
+
 ```vue
 <template>
   <vue-picture-cut
@@ -270,6 +275,9 @@ import {
 菜单栏组件，效果参见Demo。  
 
 **使用：**
+
+[/demo/demo4.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo4.html)  
+[/demo/demo5.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/987153776/vue-picture-cut/master/demo/demo5.html)  
 
 ```vue
 <template>
