@@ -21,7 +21,8 @@
     </div>
     <div class="vue-picture-cut-menu_box">
       <div class="vue-picture-cut-menu_box-content">
-        <div class="vue-picture-cut-menu_box-list" :style="{width: 13 * 40 + 38 + 'px'}">
+        <!-- 13 * 40 + 38 = 558 -->
+        <div class="vue-picture-cut-menu_box-list" style="width: 558px">
           <div class="vue-picture-cut-menu_box-item v-p-icon_flip-v" @click="setFlipV"></div>
           <div class="vue-picture-cut-menu_box-item v-p-icon_flip-h" @click="setFlipH"></div>
           <span></span>
@@ -58,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="vue-picture-cut-menu_confirm">
+    <div class="vue-picture-cut-menu_confirm" style="max-width: 558px">
       <div v-show="cancel" class="__cancel" @click="onCancelEvent">{{ cancelName }}</div>
       <div class="__sure" :class="{'__center': !cancel}" @click="sureCut">{{ confirmName }}</div>
     </div>
@@ -74,7 +75,9 @@ import PhotoMain from "@/lib/views/PhotoMain";
 @Component
 export default class VuePictureCutMenu extends Vue {
   @Inject({from: 'vuePictureCut', default: 'photoRoot'})
-  photoRoot!: PhotoRoot;
+  pRoot?: PhotoRoot;
+
+  @Prop({ type: Object, required: false}) root?: {photoRoot?: PhotoRoot};
 
   @Prop({ type: String, default: 'default'}) theme!: string;
   // 裁剪长边像素
@@ -93,8 +96,13 @@ export default class VuePictureCutMenu extends Vue {
 
   private sliderAngle = 0;
 
+  private get photoRoot() {
+    return this.root ? this.root.photoRoot : this.pRoot;
+  }
+
   @Watch('sliderAngle')
   watchSliderAngle (to: string): void {
+    if (!this.photoRoot) return;
     const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (photoMain) {
       photoMain.setAngle(parseInt(to));
@@ -112,6 +120,7 @@ export default class VuePictureCutMenu extends Vue {
   /*******事件********/
   // 裁剪
   sureCut(): void{
+    if (!this.photoRoot) return;
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
       const result = mask.clip(this.maxPixel, this.encoderOptions, this.format);
@@ -122,6 +131,7 @@ export default class VuePictureCutMenu extends Vue {
   }
   // 设置剪裁框
   setMaskSize(w: number, h: number): void {
+    if (!this.photoRoot) return;
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
       mask.reset(w, h);
@@ -130,6 +140,7 @@ export default class VuePictureCutMenu extends Vue {
   }
   // 设置剪裁框
   setMaskSizeToOriginal (): void {
+    if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       this.setMaskSize(main.imgRect.w, main.imgRect.h)
@@ -137,6 +148,7 @@ export default class VuePictureCutMenu extends Vue {
   }
   // 设置剪裁框
   setMaskResize (resize = true): void {
+    if (!this.photoRoot) return;
     const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
     if (mask) {
       mask.setResize(resize);
@@ -144,7 +156,7 @@ export default class VuePictureCutMenu extends Vue {
   }
   // 旋转
   rotate (angle: number, animation = false): void {
-    if (angle % 36 === 0) return;
+    if (!this.photoRoot || angle % 36 === 0) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       const angle2 = (main.showRect.r + angle) % 360;
@@ -156,6 +168,7 @@ export default class VuePictureCutMenu extends Vue {
    * 设置图片垂直翻折
    */
   setFlipV(): void {
+    if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       main.setFlipV(!main.showRect.sV);
@@ -165,6 +178,7 @@ export default class VuePictureCutMenu extends Vue {
    * 设置图片水平翻折
    */
   setFlipH(): void {
+    if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       main.setFlipH(!main.showRect.sH);

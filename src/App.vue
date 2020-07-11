@@ -42,6 +42,19 @@
                             :confirm-name="config(language, 'Ok')"
                             @on-change="cutChange"/>
     </vue-picture-cut>
+    <!--单独使用vuePictureCutMenu-->
+    <vue-picture-cut-menu class="cut-menu"
+                          :root="pictureCut"
+                          :max-pixel="form.maxPixel"
+                          :encoder-options="form.encoderOptions"
+                          :format="form.format"
+                          :theme="form.menuTheme"
+                          :size-auto-name="config(language, 'auto')"
+                          :size-raw-name="config(language, 'raw')"
+                          :menu-rotate-name="config(language, 'Rotate')"
+                          :cancel-name="config(language, 'Cancel')"
+                          :confirm-name="config(language, 'Ok')"
+                          @on-change="cutChange"/>
     <el-form style="margin-top: 15px;" ref="form" :model="form" label-width="140px" inline>
       <el-form-item :label="config(language, 'preview') + ':'" label-width="70px">
         <a class="download-img"
@@ -140,6 +153,8 @@ export default class App extends Vue {
   private blob: Blob | null = null;
   private base64: string | null = null;
 
+  private pictureCut: Vue | null = null;
+
   private form = {
     backgroundColor: undefined,
     maskColor: undefined,
@@ -170,6 +185,11 @@ export default class App extends Vue {
 
   get newSrc(): string {
     return this.blob ? URL.createObjectURL(this.blob) : '';
+  }
+
+  /*******生命周期********/
+  protected mounted (): void {
+    this.pictureCut = this.$refs['pictureCut'] as Vue;
   }
 
   inputChange (file: File): boolean {
@@ -250,7 +270,13 @@ export default class App extends Vue {
   height: 480px !important;
   max-width: 1000px;
   outline: 1px solid #000;
+  margin-bottom: 20px;
 }
+
+.cut-menu{
+  outline: 1px solid #000;
+}
+
 .download-img{
   display: block;
   width: 90px;

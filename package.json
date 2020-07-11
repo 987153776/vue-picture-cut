@@ -39,7 +39,8 @@
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.0.0",
-    "element-ui": "^2.13.2"
+    "element-ui": "^2.13.2",
+    "highlight.js": "^10.1.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.4.0",

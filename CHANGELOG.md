@@ -2,8 +2,8 @@
 
 #### :rocket: New Features
 * `VuePictureCut`
-  * API: `menuPosition` 菜单栏位置，取值(top、bottom、left、right，默认bottom)
-  * API: `menuThickness` menuPosition为top、bottom时即height，menuPosition为left、right时即width。
+  * Attribute: `menuPosition` 菜单栏位置，取值(top、bottom、left、right，默认bottom)
+  * Attribute: `menuThickness` menuPosition为top、bottom时即height，menuPosition为left、right时即width。
 
 ## 2.0.1 (2020-07-06)
 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../lib/vue-picture-cut.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="../lib/vue-picture-cut.umd.min.js"></script>
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    }
+    #app{
+      width: 100%;
+      max-width: 1000px;
+      padding: 10px;
+      margin: 0 auto;
+    }
+    .cut{
+      outline: 1px solid #000;
+      height: 460px;
+      margin-bottom: 20px;
+    }
+    .download-img{
+      display: inline-block;
+      width: 150px;
+      height: 150px;
+      outline: 1px solid #000;
+      text-align: center;
+      line-height: 150px;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="cut">
+      <vue-picture-cut
+        :src="src"
+        :background-color="backgroundColor"
+        :init-angle="initAngle"
+        :rotate-control="rotateControl"
+        :msk-option="mskOption"
+        :max-pixel="maxPixel"
+        :encoder-options="encoderOptions"
+        :format="format"
+        @on-change="cutChange"
+      ></vue-picture-cut>
+    </div>
+    <!--choose picture-->
+    <input type="file" accept="image/*" @change="fileChange"></input>
+    <!--choose picture-->
+    <a class="download-img"
+       download="vue-picture-cut.jpeg"
+       :href="base64"
+       :style="{'background-image': `url(${newSrc})`}">
+      download
+    </a>
+  </div>
+  <script>
+    Vue.use(window['vue-picture-cut'].default);
+    new Vue({
+      el: '#app',
+      data () {
+        return {
+          src: '../public/demo.jpg',
+          blob: null,
+          base64: '',
+
+          mskOption: {
+            width: 4,
+            height: 5,
+            isRound: true,
+            resize: true,
+            color: 'rgba(0,247,255,0.49)',
+            borderColor: '#E600FF'
+          },
+
+          backgroundColor: 'rgb(255,0,0)',
+          rotateControl: true,
+          initAngle: 20,
+          maxPixel: 500,
+          encoderOptions: 0.8,
+          format: 'image/jpeg'
+        }
+      },
+      computed: {
+        newSrc () {
+          return this.blob ? URL.createObjectURL(this.blob) : '';
+        }
+      },
+      methods: {
+        fileChange (e) {
+          if (e.target.files.length) {
+            this.src = URL.createObjectURL(e.target.files[0])
+          }
+        },
+        cutChange (res) {
+          this.blob = res.blob;
+          this.base64 = res.base64;
+        }
+      }
+    })
+  </script>
+</body>
+</html>
