@@ -1,3 +1,17 @@
+## 2.0.4 (2020-07-12)
+
+#### :rocket: New Features
+* `Utils`工具类
+  * 将控件操作进行二次封装，以便用户能够更加灵活的自定义菜单，特别是有特定需求的时候。
+
+#### :house: Optimize
+* `VuePictureCut`
+  * 图片翻转加入了动画效果
+
+#### :bug: Bug Fix
+* `VuePictureCutMenu`
+  * 修复了一些问题。
+
 ## 2.0.3 (2020-07-11)
 
 #### :rocket: New Features
