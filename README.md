@@ -449,7 +449,7 @@ ParamsInterface is an array containing four number types.
 
 ***...Waiting for editing***
 
-#### 7、 createUtils方法
+#### 7、 createUtils method
 
 ```vue
 <template>
@@ -501,7 +501,7 @@ ParamsInterface is an array containing four number types.
 </style>
 ```
 
-##### 包含方法
+##### Method
 
 1. `cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null`  
 **describe**：cut  

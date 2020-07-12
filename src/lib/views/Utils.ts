@@ -80,7 +80,7 @@ class Utils {
   setFlipV(animation?: boolean): void {
     if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    main?.setFlipV(main.showRect.sV === -1, animation);
+    main?.setFlipV(main.showRect.sV === 1, animation);
   }
 
   /**
@@ -90,7 +90,7 @@ class Utils {
   setFlipH(animation?: boolean): void {
     if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    main?.setFlipH(main.showRect.sH === -1, animation);
+    main?.setFlipH(main.showRect.sH === 1, animation);
   }
 
   /**

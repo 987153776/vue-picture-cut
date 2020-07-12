@@ -1,6 +1,6 @@
 {
   "name": "vue-picture-cut",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "基于vue和typescript开发的一款图片剪裁处理工具。优点：原生、轻量、使用简单、功能全面、扩展性强。目前功能：缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁。",
   "main": "lib/vue-picture-cut.umd.min.js",
   "directories": {
