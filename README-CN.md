@@ -111,11 +111,12 @@ import {
   VuePictureCutMenu,
   Bezier,
   createAnimation,
-  Tool
+  Tool,
+  createUtils
 } from 'vue-picture-cut';
 ```
 组件：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`。
-工具类：`Bezier`、`createAnimation`、`Tool`。
+工具类：`Bezier`、`createAnimation`、`Tool`、`createUtils`。
 
 ### 1、VuePictureCut组件
 
@@ -506,7 +507,95 @@ createAnimation会返回一个Animation对象
 **参数 angle**：逆时针旋转角度  
 **返回 Rect**：返回Rect对象  
 
-#### 7、 内部对象说明
+#### 7、 createUtils方法
+
+```vue
+<template>
+  <div>
+	<input type="file" accept="image/*" @change="inputChange"/>
+    <vue-picture-cut ref="pictureCut" :src="src"/>
+    <button @click="doCut">裁剪</button>
+  </div>
+</template>
+
+<script>
+  import { VuePictureCut, createUtils } from 'vue-picture-cut';
+
+  export default {
+    // ...
+    components: {
+      VuePictureCut
+    },
+    data () {
+      return {
+        utils: null,
+        src: null,
+        blob: null,
+        base64: null
+      }
+    },
+    mounted() {
+      this.utils = createUtils(this.$refs['pictureCut']);
+    },
+    methods: {
+      inputChange(e) {
+        const file = e.target.files[0];
+        this.src = URL.createObjectURL(file);
+      },
+      doCut() {
+        const res = this.utils.cut();
+        if (res) {
+            this.blob = res.file;   // BLOB对象
+            this.base64 = res.src;  // base64字符串
+        }
+      }
+    }
+    // ...
+  }
+</script>
+
+<style>
+  @import "~vue-picture-cut/lib/vue-picture-cut.css";
+</style>
+```
+
+##### 包含方法
+
+1. `cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null`  
+**描述**：裁剪  
+**参数 maxPixel**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。  
+**参数 encoderOptions**：压缩率  
+**参数 format**：导出图片的格式'image/jpeg'、'image/png'等  
+**返回 ClipResult | null**：略  
+2. `setMaskSize(w: number, h: number): void`  
+**描述**：设置剪裁框尺寸  
+**参数 w**：比例宽  
+**参数 h**：比例高  
+3. `setMaskSizeToOriginal (): void`  
+**描述**：按图片宽高比例设置剪裁框尺寸  
+4. `setMaskResize (resize = true): void`  
+**描述**：设置剪裁框是否可拖动改变大小  
+**参数 resize**：略  
+5. `rotate (angle: number, animation = false): void`  
+**描述**：图片旋转  
+**参数 angle**：逆时针角度  
+**参数 animation**：是否进行动画  
+6. `setFlipV(animation?: boolean): void`  
+**描述**：图片垂直翻转  
+**参数 animation**：是否进行动画  
+7. `setFlipH(animation?: boolean): void`  
+**描述**：图片水平翻转  
+**参数 animation**：是否进行动画  
+8. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
+**描述**：图片翻转  
+**参数 sV**：垂直，true (翻转)，false (原始)。  
+**参数 sH**：水平，true (翻转)，false (原始)。  
+**参数 animation**：是否进行动画  
+9. `scale(zoom: number): void`  
+**描述**：图片缩放  
+**参数 zoom**：缩放系数  
+
+#### 8、 内部对象说明
 
 ***...待编辑***
 

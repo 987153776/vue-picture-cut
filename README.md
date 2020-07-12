@@ -111,11 +111,12 @@ import {
   VuePictureCutMenu,
   Bezier,
   createAnimation,
-  Tool
+  Tool,
+  createUtils
 } from 'vue-picture-cut';
 ```
 Components：`VuePictureCut`、`VuePictureCutMask`、`VuePictureCutMenu`。
-Tools：`Bezier`、`createAnimation`、`Tool`。
+Tools：`Bezier`、`createAnimation`、`Tool`、`createUtils`。
 
 ### 1、VuePictureCut Components
 
@@ -447,6 +448,94 @@ ParamsInterface is an array containing four number types.
 ##### Method
 
 ***...Waiting for editing***
+
+#### 7、 createUtils方法
+
+```vue
+<template>
+  <div>
+	<input type="file" accept="image/*" @change="inputChange"/>
+    <vue-picture-cut ref="pictureCut" :src="src"/>
+    <button @click="doCut">裁剪</button>
+  </div>
+</template>
+
+<script>
+  import { VuePictureCut, createUtils } from 'vue-picture-cut';
+
+  export default {
+    // ...
+    components: {
+      VuePictureCut
+    },
+    data () {
+      return {
+        utils: null,
+        src: null,
+        blob: null,
+        base64: null
+      }
+    },
+    mounted() {
+      this.utils = createUtils(this.$refs['pictureCut']);
+    },
+    methods: {
+      inputChange(e) {
+        const file = e.target.files[0];
+        this.src = URL.createObjectURL(file);
+      },
+      doCut() {
+        const res = this.utils.cut();
+        if (res) {
+            this.blob = res.file;   // BLOB Object
+            this.base64 = res.src;  // base64 string
+        }
+      }
+    }
+    // ...
+  }
+</script>
+
+<style>
+  @import "~vue-picture-cut/lib/vue-picture-cut.css";
+</style>
+```
+
+##### 包含方法
+
+1. `cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null`  
+**describe**：cut  
+**param maxPixel**：Export the pixels on the longer side of the picture.   
+**param encoderOptions**：Compression ratio of exported pictures.  
+**param format**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
+**return ClipResult | null**：omit...  
+2. `setMaskSize(w: number, h: number): void`  
+**describe**：Set clipping box size.  
+**param w**：Crop box width ratio.  
+**param h**：Crop box height ratio.  
+3. `setMaskSizeToOriginal (): void`  
+**describe**：Set clipping box size according to picture width height ratio.  
+4. `setMaskResize (resize = true): void`  
+**describe**：Can the crop box size be changed by dragging.  
+**param resize**：omit...  
+5. `rotate (angle: number, animation = false): void`  
+**describe**：Pictures rotating.  
+**param angle**：Counterclockwise angle.  
+**param animation**：Do you want to show animation.  
+6. `setFlipV(animation?: boolean): void`  
+**describe**：Picture vertical flip  
+**param animation**：Do you want to show animation.  
+7. `setFlipH(animation?: boolean): void`  
+**describe**：Picture flip horizontally  
+**param animation**：Do you want to show animation.  
+8. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
+**describe**：Pictures flipping.  
+**param sV**：Vertical，true (flipping)，false (original)。  
+**param sH**：Vorizontal，true (flipping)，false (original)。  
+**param animation**：Do you want to show animation.  
+9. `scale(zoom: number): void`  
+**describe**：Picture zoom.  
+**param zoom**：The scale of the scaled size to the current size.  
 
 ### 3、Custom extension
 

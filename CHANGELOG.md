@@ -1,3 +1,12 @@
+## 2.0.6 (2020-07-12)
+
+#### :bug: Bug Fix
+* `Utils`
+  * 紧急修复了一些问题。
+  
+#### :memo: Documentation
+* 完善文档。
+
 ## 2.0.4 (2020-07-12)
 
 #### :rocket: New Features
