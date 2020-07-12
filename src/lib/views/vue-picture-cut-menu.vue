@@ -156,7 +156,7 @@ export default class VuePictureCutMenu extends Vue {
   }
   // 旋转
   rotate (angle: number, animation = false): void {
-    if (!this.photoRoot || angle % 36 === 0) return;
+    if (!this.photoRoot || angle % 360 === 0) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
       const angle2 = (main.showRect.r + angle) % 360;
@@ -171,7 +171,7 @@ export default class VuePictureCutMenu extends Vue {
     if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
-      main.setFlipV(!main.showRect.sV);
+      main.setFlipV(main.showRect.sV === 1, true);
     }
   }
   /**
@@ -181,7 +181,7 @@ export default class VuePictureCutMenu extends Vue {
     if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     if (main) {
-      main.setFlipH(!main.showRect.sH);
+      main.setFlipH(main.showRect.sH === 1, true);
     }
   }
 }

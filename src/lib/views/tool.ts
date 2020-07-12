@@ -202,12 +202,16 @@ export default {
     if (r / 360) {
       ctx.rotate(-r * Math.PI / 180);
     }
-    ctx.scale(sH ? -1 : 1,sV ? -1 : 1);
 
-    ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
+    ctx.translate(x + w / 2 , y + h /2);
+    ctx.scale(sH , sV);
 
-    ctx.scale(sH ? 1 : -1,sV ? 1 : -1);
-    ctx.translate(-width / 2, -height / 2);
+    ctx.drawImage(img, 0, 0, img.width, img.height,
+      -w / 2, -h / 2, w, h);
+
+    ctx.scale(sH, sV);
+
+    ctx.translate(-x - w / 2 - width / 2, -y - h / 2 - height / 2);
     ctx.restore();
     return canvas.toDataURL(format, encoderOptions);
   },
@@ -265,8 +269,8 @@ export default {
         w: nw,
         h: nh,
         r: 0,
-        sV: false,
-        sH: false
+        sV: 1,
+        sH: 1
       }
       const base64 = this.clipBy(img, nw, nh, newShow, encoderOptions);
       return {

@@ -31,7 +31,7 @@ export default class PhotoMain implements PhotoBasic{
   // 图片矩形
   imgRect: Rect = { x: 0, y: 0, w: 0, h: 0};
   // 显示矩形
-  showRect: RectFull = { x: 0, y: 0, w: 0, h: 0, r: 0, sV: false, sH: false };
+  showRect: RectFull = { x: 0, y: 0, w: 0, h: 0, r: 0, sV: 1, sH: 1 };
   private _showRect?: RectFull;
   // 图片可移动范围
   private moveRect: Rect2 = { minX: null, minY: null, maxX: null, maxY: null };
@@ -189,49 +189,59 @@ export default class PhotoMain implements PhotoBasic{
    * 设置图片翻折
    * @param sV  垂直翻折
    * @param sH  水平翻折
+   * @param animation   // 是否动画
    */
-  setFlip (sV: boolean, sH: boolean): void {
-    const sh = this.showRect.sH;
-    const sv = this.showRect.sV;
+  setFlip (sV: boolean, sH: boolean, animation = false): void {
+    const sh = this.showRect.sH === -1;
+    const sv = this.showRect.sV === -1;
     if (sh === sH && sv === sV) return;
-    this.showRect.sV = sV;
-    this.showRect.sH = sH;
-    if (sh !== sH) {
-      this.showRect.x *= -1;
-    }
-    if (sv === sV) {
-      this.showRect.y *= -1;
-    }
     if (this.img) {
-      this._draw(this.imgRect, this.showRect);
+      if (!animation) {
+        this.showRect.sV = sV ? -1 : 1;
+        this.showRect.sH = sH ? -1 : 1;
+        this._draw(this.imgRect, this.showRect);
+      } else {
+        this.animation?.abort();
+        this.doAnimation(0, 0, 0, 0, 0, sV, sH);
+      }
     }
   }
 
   /**
    * 设置图片垂直翻折
    * @param sV  垂直翻折
+   * @param animation   // 是否动画
    */
-  setFlipV (sV: boolean): void {
-    const sv = this.showRect.sV;
+  setFlipV (sV: boolean, animation = false): void {
+    const sv = this.showRect.sV === -1;
     if (sv === sV) return;
-    this.showRect.sV = sV;
-    this.showRect.y *= -1;
     if (this.img) {
-      this._draw(this.imgRect, this.showRect);
+      if (!animation) {
+        this.showRect.sV = sV ? -1 : 1;
+        this._draw(this.imgRect, this.showRect);
+      } else {
+        this.animation?.abort();
+        this.doAnimation(0, 0, 0, 0, 0, sV);
+      }
     }
   }
 
   /**
    * 设置图片水平翻折
    * @param sH  水平翻折
+   * @param animation   // 是否动画
    */
-  setFlipH (sH: boolean): void {
-    const sh = this.showRect.sH;
+  setFlipH (sH: boolean, animation = false): void {
+    const sh = this.showRect.sH === -1;
     if (sh === sH) return;
-    this.showRect.sH = sH;
-    this.showRect.x *= -1;
     if (this.img) {
-      this._draw(this.imgRect, this.showRect);
+      if (!animation) {
+        this.showRect.sH = sH ? -1 : 1;
+        this._draw(this.imgRect, this.showRect);
+      } else {
+        this.animation?.abort();
+        this.doAnimation(0, 0, 0, 0, 0, undefined, sH);
+      }
     }
   }
 
@@ -277,9 +287,7 @@ export default class PhotoMain implements PhotoBasic{
    * @param point
    */
   private _changePointByCanvas (point: Point): Point{
-    const { r, sV, sH } = this.showRect;
-    point.x *= sH ? -1 : 1;
-    point.y *= sV ? -1 : 1;
+    const { r } = this.showRect;
     return $tool.rotatePoint(point.x, point.y, r);
   }
   /**
@@ -287,11 +295,8 @@ export default class PhotoMain implements PhotoBasic{
    * @param point
    */
   private _changePointByImage (point: Point): Point{
-    const { r, sV, sH } = this.showRect;
-    const offPoint = $tool.rotatePoint(point.x, point.y, -r);
-    offPoint.x *= sH ? -1 : 1;
-    offPoint.y *= sV ? -1 : 1;
-    return offPoint;
+    const { r } = this.showRect;
+    return $tool.rotatePoint(point.x, point.y, -r);
   }
 
   /**
@@ -357,7 +362,7 @@ export default class PhotoMain implements PhotoBasic{
   }
 
   /**
-   *
+   * 绘制画布
    * @param imgRect   图片矩形
    * @param showRect  将要显示的矩形
    * @private
@@ -369,13 +374,16 @@ export default class PhotoMain implements PhotoBasic{
       const ctx = this.ctx;
       ctx.save();
       ctx.rotate(-r * Math.PI / 180);
-      ctx.scale(sH ? -1 : 1,sV ? -1 : 1);
+
+      ctx.translate(x , y);
+      ctx.scale(sH, sV);
 
       ctx.drawImage(this.img,
         imgRect.x, imgRect.y, imgRect.w, imgRect.h,
-        x - w / 2, y - h /2, w, h);
+        -w / 2, -h /2, w, h);
 
-      ctx.scale(sH ? 1 : -1,sV ? 1 : -1);
+      ctx.scale(-sH, -sV);
+      ctx.translate(-x, -y);
 
       if (this.root.debug) {
         ctx.strokeStyle = '#0f0';
@@ -696,23 +704,34 @@ export default class PhotoMain implements PhotoBasic{
    * @param offW 偏移量
    * @param offH 偏移量
    * @param offR 偏移量
-   * @param endCallback 结束回调
+   * @param offSV 偏移量
+   * @param offSH 偏移量
+   * @param endCallback 结束时的回调
    * @private
    */
-  doAnimation(offX: number, offY: number, offW: number, offH: number, offR: number, endCallback?: {(...arg: any[]): void}): void {
-    if (!offX && !offY && !offW && !offH && !offR) {
+  doAnimation(offX: number, offY: number, offW: number, offH: number,
+              offR: number, offSV?: boolean, offSH?: boolean,
+              endCallback?: {(...arg: any[]): void}): void {
+    if (!offX && !offY && !offW && !offH && !offR && offSV === undefined && offSH === undefined) {
       return;
     }
     const { x, y, w, h, r, sV, sH} = this.showRect;
+    offSV = offSV === void 0 ? sV === -1 : offSV;
+    offSH = offSH === void 0 ? sH === -1 : offSH;
     this.showRect = {
       x: x + offX,
       y: y + offY,
       w: w + offW,
       h: h + offH,
       r: r + offR,
-      sV,
-      sH
+      sV: offSV ? -1 : 1,
+      sH: offSH ? -1 : 1,
     };
+    const _offSV = this.showRect.sV - sV;
+    const _offSH = this.showRect.sH - sH;
+    if (!offX && !offY && !offW && !offH && !offR && _offSH && _offSV) {
+      return;
+    }
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
@@ -723,8 +742,8 @@ export default class PhotoMain implements PhotoBasic{
           w: w + i * offW,
           h: h + i * offH,
           r: r + i * offR,
-          sV,
-          sH
+          sV: sV + i * _offSV,
+          sH: sH + i * _offSH
         }
         // 重新绘制画布
         this._draw(this.imgRect, this._showRect);

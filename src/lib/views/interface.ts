@@ -1,3 +1,5 @@
+import PhotoRoot from './PhotoRoot';
+
 export class Win extends Window {
   BlobBuilder?: any;
   WebKitBlobBuilder?: any;
@@ -25,20 +27,17 @@ export interface RectFull extends Rect {
    */
   r: number;
   /**
-   * 垂直翻折
+   * 垂直翻转
+   * 1：表示原始
+   * -1： 表示翻转
    */
-  sV: boolean;
+  sV: number;
   /**
-   * 水平翻折
+   * 水平翻转
+   * 1：表示原始
+   * -1： 表示翻转
    */
-  sH: boolean;
-}
-
-export interface Round extends Point {
-  /**
-   * 半径
-   */
-  r: number;
+  sH: number;
 }
 
 export interface Rect2 {
@@ -145,4 +144,8 @@ export interface PathDone {
     width: number,
     height: number
   ): void;
+}
+
+export interface CutInterface extends Vue {
+  photoRoot: PhotoRoot;
 }
