@@ -81,14 +81,26 @@ export default class VuePictureCutMask extends Vue {
 
   @Watch('isRound')
   watchIsRound (to: boolean): void {
-    this.thisRound = to;
     this.mask && (this.mask.isRound = to);
   }
 
   @Watch('resize')
   watchResize (to: boolean): void {
-    this.thisResize = to;
     this.mask && this.mask.setResize(to);
+  }
+
+  @Watch('thisRound')
+  watchThisRound (to: boolean): void {
+    if (this.mask && this.mask.isRound !== to) {
+      this.mask.isRound = to;
+    }
+  }
+
+  @Watch('thisResize')
+  watchThisResize (to: boolean): void {
+    if (this.mask && this.mask.getResize() !== to) {
+      this.mask.setResize(to);
+    }
   }
 
   /*******生命周期********/
@@ -129,7 +141,7 @@ export default class VuePictureCutMask extends Vue {
     }
     const r1 = w / 2;
     const r2 = h / 2;
-    if (this.isRound) {
+    if (this.thisRound) {
       this.round = `M${x},${y + r2} a${r1},${r2} 0 1 0 0,-1`;
     } else {
       this.round = `M${x},${y} H${w + x} V${h + y} H${x} V${y}`;

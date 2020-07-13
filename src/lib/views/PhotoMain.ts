@@ -192,6 +192,7 @@ export default class PhotoMain implements PhotoBasic{
    * @param animation   // 是否动画
    */
   setFlip (sV: boolean, sH: boolean, animation = false): void {
+    console.log(1, sV, sH);
     const sh = this.showRect.sH === -1;
     const sv = this.showRect.sV === -1;
     if (sh === sH && sv === sV) return;
@@ -201,6 +202,7 @@ export default class PhotoMain implements PhotoBasic{
         this.showRect.sH = sH ? -1 : 1;
         this._draw(this.imgRect, this.showRect);
       } else {
+        console.log(2, sV, sH);
         this.animation?.abort();
         this.doAnimation(0, 0, 0, 0, 0, sV, sH);
       }
@@ -729,7 +731,7 @@ export default class PhotoMain implements PhotoBasic{
     };
     const _offSV = this.showRect.sV - sV;
     const _offSH = this.showRect.sH - sH;
-    if (!offX && !offY && !offW && !offH && !offR && _offSH && _offSV) {
+    if (!offX && !offY && !offW && !offH && !offR && !_offSH && !_offSV) {
       return;
     }
     this.animation = createAnimation({

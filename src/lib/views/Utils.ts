@@ -31,6 +31,18 @@ class Utils {
   }
 
   /**
+   * 设置剪裁框是否圆形
+   * @param isRound
+   */
+  setMaskRound(isRound = true): void {
+    if (!this.photoRoot) return;
+    const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+    if (mask) {
+      mask.isRound = isRound;
+    }
+  }
+
+  /**
    * 设置剪裁框
    * @param w   比例宽
    * @param h   比例高
@@ -100,6 +112,7 @@ class Utils {
    * @param animation   是否动画
    */
   setFlip (sV: boolean, sH: boolean, animation?: boolean): void {
+    console.log(0, sV, sH);
     if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     main?.setFlip(sV, sH, animation);

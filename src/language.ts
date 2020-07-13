@@ -27,7 +27,8 @@ const config = {
     'raw': '原始',
     'Rotate': '旋转',
     'Cancel': '取消',
-    'Ok': '确定'
+    'Ok': '确定',
+    'Now you can use the "utils" object to manipulate plug-ins in the browser console.': '现在你可以在浏览器控制台使用“utils”对象操作插件。'
   }
 };
 

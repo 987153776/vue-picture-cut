@@ -55,6 +55,11 @@
                           :cancel-name="config(language, 'Cancel')"
                           :confirm-name="config(language, 'Ok')"
                           @on-change="cutChange"/>
+
+    <el-alert :closable="false" type="success" effect="dark">
+      {{ config(language, 'Now you can use the "utils" object to manipulate plug-ins in the browser console.') }}
+    </el-alert>
+
     <el-form style="margin-top: 15px;" ref="form" :model="form" label-width="140px" inline>
       <el-form-item :label="config(language, 'preview') + ':'" label-width="70px">
         <a class="download-img"
@@ -134,6 +139,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import config from './language';
+import { CutInterface } from './lib/views/interface';
+import createUtils from './lib/views/Utils';
 
 interface MskOption {
   width?: number;
@@ -153,7 +160,7 @@ export default class App extends Vue {
   private blob: Blob | null = null;
   private base64: string | null = null;
 
-  private pictureCut: Vue | null = null;
+  private pictureCut: CutInterface | null = null;
 
   private form = {
     backgroundColor: undefined,
@@ -189,7 +196,8 @@ export default class App extends Vue {
 
   /*******生命周期********/
   protected mounted (): void {
-    this.pictureCut = this.$refs['pictureCut'] as Vue;
+    this.pictureCut = this.$refs['pictureCut'] as CutInterface;
+    (window as any).utils = createUtils(this.pictureCut);
   }
 
   inputChange (file: File): boolean {
@@ -275,6 +283,7 @@ export default class App extends Vue {
 
 .cut-menu{
   outline: 1px solid #000;
+  margin-bottom: 20px;
 }
 
 .download-img{
