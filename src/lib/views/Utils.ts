@@ -112,7 +112,6 @@ class Utils {
    * @param animation   是否动画
    */
   setFlip (sV: boolean, sH: boolean, animation?: boolean): void {
-    console.log(0, sV, sH);
     if (!this.photoRoot) return;
     const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
     main?.setFlip(sV, sH, animation);

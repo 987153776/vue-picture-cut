@@ -509,31 +509,34 @@ ParamsInterface is an array containing four number types.
 **param encoderOptions**：Compression ratio of exported pictures.  
 **param format**：Format of exported picture. When no value is transferred, the export format is “image/jpeg”, and the value can be “image/png” and other browser supported formats.  
 **return ClipResult | null**：omit...  
-2. `setMaskSize(w: number, h: number): void`  
+2. `setMaskRound(isRound = true): void`  
+**describe**：Sets the shape of the crop box.  
+**param isRound**：true (circular)，false (rectangle).   
+3. `setMaskSize(w: number, h: number): void`  
 **describe**：Set clipping box size.  
 **param w**：Crop box width ratio.  
 **param h**：Crop box height ratio.  
-3. `setMaskSizeToOriginal (): void`  
+4. `setMaskSizeToOriginal (): void`  
 **describe**：Set clipping box size according to picture width height ratio.  
-4. `setMaskResize (resize = true): void`  
+5. `setMaskResize (resize = true): void`  
 **describe**：Can the crop box size be changed by dragging.  
 **param resize**：omit...  
-5. `rotate (angle: number, animation = false): void`  
+6. `rotate (angle: number, animation = false): void`  
 **describe**：Pictures rotating.  
 **param angle**：Counterclockwise angle.  
 **param animation**：Do you want to show animation.  
-6. `setFlipV(animation?: boolean): void`  
+7. `setFlipV(animation?: boolean): void`  
 **describe**：Picture vertical flip  
 **param animation**：Do you want to show animation.  
-7. `setFlipH(animation?: boolean): void`  
+8. `setFlipH(animation?: boolean): void`  
 **describe**：Picture flip horizontally  
 **param animation**：Do you want to show animation.  
-8. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
+9. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
 **describe**：Pictures flipping.  
 **param sV**：Vertical，true (flipping)，false (original)。  
 **param sH**：Vorizontal，true (flipping)，false (original)。  
 **param animation**：Do you want to show animation.  
-9. `scale(zoom: number): void`  
+10. `scale(zoom: number): void`  
 **describe**：Picture zoom.  
 **param zoom**：The scale of the scaled size to the current size.  
 

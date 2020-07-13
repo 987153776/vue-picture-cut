@@ -1,3 +1,20 @@
+## 2.0.8 (2020-07-12)
+
+#### :rocket: New Features
+* `Utils`工具类
+  * 新增`setMaskRound(isRound = true): void`方法来设置裁剪框是圆形还是矩形。
+
+#### :bug: Bug Fix
+* `Utils`
+  * 修复`setFlip`方法使用无效的问题。
+
+#### :house: Optimize
+* `VuePictureCutMask`
+  * 内部优化
+  
+#### :memo: Documentation
+* 更新文档。
+
 ## 2.0.7 (2020-07-12)
 
 #### :bug: Bug Fix
