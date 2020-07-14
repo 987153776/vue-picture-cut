@@ -24,9 +24,7 @@
 
 ### 通过npm安装插件
 
-```nodejs
-npm i vue-picture-cut
-```
+[![NPM](https://nodei.co/npm/vue-picture-cut.png)](https://nodei.co/npm/vue-picture-cut/)
 
 ### 在vue中使用
 
