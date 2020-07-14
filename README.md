@@ -24,9 +24,7 @@ About zoom: mouse (mouse wheel zoom), touch screen (double finger zoom)
 
 ### Install
 
-```nodejs
-npm i vue-picture-cut
-```
+[![NPM](https://nodei.co/npm/vue-picture-cut.png)](https://nodei.co/npm/vue-picture-cut/)
 
 ### Using in Vue
 
