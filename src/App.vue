@@ -65,7 +65,7 @@
         <a class="download-img"
            :download="'vue-picture-cut.' + form.format.replace('image/', '')"
            :href="base64"
-           :style="{'background-image': `url(${newSrc})`}">
+           :style="{'background-image': `url(${base64})`}">
           {{ config(language, 'download') }}
         </a>
       </el-form-item>
