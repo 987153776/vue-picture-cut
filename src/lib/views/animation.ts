@@ -6,6 +6,9 @@ import {
   AnimationParamsEnd
 } from './interface';
 
+/**
+ * 对requestAnimationFrame和cancelAnimationFrame做兼容处理
+ */
 (function() {
   let lastTime = 0;
   const vendors = ['webkit', 'moz'];

@@ -1,3 +1,8 @@
+## 2.0.9 (2020-07-13)
+
+#### :house: Optimize
+* 对ie9做了requestAnimationFrame、cancelAnimationFrame兼容处理
+
 ## 2.0.8 (2020-07-12)
 
 #### :rocket: New Features
