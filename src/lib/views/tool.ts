@@ -286,7 +286,10 @@ export default {
    * @param format
    */
   base64ToBlob (base64: string, format = 'image/jpeg'): Blob | null {
-    const code = atob(base64.split(',')[1]);
+    if (!window.atob) {
+      return null;
+    }
+    const code = window.atob(base64.split(',')[1]);
     const aBuffer = new ArrayBuffer(code.length);
     const uBuffer = new Uint8Array(aBuffer);
     for (let i = 0, l = code.length; i < l; i++) {
