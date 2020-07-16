@@ -78,6 +78,9 @@
           <el-button size="small" type="primary">{{ config(language, 'Select') }}</el-button>
         </el-upload>
       </el-form-item>
+      <el-form-item :label="'😱' + config(language, 'reset') + ':'">
+        <el-button size="small" type="primary" @click="reset">{{ config(language, 'do') }}</el-button>
+      </el-form-item>
       <el-form-item :label="'😱' + config(language, 'Canvas bgColor') + ':'">
         <el-color-picker v-model="form.backgroundColor" show-alpha></el-color-picker>
       </el-form-item>
@@ -140,7 +143,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import config from './language';
 import { CutInterface } from './lib/views/interface';
-import createUtils from './lib/views/Utils';
+import createUtils, { Utils } from './lib/views/Utils';
 
 interface MskOption {
   width?: number;
@@ -178,6 +181,7 @@ export default class App extends Vue {
     encoderOptions: 0.8,
     format: 'image/jpeg'
   }
+  utils!: Utils;
 
   get mskOption(): MskOption {
     return {
@@ -196,8 +200,8 @@ export default class App extends Vue {
 
   /*******生命周期********/
   protected mounted (): void {
-    this.pictureCut = this.$refs['pictureCut'] as CutInterface;
-    (window as any).utils = createUtils(this.pictureCut);
+    this.pictureCut = this.$refs['pictureCut'] as any as CutInterface;
+    this.utils = (window as any).utils = createUtils(this.pictureCut);
   }
 
   inputChange (file: File): boolean {
@@ -208,6 +212,10 @@ export default class App extends Vue {
   cutChange({ blob, base64 }: {blob: Blob; base64: string}): void{
     this.blob = blob;
     this.base64 = base64;
+  }
+
+  reset(): void{
+    this.utils.reset();
   }
 }
 </script>

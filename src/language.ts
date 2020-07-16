@@ -1,6 +1,8 @@
 const config = {
   ZN: {
     'download': '点击下载',
+    'reset': '重置',
+    'do': '执行',
     'Select Picture': '选择图片',
     'Select': '选择',
     'Please select': '请选择',

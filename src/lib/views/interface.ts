@@ -146,6 +146,6 @@ export interface PathDone {
   ): void;
 }
 
-export interface CutInterface extends Vue {
+export interface CutInterface {
   photoRoot: PhotoRoot;
 }

@@ -120,6 +120,37 @@ export default class PhotoMain implements PhotoBasic{
   }
 
   /**
+   * 重置状态
+   */
+  reset(): void {
+    if (this.img) {
+      this._initRect();
+      this.showRect.r = 0;
+      this.showRect.sV = 1;
+      this.showRect.sH = 1;
+      if (!this.moveRect.minX || !this.moveRect.minY) {
+        this._initMoveRange();
+      } else {
+        this.loadImgEd.forEach(v => {
+          v && v();
+        });
+        const { x, y, w, h, r, sV, sH } = this.showRect;
+        const range = this._checkRange({x, y, w, h, r, sV, sH});
+        this.showRect = {
+          x: x + range[0],
+          y: y + range[1],
+          w: w + range[2],
+          h: h + range[3],
+          r,
+          sV,
+          sH
+        };
+      }
+      this._draw(this.imgRect, this.showRect);
+    }
+  }
+
+  /**
    * 设置图片可移动范围
    * @param minX
    * @param minY

@@ -1,4 +1,10 @@
-## 2.0.9 (2020-07-13)
+## 2.0.10 (2020-07-16)
+
+#### :rocket: New Features
+* `Utils`工具类
+  * 新增`reset(): void`方法来重置图片状态。
+
+## 2.0.9 (2020-07-15)
 
 #### :house: Optimize
 * 对ie9做了requestAnimationFrame、cancelAnimationFrame兼容处理

@@ -7,7 +7,7 @@ import PhotoMain from "@/lib/views/PhotoMain";
  * 二次包装工具类
  * 简化api，方便自定义菜单等
  */
-class Utils {
+export class Utils {
 
   photoRoot: PhotoRoot;
 
@@ -28,6 +28,15 @@ class Utils {
       return mask.clip(maxPixel, encoderOptions, format);
     }
     return null;
+  }
+
+  /**
+   * 重置图片状态
+   */
+  reset(): void{
+    if (!this.photoRoot) return;
+    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    main?.reset();
   }
 
   /**
