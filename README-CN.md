@@ -587,25 +587,30 @@ createAnimation会返回一个Animation对象
 **参数 angle**：逆时针角度  
 **参数 animation**：是否进行动画  
 
-7. `setFlipV(animation?: boolean): void`  
+7. `rotateTo (angle: number, animation = false): void`  
+**描述**：图片旋转指定角度  
+**参数 angle**：逆时针角度  
+**参数 animation**：是否进行动画  
+
+8. `setFlipV(animation?: boolean): void`  
 **描述**：图片垂直翻转  
 **参数 animation**：是否进行动画  
 
-8. `setFlipH(animation?: boolean): void`  
+9. `setFlipH(animation?: boolean): void`  
 **描述**：图片水平翻转  
 **参数 animation**：是否进行动画  
 
-9. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
+10. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
 **描述**：图片翻转  
 **参数 sV**：垂直，true (翻转)，false (原始)。  
 **参数 sH**：水平，true (翻转)，false (原始)。  
 **参数 animation**：是否进行动画  
 
-10. `scale(zoom: number): void`  
+11. `scale(zoom: number): void`  
 **描述**：图片缩放  
 **参数 zoom**：缩放系数  
 
-11. `reset(): void`  
+12. `reset(): void`  
 **描述**：重置图片状态  
 
 

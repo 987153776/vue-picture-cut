@@ -95,6 +95,19 @@ export class Utils {
   }
 
   /**
+   * 图片旋转到指定角度
+   * @param angle       逆时针角度
+   * @param animation   是否动画
+   */
+  rotateTo (angle: number, animation = false): void {
+    if (!this.photoRoot) return;
+    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    if (main && main.showRect.r + angle % 360) {
+      main.setAngle(angle, animation);
+    }
+  }
+
+  /**
    * 设置图片垂直翻转
    * @param animation   是否动画
    */
@@ -137,5 +150,12 @@ export class Utils {
 }
 
 export default function createUtils(cut: CutInterface): Utils {
-  return new Utils(cut);
+  if (!cut || !cut.photoRoot) {
+    throw new Error(
+      `createUtils需要一个为VuePictureCut实例的参数，但是当前得到的是${cut}!\n
+      "createUtils" requires an argument for the "VuePictureCut" instance, but the current result is ${cut}!`
+    );
+  } else {
+    return new Utils(cut);
+  }
 }

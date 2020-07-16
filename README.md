@@ -529,25 +529,30 @@ ParamsInterface is an array containing four number types.
 **param angle**：Counterclockwise angle.  
 **param animation**：Do you want to show animation.  
 
-7. `setFlipV(animation?: boolean): void`  
+7. `rotateTo (angle: number, animation = false): void`  
+**describe**：Rotate the picture at a specified angle.  
+**param angle**：Counterclockwise angle.  
+**param animation**：Do you want to show animation.  
+
+8. `setFlipV(animation?: boolean): void`  
 **describe**：Picture vertical flip  
 **param animation**：Do you want to show animation.  
 
-8. `setFlipH(animation?: boolean): void`  
+9. `setFlipH(animation?: boolean): void`  
 **describe**：Picture flip horizontally  
 **param animation**：Do you want to show animation.  
 
-9. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
+10. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
 **describe**：Pictures flipping.  
 **param sV**：Vertical，true (flipping)，false (original)。  
 **param sH**：Vorizontal，true (flipping)，false (original)。  
 **param animation**：Do you want to show animation.  
 
-10. `scale(zoom: number): void`  
+11. `scale(zoom: number): void`  
 **describe**：Picture zoom.  
 **param zoom**：The scale of the scaled size to the current size.  
 
-11. `reset(): void`  
+12. `reset(): void`  
 **describe**：Reset picture status.  
 
 ### 3、Custom extension
