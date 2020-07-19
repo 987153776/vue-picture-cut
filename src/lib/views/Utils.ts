@@ -28,18 +28,25 @@ export class Utils {
     }
     return null;
   }
-  
+
   /**
    * 裁剪
    * @param maxPixel        最大像素
    * @param encoderOptions  压缩率
    * @param format          导出格式
    */
-  cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null{
+  cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null;
+  cut(opt?: { maxPixel?: number, encoderOptions?: number, format?: string }): ClipResult | null;
+  cut(opt?: any, encoderOptions?: number, format?: string): ClipResult | null {
     if (!this.photoRoot) return null;
     const mask = this.getPhotoMask();
     if (mask) {
-      return mask.clip(maxPixel, encoderOptions, format);
+      if (typeof opt === "object") {
+        return mask.clip(opt?.maxPixel, opt?.encoderOptions, opt?.format);
+      } else if (typeof opt === "number") {
+        return mask.clip(opt, encoderOptions, format);
+      }
+      return mask.clip();
     }
     return null;
   }

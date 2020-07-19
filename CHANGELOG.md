@@ -1,8 +1,21 @@
+## 2.0.12 (2020-07-19)
+
+#### :rocket: New Features
+* `Utils`工具类
+  * 新增`getOptions(): CutOptions | null`方法获取组件当前的内部参数。
+  * 重载`cut(opt?: { maxPixel?: number, encoderOptions?: number, format?: string }): ClipResult | null`方法来裁剪图片。  
+
+#### :house: Optimize
+* `Utils`工具类
+  * `rotate (angle: number, animation = false): number | void`方法增加了返回值，表示图片旋转后的绝对逆时针角度。 
+  * `setFlipV(animation?: boolean): boolean | void`方法增加了返回值，表示图片垂直翻转后的翻转状态，true (翻转)，false (原始)。 
+  * `setFlipH(animation?: boolean): boolean | void`方法增加了返回值，表示图片水平翻转后的翻转状态，true (翻转)，false (原始)。 
+
 ## 2.0.11 (2020-07-16)
 
 #### :rocket: New Features
 * `Utils`工具类
-  * 新增`rotateTo (angle: number, animation = false): void`方法来旋转图片到指定角度。  
+  * 新增`rotateTo (angle: number, animation = false): void`方法来旋转图片到指定角度。 
 
 ## 2.0.10 (2020-07-16)
 

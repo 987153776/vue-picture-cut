@@ -566,52 +566,66 @@ createAnimation会返回一个Animation对象
 **参数 format**：导出图片的格式'image/jpeg'、'image/png'等  
 **返回 ClipResult | null**：略  
 
-2. `setMaskRound(isRound = true): void`  
+2.`cut(opt?: { maxPixel?: number, encoderOptions?: number, format?: string }): ClipResult | null`
+**描述**：裁剪  
+**参数 opt.maxPixel**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。  
+**参数 opt.encoderOptions**：压缩率  
+**参数 opt.format**：导出图片的格式'image/jpeg'、'image/png'等  
+**返回 ClipResult | null**：略  
+
+3. `setMaskRound(isRound = true): void`  
 **描述**：设置裁剪框的形状。  
 **参数 isRound**：true (圆形)，false (矩形)。  
 
-3. `setMaskSize(w: number, h: number): void`  
+4. `setMaskSize(w: number, h: number): void`  
 **描述**：设置剪裁框尺寸  
 **参数 w**：比例宽  
 **参数 h**：比例高  
 
-4. `setMaskSizeToOriginal (): void`  
+5. `setMaskSizeToOriginal (): void`  
 **描述**：按图片宽高比例设置剪裁框尺寸  
 
-5. `setMaskResize (resize = true): void`  
+6. `setMaskResize (resize = true): void`  
 **描述**：设置剪裁框是否可拖动改变大小  
 **参数 resize**：略  
 
-6. `rotate (angle: number, animation = false): void`  
+7. `rotate (angle: number, animation = false): number | void`  
 **描述**：图片旋转  
 **参数 angle**：逆时针角度  
 **参数 animation**：是否进行动画  
+**返回 number | null**：图片旋转后的逆时针角度  
 
-7. `rotateTo (angle: number, animation = false): void`  
+8. `rotateTo (angle: number, animation = false): void`  
 **描述**：图片旋转指定角度  
 **参数 angle**：逆时针角度  
 **参数 animation**：是否进行动画  
 
-8. `setFlipV(animation?: boolean): void`  
+9. `setFlipV(animation?: boolean): boolean | void`  
 **描述**：图片垂直翻转  
 **参数 animation**：是否进行动画  
+**返回 boolean | null**：和原图相比，是否翻转了，true (翻转)，false (原始)。  
 
-9. `setFlipH(animation?: boolean): void`  
+10. `setFlipH(animation?: boolean): boolean | void`  
 **描述**：图片水平翻转  
 **参数 animation**：是否进行动画  
+**返回 boolean | null**：和原图相比，是否翻转了，true (翻转)，false (原始)。  
 
-10. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
+11. `setFlip (sV: boolean, sH: boolean, animation?: boolean): void`  
 **描述**：图片翻转  
 **参数 sV**：垂直，true (翻转)，false (原始)。  
 **参数 sH**：水平，true (翻转)，false (原始)。  
 **参数 animation**：是否进行动画  
 
-11. `scale(zoom: number): void`  
+12. `scale(zoom: number): void`  
 **描述**：图片缩放  
 **参数 zoom**：缩放系数  
 
-12. `reset(): void`  
+13. `reset(): void`  
 **描述**：重置图片状态  
+
+13. `getOptions(): CutOptions | null`  
+**描述**：获取组件内部当前状态的参数。  
+**返回 CutOptions | null**：略。  
 
 
 #### 8、 内部对象说明
