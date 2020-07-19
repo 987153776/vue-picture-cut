@@ -86,6 +86,10 @@ export default class PhotoMask implements PhotoBasic {
     }
   }
 
+  getmaskRect(): Rect {
+    return this.maskRect;
+  }
+
   /**
    * 重新设置裁剪框宽高比例
    * @param photoMain   // 原PhotoMain对象

@@ -149,3 +149,28 @@ export interface PathDone {
 export interface CutInterface {
   photoRoot: PhotoRoot;
 }
+
+interface CanvasOptions {
+  width: number;          // 画布宽
+  height: number;         // 画布高
+  drawWidth: number;      // 画布绘制的逻辑宽
+  drawHeight: number;     // 画布绘制的逻辑高
+  magnification: number;  // 逻辑宽与画布宽的比例
+}
+
+interface imgOptions {
+  src: string;          // 原图片链接
+  width: number;        // 原图片宽
+  height: number;       // 原图片高
+  showRect: RectFull;   // 图片绘制在画布上参数
+}
+
+interface maskOptions extends Rect{
+  isRound: boolean;     // 是否是圆形
+}
+
+export interface CutOptions {
+  canvas: CanvasOptions;
+  img: imgOptions | {};
+  mask: maskOptions | {};
+}

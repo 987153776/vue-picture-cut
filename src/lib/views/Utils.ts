@@ -1,4 +1,4 @@
-import {ClipResult, CutInterface} from './interface';
+import {ClipResult, CutInterface, CutOptions} from './interface';
 import PhotoRoot from './PhotoRoot';
 import PhotoMask from "@/lib/views/PhotoMask";
 import PhotoMain from "@/lib/views/PhotoMain";
@@ -15,6 +15,20 @@ export class Utils {
     this.photoRoot = cut.photoRoot;
   }
 
+  getPhotoMask(): PhotoMask | null {
+    if (this.photoRoot) {
+      return this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+    }
+    return null;
+  }
+
+  getPhotoMain(): PhotoMain | null {
+    if (this.photoRoot) {
+      return this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    }
+    return null;
+  }
+  
   /**
    * 裁剪
    * @param maxPixel        最大像素
@@ -23,7 +37,7 @@ export class Utils {
    */
   cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null{
     if (!this.photoRoot) return null;
-    const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+    const mask = this.getPhotoMask();
     if (mask) {
       return mask.clip(maxPixel, encoderOptions, format);
     }
@@ -35,7 +49,7 @@ export class Utils {
    */
   reset(): void{
     if (!this.photoRoot) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    const main = this.getPhotoMain();
     main?.reset();
   }
 
@@ -45,7 +59,7 @@ export class Utils {
    */
   setMaskRound(isRound = true): void {
     if (!this.photoRoot) return;
-    const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+    const mask = this.getPhotoMask();
     if (mask) {
       mask.isRound = isRound;
     }
@@ -58,18 +72,22 @@ export class Utils {
    */
   setMaskSize(w: number, h: number): void {
     if (!this.photoRoot) return;
-    const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+    const mask = this.getPhotoMask();
     mask?.reset(w, h);
   }
 
   /**
    * 按图片宽高比例设置剪裁框尺寸
    */
-  setMaskSizeToOriginal (): void {
+  setMaskSizeToOriginal (): {width: number, height: number} | void {
     if (!this.photoRoot) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    const main = this.getPhotoMain();
     if (main) {
-      this.setMaskSize(main.imgRect.w, main.imgRect.h)
+      this.setMaskSize(main.imgRect.w, main.imgRect.h);
+      return {
+        width: main.imgRect.w,
+        height: main.imgRect.h
+      }
     }
   }
 
@@ -79,7 +97,7 @@ export class Utils {
    */
   setMaskResize (resize = true): void {
     if (!this.photoRoot) return;
-    const mask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+    const mask = this.getPhotoMask();
     mask?.setResize(resize);
   }
 
@@ -88,10 +106,14 @@ export class Utils {
    * @param angle       逆时针角度
    * @param animation   是否动画
    */
-  rotate (angle: number, animation = false): void {
+  rotate (angle: number, animation = false): number | void {
     if (!this.photoRoot || angle % 360 === 0) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    main?.setAngle(main.showRect.r + angle, animation);
+    const main = this.getPhotoMain();
+    if (main) {
+      const newAngle = main.showRect.r + angle;
+      main.setAngle(newAngle, animation);
+      return newAngle;
+    }
   }
 
   /**
@@ -101,7 +123,7 @@ export class Utils {
    */
   rotateTo (angle: number, animation = false): void {
     if (!this.photoRoot) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    const main = this.getPhotoMain();
     if (main && main.showRect.r + angle % 360) {
       main.setAngle(angle, animation);
     }
@@ -111,20 +133,26 @@ export class Utils {
    * 设置图片垂直翻转
    * @param animation   是否动画
    */
-  setFlipV(animation?: boolean): void {
+  setFlipV(animation?: boolean): boolean | void {
     if (!this.photoRoot) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    main?.setFlipV(main.showRect.sV === 1, animation);
+    const main = this.getPhotoMain();
+    if (main) {
+      main.setFlipV(main.showRect.sV === 1, animation);
+      return main.showRect.sV === 1;
+    }
   }
 
   /**
    * 设置图片水平翻转
    * @param animation   是否动画
    */
-  setFlipH(animation?: boolean): void {
+  setFlipH(animation?: boolean): boolean | void {
     if (!this.photoRoot) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    main?.setFlipH(main.showRect.sH === 1, animation);
+    const main = this.getPhotoMain();
+    if (main) {
+      main.setFlipH(main.showRect.sH === 1, animation);
+      return main.showRect.sH === 1;
+    }
   }
 
   /**
@@ -135,7 +163,7 @@ export class Utils {
    */
   setFlip (sV: boolean, sH: boolean, animation?: boolean): void {
     if (!this.photoRoot) return;
-    const main = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    const main = this.getPhotoMain();
     main?.setFlip(sV, sH, animation);
   }
 
@@ -144,8 +172,51 @@ export class Utils {
    * @param zoom    缩放系数
    */
   scale(zoom: number): void{
-    const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
+    const photoMain = this.getPhotoMain();
     photoMain?.scale(zoom);
+  }
+
+  /**
+   * 获取控件参数
+   */
+  getOptions(): CutOptions | null {
+    const root = this.photoRoot;
+    if (!root) return null;
+    const main = root.getEventList<PhotoMain>('PhotoMain');
+    const mask = root.getEventList<PhotoMask>('PhotoMask');
+    let imgOpt, maskOpt;
+    if (main) {
+      const imgRect = main.imgRect;
+      const showRect = main.showRect;
+      imgOpt = {
+        src: main.originalImg?.src,
+        imgRect: {...imgRect},
+        showRect: {...showRect},
+      };
+      imgOpt.showRect.x -= imgOpt.showRect.w / 2;
+      imgOpt.showRect.y -= imgOpt.showRect.y / 2;
+    }
+    if (mask) {
+      const maskRect = mask.getmaskRect();
+      maskOpt = {
+        isRound: mask.isRound,
+        x: maskRect.x - maskRect.w / 2,
+        y: maskRect.y - maskRect.h / 2,
+        w: maskRect.w,
+        h: maskRect.h
+      }
+    }
+    return {
+      canvas: {
+        width: root.width,
+        height: root.height,
+        drawWidth: root.drawWidth,
+        drawHeight: root.drawHeight,
+        magnification: root.magnification
+      },
+      img: imgOpt || {},
+      mask: maskOpt || {}
+    };
   }
 }
 
