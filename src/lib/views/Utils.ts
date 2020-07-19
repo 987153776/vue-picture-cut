@@ -138,7 +138,7 @@ export class Utils {
     const main = this.getPhotoMain();
     if (main) {
       main.setFlipV(main.showRect.sV === 1, animation);
-      return main.showRect.sV === 1;
+      return main.showRect.sV === -1;
     }
   }
 
@@ -151,7 +151,7 @@ export class Utils {
     const main = this.getPhotoMain();
     if (main) {
       main.setFlipH(main.showRect.sH === 1, animation);
-      return main.showRect.sH === 1;
+      return main.showRect.sH === -1;
     }
   }
 
