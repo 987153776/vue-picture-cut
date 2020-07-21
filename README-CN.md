@@ -566,7 +566,7 @@ createAnimation会返回一个Animation对象
 **参数 format**：导出图片的格式'image/jpeg'、'image/png'等  
 **返回 ClipResult | null**：略  
 
-2.`cut(opt?: { maxPixel?: number, encoderOptions?: number, format?: string }): ClipResult | null`
+2. `cut(opt?: { maxPixel?: number, encoderOptions?: number, format?: string }): ClipResult | null`  
 **描述**：裁剪  
 **参数 opt.maxPixel**：导出图片的宽高中较长边的像素，不传时则依据实际图片大小自适应。  
 **参数 opt.encoderOptions**：压缩率  
