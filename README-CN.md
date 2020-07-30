@@ -1,7 +1,7 @@
 # vue-picture-cut 2.x
 
 ![npm](https://badgen.net/npm/v/vue-picture-cut?cache=1800)
-![download](https://badgen.net/npm/dm/vue-picture-cut?cache=1800)
+![download](https://badgen.net/npm/dy/vue-picture-cut?cache=1800)
 ![license](https://badgen.net/npm/license/vue-picture-cut)
 
 [English](./README.md) | 中文  
