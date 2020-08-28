@@ -1,27 +1,10 @@
 import Bezier, { BEZIER } from './Bezier';
-
-export interface AnimationParamsChange {
-  (x: number, y: number): boolean | void;
-}
-
-export interface AnimationParamsEnd {
-  (): void;
-}
-
-export interface AnimationParams {
-  change: AnimationParamsChange;
-  duration?: number;
-  timing?: [number, number][] | string;
-  delay?: number;
-  iteration?: number | string;
-  direction?: string;
-  end?: AnimationParamsEnd;
-}
-
-export interface AnimationInterface {
-  start(): this;
-  abort(): void;
-}
+import {
+  AnimationParams,
+  AnimationInterface,
+  AnimationParamsChange,
+  AnimationParamsEnd
+} from './interface';
 
 class Animation implements AnimationInterface{
   private bezier = new Bezier();

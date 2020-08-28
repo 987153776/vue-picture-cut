@@ -97,7 +97,7 @@ export interface BezierInterface {
 }
 
 export interface AnimationParamsChange {
-  (i: number): boolean | void;
+  (x: number, y: number): boolean | void;
 }
 
 export interface AnimationParamsEnd {
@@ -107,7 +107,7 @@ export interface AnimationParamsEnd {
 export interface AnimationParams {
   change: AnimationParamsChange;
   duration?: number;
-  timing?: string | number[];
+  timing?: [number, number][] | string;
   delay?: number;
   iteration?: number | string;
   direction?: string;
