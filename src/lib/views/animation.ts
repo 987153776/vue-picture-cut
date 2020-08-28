@@ -1,43 +1,30 @@
-import Bezier from './Bezier';
-import {
-  AnimationInterface,
-  AnimationParams,
-  AnimationParamsChange,
-  AnimationParamsEnd
-} from './interface';
+import Bezier, { BEZIER } from './Bezier';
 
-/**
- * 对requestAnimationFrame和cancelAnimationFrame做兼容处理
- */
-(function() {
-  let lastTime = 0;
-  const vendors = ['webkit', 'moz'];
-  for(let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||    // Webkit中此取消方法的名字变了
-      window[vendors[x] + 'CancelRequestAnimationFrame'];
-  }
+export interface AnimationParamsChange {
+  (x: number, y: number): boolean | void;
+}
 
-  if (!window.requestAnimationFrame) {
-    window.requestAnimationFrame = function(callback) {
-      const currTime = new Date().getTime();
-      const timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
-      const id = window.setTimeout(function () {
-        callback(currTime + timeToCall);
-      }, timeToCall);
-      lastTime = currTime + timeToCall;
-      return id;
-    };
-  }
-  if (!window.cancelAnimationFrame) {
-    window.cancelAnimationFrame = function(id) {
-      clearTimeout(id);
-    };
-  }
-}());
+export interface AnimationParamsEnd {
+  (): void;
+}
 
-const bezier = new Bezier();
+export interface AnimationParams {
+  change: AnimationParamsChange;
+  duration?: number;
+  timing?: [number, number][] | string;
+  delay?: number;
+  iteration?: number | string;
+  direction?: string;
+  end?: AnimationParamsEnd;
+}
+
+export interface AnimationInterface {
+  start(): this;
+  abort(): void;
+}
+
 class Animation implements AnimationInterface{
+  private bezier = new Bezier();
   /**
    * 动画持续时间，单位毫秒，
    * 默认1000毫秒。
@@ -50,9 +37,9 @@ class Animation implements AnimationInterface{
    * ease-in(由慢到快)；
    * ease-out(由快到慢)；
    * ease-in-out(由慢到快再到慢)；
-   * [x1,y1,x1,y1](数组,[x1,y1]表示点1的坐标,[x2,y2]表示点2的坐标)。
+   * [[x1,y1],[x1,y1]...](数组,[x1,y1]表示点1的坐标,[x2,y2]表示点2的坐标)。
    */
-  private readonly timing: string | number[] = 'ease';
+  private readonly timing: [number, number][] = [];
   /**
    * 动画的延迟时间，单位毫秒，
    * 默认0毫秒。
@@ -94,7 +81,13 @@ class Animation implements AnimationInterface{
 
   constructor(option: AnimationParams) {
     if (option.duration !== void 0) this.duration = option.duration;
-    if (option.timing !== void 0) this.timing = option.timing;
+    if (option.timing !== void 0) {
+      if (typeof option.timing === "string") {
+        this.timing = BEZIER[option.timing] || BEZIER['linear'];
+      } else {
+        this.timing = option.timing;
+      }
+    }
     if (option.delay !== void 0) this.delay = option.delay;
     if (option.iteration !== void 0) this.iteration = option.iteration;
     if (option.direction !== void 0) this.direction = option.direction;
@@ -106,7 +99,7 @@ class Animation implements AnimationInterface{
     // 如果动画正反向交替进行，则总时间乘以2
     this.times = (this.direction === 'alternate' || this.direction === 'alternate-reverse') ? (2 * times) : times;
 
-    bezier.setOpt(this.timing);
+    this.bezier.setOpt(this.timing);
   }
 
   /**
@@ -157,8 +150,8 @@ class Animation implements AnimationInterface{
           if (n / 2 === this.iteration) difT2 = 1;
           break;
       }
-      const x = bezier.getPoint(difT2);
-      const c = this.change(x);
+      const { x, y } = this.bezier.getPoint(difT2);
+      const c = this.change(x, y);
       if (c !== false && difT < this.times) {
         this._do();
       } else this.end();

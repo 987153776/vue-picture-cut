@@ -766,7 +766,7 @@ export default class PhotoMain implements PhotoBasic{
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
-      change: i => {
+      change: (j, i) => {
         this._showRect = {
           x: x + i * offX,
           y: y + i * offY,

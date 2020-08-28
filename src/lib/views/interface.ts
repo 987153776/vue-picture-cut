@@ -72,8 +72,28 @@ export interface CubeInterface {
   getPoint(time: number): number;
 }
 
+/**
+ * 贝塞尔预设值
+ */
+export interface BEZIERInterface {
+  [name: string]: [number, number][]
+}
+
+/**
+ * n次贝塞尔
+ */
 export interface BezierInterface {
-  [name: string]: number[];
+
+  /**
+   * 设置曲线点
+   */
+  setOpt(Nodes: [number, number][]): this;
+
+  /**
+   * 计算公式
+   * @param time
+   */
+  getPoint(time: number): Point;
 }
 
 export interface AnimationParamsChange {
