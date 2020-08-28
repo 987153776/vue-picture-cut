@@ -272,12 +272,12 @@ export default class PhotoMask implements PhotoBasic {
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
-      change: (j, i) => {
+      change: (i, j) => {
         this._maskRect = {
-          x: x + i * offX,
-          y: y + i * offY,
-          w: w + i * offW,
-          h: h + i * offH
+          x: x + j * offX,
+          y: y + j * offY,
+          w: w + j * offW,
+          h: h + j * offH
         }
         this._draw(this._maskRect, false, this);
       },
