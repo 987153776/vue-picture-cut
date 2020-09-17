@@ -163,6 +163,16 @@ export default class PhotoRoot{
         y: e.offsetY * this.magnification - this.core.y
       });
     }, false);
+    // 火狐鼠标滚轮
+    this.root.addEventListener('DOMMouseScroll', event => {
+      const e = (event || window.event) as unknown as WheelEvent2;
+      e.preventDefault();
+      const delta = (e as any).detail * -40;
+      this._mouseWheel(delta, {
+        x: (e as any).layerX * this.magnification - this.core.x,
+        y: (e as any).layerY * this.magnification - this.core.y
+      });
+    }, false);
   }
 
   private _touchStart(touches: TouchList): void {
@@ -315,8 +325,8 @@ export default class PhotoRoot{
    */
   private _getMousePoint (ct: MouseEvent): TouchePoint {
     return {
-      x: ct.offsetX * this.magnification - this.core.x,
-      y: ct.offsetY * this.magnification - this.core.y,
+      x: ((ct as any).layerX || ct.offsetX) * this.magnification - this.core.x,
+      y: ((ct as any).layerY || ct.offsetY) * this.magnification - this.core.y,
       id: 0
     };
   }
@@ -331,7 +341,6 @@ export default class PhotoRoot{
     p.x += el.offsetLeft;
     p.y += el.offsetTop;
     if (el.tagName === 'HTML' || el.offsetParent === null) {
-
       return p;
     } else {
       return this._getClientPosition(el.offsetParent as HTMLElement, p);
