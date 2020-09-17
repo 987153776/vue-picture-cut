@@ -713,10 +713,7 @@ export default class PhotoMain implements PhotoBasic{
     let { x, y, w, h } = this.showRect;
     const { minX, minY, maxX, maxY } = this.moveRect;
     if (newLocation) {
-      x = newLocation[0];
-      y = newLocation[1];
-      w = newLocation[2];
-      h = newLocation[3];
+      [x, y, w, h] = newLocation;
     }
     return [
       x - (minX || 0),
