@@ -230,7 +230,7 @@ import {
     :background-color="backgroundColor"
     @on-change="onChange"
   >
-    <vue-picture-mask
+    <vue-picture-cut-mask
       :width="width"
       :height="height"
       :is-round="isRound"
@@ -288,7 +288,7 @@ import {
     :msk-option="mskOption"
     @on-change="cutChange"
   >
-    <vue-picture-menu
+    <vue-picture-cut-menu
       slot="menu"
       :cancel="false"
       :max-pixel="maxPixel"
