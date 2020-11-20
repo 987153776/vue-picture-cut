@@ -10,6 +10,8 @@ import $tool from './tool';
 export default class PhotoRoot{
 
   debug = false;
+  // 是否是火狐
+  isFirefox = navigator.userAgent.indexOf("Firefox") > 0;
   // 最外层dom
   root!: HTMLElement;
   // 画布宽高
@@ -154,25 +156,25 @@ export default class PhotoRoot{
       e.preventDefault();
       this._mouseMove(e);
     }, false);
-    this.root.addEventListener('mousewheel', event => {
-      const e = (event || window.event) as unknown as WheelEvent2;
-      e.preventDefault();
-      const delta = e.wheelDelta || e.detail;
-      this._mouseWheel(delta as number, {
-        x: e.offsetX * this.magnification - this.core.x,
-        y: e.offsetY * this.magnification - this.core.y
-      });
-    }, false);
-    // 火狐鼠标滚轮
-    this.root.addEventListener('DOMMouseScroll', event => {
-      const e = (event || window.event) as unknown as WheelEvent2;
-      e.preventDefault();
-      const delta = (e as any).detail * -40;
-      this._mouseWheel(delta, {
-        x: (e as any).layerX * this.magnification - this.core.x,
-        y: (e as any).layerY * this.magnification - this.core.y
-      });
-    }, false);
+    this.isFirefox ?
+      this.root.addEventListener('DOMMouseScroll', event => {
+        const e = (event || window.event) as unknown as WheelEvent2;
+        e.preventDefault();
+        const delta = (e as any).detail * -40;
+        this._mouseWheel(delta, {
+          x: (e as any).layerX * this.magnification - this.core.x,
+          y: (e as any).layerY * this.magnification - this.core.y
+        });
+      }, false) :
+      this.root.addEventListener('mousewheel', event => {
+        const e = (event || window.event) as unknown as WheelEvent2;
+        e.preventDefault();
+        const delta = e.wheelDelta || e.detail;
+        this._mouseWheel(delta as number, {
+          x: e.offsetX * this.magnification - this.core.x,
+          y: e.offsetY * this.magnification - this.core.y
+        });
+      }, false);
   }
 
   private _touchStart(touches: TouchList): void {
@@ -325,8 +327,8 @@ export default class PhotoRoot{
    */
   private _getMousePoint (ct: MouseEvent): TouchePoint {
     return {
-      x: ((ct as any).layerX || ct.offsetX) * this.magnification - this.core.x,
-      y: ((ct as any).layerY || ct.offsetY) * this.magnification - this.core.y,
+      x: (this.isFirefox ? (ct as any).layerX : ct.offsetX) * this.magnification - this.core.x,
+      y: (this.isFirefox ? (ct as any).layerY : ct.offsetY) * this.magnification - this.core.y,
       id: 0
     };
   }

@@ -263,12 +263,13 @@ export default class PhotoMask implements PhotoBasic {
       return;
     }
     const {x, y, w, h} = this.maskRect;
+    this._maskRect = this.maskRect;
     this.maskRect = {
       x: x + offX,
       y: y + offY,
       w: w + offW,
       h: h + offH
-    }
+    };
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
@@ -346,7 +347,7 @@ export default class PhotoMask implements PhotoBasic {
       this.reset(this.maskRect.w, this.maskRect.h);
       this.root.deletePriority(this.className);
       this.touchePosition = undefined;
-      this._draw(this.maskRect, false, this);
+      this._draw(this._maskRect ||this.maskRect, false, this);
       this.root.cursor = 'default';
     }
   }

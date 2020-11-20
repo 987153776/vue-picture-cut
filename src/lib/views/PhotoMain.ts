@@ -309,7 +309,7 @@ export default class PhotoMain implements PhotoBasic{
   setShowRect (showRect: RectFull): void {
     if (this.img) {
       this.showRect = showRect;
-      this._draw(this.imgRect, this.showRect);
+      this._draw(this.imgRect, this._showRect || this.showRect);
     }
   }
 
@@ -746,7 +746,7 @@ export default class PhotoMain implements PhotoBasic{
     const { x, y, w, h, r, sV, sH} = this.showRect;
     offSV = offSV === void 0 ? sV === -1 : offSV;
     offSH = offSH === void 0 ? sH === -1 : offSH;
-    this.showRect = {
+    const showRect = {
       x: x + offX,
       y: y + offY,
       w: w + offW,
@@ -755,11 +755,13 @@ export default class PhotoMain implements PhotoBasic{
       sV: offSV ? -1 : 1,
       sH: offSH ? -1 : 1,
     };
-    const _offSV = this.showRect.sV - sV;
-    const _offSH = this.showRect.sH - sH;
+    const _offSV = showRect.sV - sV;
+    const _offSH = showRect.sH - sH;
     if (!offX && !offY && !offW && !offH && !offR && !_offSH && !_offSV) {
       return;
     }
+    this._showRect = this.showRect;
+    this.showRect = showRect;
     this.animation = createAnimation({
       duration: 300,
       timing: 'ease-in-out',
