@@ -1,6 +1,6 @@
 {
   "name": "vue-picture-cut",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "基于vue和typescript开发的一款图片剪裁处理工具。优点：原生、轻量、使用简单、功能全面、扩展性强。目前功能：缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁。",
   "main": "lib/vue-picture-cut.umd.min.js",
   "directories": {
@@ -36,21 +36,21 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "element-ui": "^2.13.2",
+    "highlight.js": "^10.1.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^9.0.0",
-    "element-ui": "^2.13.2",
-    "highlight.js": "^10.1.1"
+    "vue-property-decorator": "^9.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^3.4.0",
-    "@typescript-eslint/parser": "^3.4.0",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "@vue/cli-plugin-babel": "^4.4.6",
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-plugin-typescript": "^4.4.6",
     "@vue/cli-service": "^4.4.6",
     "@vue/eslint-config-typescript": "^5.0.2",
-    "eslint": "^7.3.1",
+    "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
@@ -73,8 +73,16 @@
     "rules": {}
   },
   "browserslist": [
+    "last 1 version",
     "> 1%",
-    "last 2 versions",
-    "not dead"
+    "maintained node versions",
+    "not dead",
+    "last 20 Chrome versions",
+    "last 10 Firefox versions",
+    "Safari >= 6",
+    "ie >= 9",
+    "not ie <= 8",
+    "Android >= 4.0",
+    "iOS >= 8"
   ]
 }

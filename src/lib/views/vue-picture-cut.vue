@@ -206,7 +206,7 @@ export default class VuePictureCut extends Vue {
 
   /*******事件********/
   @Emit('on-change')
-  onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null, base64: string} {
+  onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null; base64: string} {
     return {blob, base64};
   }
 
@@ -214,7 +214,7 @@ export default class VuePictureCut extends Vue {
 
   setImg(): void {
     const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
-    let src = this.src;
+    const src = this.src;
     if (src && photoMain) {
       photoMain.setSrc(src, this.initAngle);
     }

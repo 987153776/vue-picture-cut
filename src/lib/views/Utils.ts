@@ -36,7 +36,7 @@ export class Utils {
    * @param format          导出格式
    */
   cut(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null;
-  cut(opt?: { maxPixel?: number, encoderOptions?: number, format?: string }): ClipResult | null;
+  cut(opt?: { maxPixel?: number; encoderOptions?: number; format?: string }): ClipResult | null;
   cut(opt?: any, encoderOptions?: number, format?: string): ClipResult | null {
     if (!this.photoRoot) return null;
     const mask = this.getPhotoMask();
@@ -86,7 +86,7 @@ export class Utils {
   /**
    * 按图片宽高比例设置剪裁框尺寸
    */
-  setMaskSizeToOriginal (): {width: number, height: number} | void {
+  setMaskSizeToOriginal (): {width: number; height: number} | void {
     if (!this.photoRoot) return;
     const main = this.getPhotoMain();
     if (main) {

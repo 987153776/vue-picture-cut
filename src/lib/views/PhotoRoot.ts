@@ -338,12 +338,9 @@ export default class PhotoRoot{
    * @private
    */
   private _getClientPosition (el: HTMLElement, p: Point): Point {
-    p.x += el.offsetLeft;
-    p.y += el.offsetTop;
-    if (el.tagName === 'HTML' || el.offsetParent === null) {
-      return p;
-    } else {
-      return this._getClientPosition(el.offsetParent as HTMLElement, p);
-    }
+    const rect: DOMRect = el.getClientRects()[0];
+    p.x += rect.x;
+    p.y += rect.y;
+    return p;
   }
 }
