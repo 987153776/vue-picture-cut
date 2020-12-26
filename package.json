@@ -35,13 +35,13 @@
     "lib": "vue-cli-service build --target lib --name vue-picture-cut --dest lib src/lib/index.ts"
   },
   "dependencies": {
+  },
+  "devDependencies": {
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^9.0.0"
-  },
-  "devDependencies": {
+    "vue-property-decorator": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vue/cli-plugin-babel": "^4.4.6",
