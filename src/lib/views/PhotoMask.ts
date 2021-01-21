@@ -3,6 +3,7 @@ import PhotoRoot from './PhotoRoot';
 import PhotoMain from './PhotoMain';
 import $tool from './tool';
 import {
+  Square,
   Rect,
   Point,
   PhotoBasic,
@@ -86,7 +87,7 @@ export default class PhotoMask implements PhotoBasic {
     }
   }
 
-  getmaskRect(): Rect {
+  getMaskRect(): Rect {
     return this.maskRect;
   }
 
@@ -158,6 +159,10 @@ export default class PhotoMask implements PhotoBasic {
       photoMain.doAnimation(offX, offY, offW, offH, 0);
     }
     this._animation(offX, offY, offW, offH);
+    this.root.onPhotoChange && this.root.onPhotoChange({
+      target: this,
+      type: 'maskReset'
+    });
   }
 
 
@@ -181,6 +186,10 @@ export default class PhotoMask implements PhotoBasic {
     }
     this.resize = value;
     this._draw(this.maskRect, false, this);
+    this.root.onPhotoChange && this.root.onPhotoChange({
+      target: this,
+      type: 'maskResize'
+    });
   }
 
   getResize(): boolean {
@@ -188,12 +197,10 @@ export default class PhotoMask implements PhotoBasic {
   }
 
   /**
-   * 裁剪
-   * @maxPixel          裁剪长边像素
-   * @encoderOptions    裁剪压缩率(仅jpg)
-   * @format            裁剪格式
+   * 获取裁剪信息
+   * @param maxPixel 裁剪长边像素
    */
-  clip(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null {
+  getCutInfo(maxPixel?: number): {cutSize: Square; showInfo: RectFull } | null {
     const photoMain = this.root.getEventList<PhotoMain>('PhotoMain');
     if (!photoMain || !photoMain.originalImg || !photoMain.img) {
       return null;
@@ -212,9 +219,11 @@ export default class PhotoMask implements PhotoBasic {
     } else {
       r = originalImg.width / showRect.w;
     }
-    const nmw = Math.round(maskRect.w * r);
-    const nmh = Math.round(maskRect.h * r);
-    const newShow: RectFull = {
+    const cutSize = {
+      w: Math.round(maskRect.w * r),
+      h: Math.round(maskRect.h * r)
+    };
+    const showInfo: RectFull = {
       x: (showRect.x - showRect.w / 2) * r,
       y: (showRect.y - showRect.h / 2) * r,
       w: showRect.w * r,
@@ -223,9 +232,25 @@ export default class PhotoMask implements PhotoBasic {
       sV: showRect.sV,
       sH: showRect.sH
     }
+    return {cutSize, showInfo };
+  }
+
+  /**
+   * 裁剪
+   * @maxPixel          裁剪长边像素
+   * @encoderOptions    裁剪压缩率(仅jpg)
+   * @format            裁剪格式
+   */
+  clip(maxPixel?: number, encoderOptions?: number, format?: string): ClipResult | null {
+    const photoMain = this.root.getEventList<PhotoMain>('PhotoMain');
+    if (!photoMain || !photoMain.originalImg || !photoMain.img) {
+      return null;
+    }
+    const originalImg = photoMain.originalImg;
+    const { cutSize, showInfo } = this.getCutInfo(maxPixel) as {cutSize: Square; showInfo: RectFull };
     const base64 = this._isRound ?
-      $tool.clipByRound(originalImg, nmw, nmh, newShow, encoderOptions, format) :
-      $tool.clipBy(originalImg, nmw, nmh, newShow, encoderOptions, format);
+      $tool.clipByRound(originalImg, cutSize.w, cutSize.h, showInfo, encoderOptions, format) :
+      $tool.clipBy(originalImg, cutSize.w, cutSize.h, showInfo, encoderOptions, format);
     return {
       src: base64,
       file: $tool.base64ToBlob(base64)
@@ -367,6 +392,10 @@ export default class PhotoMask implements PhotoBasic {
         });
         this.touche = tp;
         this._draw(this.maskRect, true, this);
+        this.root.onPhotoChange && this.root.onPhotoChange({
+          target: this,
+          type: 'maskMove'
+        });
       }
     } else if (this.resize) {
       const touchePosition = this._isHover(tps[0].x, tps[0].y);

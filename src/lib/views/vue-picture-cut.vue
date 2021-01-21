@@ -42,6 +42,7 @@ import PhotoMain from './PhotoMain';
 import PhotoMask from './PhotoMask';
 import VuePictureCutCanvas from './vue-picture-cut-canvas.vue';
 import VuePictureCutMask from './vue-picture-cut-mask.vue';
+import { Square } from './interface';
 
 interface MskOption {
   width?: number;
@@ -98,6 +99,8 @@ export default class VuePictureCut extends Vue {
   hasMenu = false;
   // 角度
   sliderAngle = 0;
+  // 图片将要裁剪的宽高
+  cutSize: Square | null = null;
 
   photoRoot: PhotoRoot = new PhotoRoot();
 
@@ -195,6 +198,7 @@ export default class VuePictureCut extends Vue {
     if (this.$slots.menu) {
       this.hasMenu = true;
     }
+    this.photoRoot.onPhotoChange = this.onStateChange;
   }
 
   protected mounted (): void {
@@ -208,6 +212,19 @@ export default class VuePictureCut extends Vue {
   @Emit('on-change')
   onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null; base64: string} {
     return {blob, base64};
+  }
+
+  onStateChange({ type }) {
+    if (['imageInit', 'imageAngle', 'imageReset', 'imageScale', 'maskMove'].indexOf(type) > -1) {
+      const photoMask = this.photoRoot.getEventList<PhotoMask>('PhotoMask');
+      if (photoMask) {
+        const info = photoMask.getCutInfo(this.maxPixel);
+        const cutSize = info?.cutSize;
+        if (cutSize?.w !== this.cutSize?.w || cutSize?.h !== this.cutSize?.h) {
+          this.cutSize = cutSize || null;
+        }
+      }
+    }
   }
 
   /**********方法**********/

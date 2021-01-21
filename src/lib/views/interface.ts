@@ -1,4 +1,6 @@
 import PhotoRoot from './PhotoRoot';
+import PhotoMain from './PhotoMain';
+import PhotoMask from './PhotoMask';
 
 export class Win extends Window {
   BlobBuilder?: any;
@@ -12,14 +14,16 @@ export interface Point {
   y: number;
 }
 
+export interface Square {
+  w: number;
+  h: number;
+}
+
 export interface TouchePoint extends Point {
   id: number;
 }
 
-export interface Rect extends Point {
-  w: number;
-  h: number;
-}
+export interface Rect extends Point, Square {}
 
 export interface RectFull extends Rect {
   /**
@@ -70,6 +74,15 @@ export interface CubeInterface {
   setOptByString(arg: string): this;
   setOptByArr(p1x: number, p1y: number, p2x: number, p2y: number): this;
   getPoint(time: number): number;
+}
+
+export interface PhotoChangeEvent {
+  readonly type: string;
+  readonly target: PhotoRoot | PhotoMain | PhotoMask | null;
+}
+
+export interface PhotoChange {
+  (e: PhotoChangeEvent): void;
 }
 
 /**

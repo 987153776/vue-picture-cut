@@ -114,6 +114,10 @@ export default class PhotoMain implements PhotoBasic{
       this._draw(this.imgRect, this.showRect);
       this.showRect.r = angle;
       this.loadingEvent && this.loadingEvent(false);
+      this.root.onPhotoChange && this.root.onPhotoChange({
+        target: this,
+        type: 'imageInit'
+      });
     }, () => {
       this.loadingEvent && this.loadingEvent(false);
     });
@@ -135,7 +139,7 @@ export default class PhotoMain implements PhotoBasic{
           v && v();
         });
         const { x, y, w, h, r, sV, sH } = this.showRect;
-        const range = this._checkRange({x, y, w, h, r, sV, sH});
+        const range = this._checkRange();
         this.showRect = {
           x: x + range[0],
           y: y + range[1],
@@ -147,6 +151,10 @@ export default class PhotoMain implements PhotoBasic{
         };
       }
       this._draw(this.imgRect, this.showRect);
+      this.root.onPhotoChange && this.root.onPhotoChange({
+        target: this,
+        type: 'imageReset'
+      });
     }
   }
 
@@ -211,6 +219,10 @@ export default class PhotoMain implements PhotoBasic{
           }
         }, animation);
       });
+      this.root.onPhotoChange && this.root.onPhotoChange({
+        target: this,
+        type: 'imageAngle'
+      });
     } else {
       this.showRect.r = angle;
     }
@@ -236,6 +248,10 @@ export default class PhotoMain implements PhotoBasic{
         this.doAnimation(0, 0, 0, 0, 0, sV, sH);
       }
     }
+    this.root.onPhotoChange && this.root.onPhotoChange({
+      target: this,
+      type: 'imageFlip'
+    });
   }
 
   /**
@@ -254,6 +270,10 @@ export default class PhotoMain implements PhotoBasic{
         this.animation?.abort();
         this.doAnimation(0, 0, 0, 0, 0, sV);
       }
+      this.root.onPhotoChange && this.root.onPhotoChange({
+        target: this,
+        type: 'imageFlipV'
+      });
     }
   }
 
@@ -273,6 +293,10 @@ export default class PhotoMain implements PhotoBasic{
         this.animation?.abort();
         this.doAnimation(0, 0, 0, 0, 0, undefined, sH);
       }
+      this.root.onPhotoChange && this.root.onPhotoChange({
+        target: this,
+        type: 'imageFlipH'
+      });
     }
   }
 
@@ -309,7 +333,7 @@ export default class PhotoMain implements PhotoBasic{
   setShowRect (showRect: RectFull): void {
     if (this.img) {
       this.showRect = showRect;
-      this._draw(this.imgRect, this._showRect || this.showRect);
+      this._draw(this.imgRect, this.showRect);
     }
   }
 
@@ -557,7 +581,9 @@ export default class PhotoMain implements PhotoBasic{
     this.touchstartEvent = $tool.doubleTouche({x: 0, y: 0, id: 0});
     this.touchstartPoint = {x: 0, y: 0};
     const [offX, offY, offW, offH] = this._checkRange();
-    this.doAnimation(offX, offY, offW, offH, 0);
+    if (offX || offY || offW || offH) {
+      this.doAnimation(offX, offY, offW, offH, 0);
+    }
     this.root.deletePriority(this.className);
   }
 
@@ -580,6 +606,10 @@ export default class PhotoMain implements PhotoBasic{
     const offPoint = this._changePointByImage(core);
     this.touchstartPoint = this._getPointerLocation(offPoint);
     this.root.setPriority(this);
+    this.root.onPhotoChange && this.root.onPhotoChange({
+      target: this,
+      type: 'imageTouchStart2'
+    });
   }
 
   private _touchMove1(tp: TouchePoint) {
@@ -588,6 +618,10 @@ export default class PhotoMain implements PhotoBasic{
       this.touchList[0] = tp;
       this._move(tp);
       this._draw(this.imgRect, this.showRect);
+      this.root.onPhotoChange && this.root.onPhotoChange({
+        target: this,
+        type: 'imageMove'
+      });
     }
   }
 
@@ -635,7 +669,7 @@ export default class PhotoMain implements PhotoBasic{
 
   /**
    * 缩放图片
-   * @param zoom
+   * @param zoom-
    * @param core
    * @param angle
    * @private
@@ -646,7 +680,7 @@ export default class PhotoMain implements PhotoBasic{
     pl = this.touchstartPoint;
     const {w, h, r, sV, sH} = this.showRect;
     const offPoint = this._changePointByImage(core);
-    this.showRect = {
+    const showRect = this.showRect = {
       x: offPoint.x - pl.x,
       y: offPoint.y - pl.y,
       w: w * zoom,
@@ -655,6 +689,18 @@ export default class PhotoMain implements PhotoBasic{
       sV,
       sH
     };
+    const [offX, offY, offW, offH] = this._checkRange(showRect);
+    const isDiff = offX || offY || offW || offH;
+    if (isDiff) {
+      this.showRect = this._getShowRect(offX, offY, offW, offH, 0);
+    }
+    this.root.onPhotoChange && this.root.onPhotoChange({
+      target: this,
+      type: 'imageScale'
+    });
+    if (isDiff) {
+      this.showRect = showRect;
+    }
   }
 
   /**
@@ -726,6 +772,33 @@ export default class PhotoMain implements PhotoBasic{
   }
 
   /**
+   *
+   * @param offX 偏移量
+   * @param offY 偏移量
+   * @param offW 偏移量
+   * @param offH 偏移量
+   * @param offR 偏移量
+   * @param offSV 偏移量
+   * @param offSH 偏移量
+   * @private
+   */
+  private _getShowRect(offX: number, offY: number, offW: number, offH: number,
+                       offR: number, offSV?: boolean, offSH?: boolean) {
+    const { x, y, w, h, r, sV, sH} = this.showRect;
+    offSV = offSV === void 0 ? sV === -1 : offSV;
+    offSH = offSH === void 0 ? sH === -1 : offSH;
+    return {
+      x: x + offX,
+      y: y + offY,
+      w: w + offW,
+      h: h + offH,
+      r: r + offR,
+      sV: offSV ? -1 : 1,
+      sH: offSH ? -1 : 1,
+    };
+  }
+
+  /**
    * 动画
    * @param offX 偏移量
    * @param offY 偏移量
@@ -744,17 +817,7 @@ export default class PhotoMain implements PhotoBasic{
       return;
     }
     const { x, y, w, h, r, sV, sH} = this.showRect;
-    offSV = offSV === void 0 ? sV === -1 : offSV;
-    offSH = offSH === void 0 ? sH === -1 : offSH;
-    const showRect = {
-      x: x + offX,
-      y: y + offY,
-      w: w + offW,
-      h: h + offH,
-      r: r + offR,
-      sV: offSV ? -1 : 1,
-      sH: offSH ? -1 : 1,
-    };
+    const showRect = this._getShowRect(offX, offY, offW, offH, offR, offSV, offSH);
     const _offSV = showRect.sV - sV;
     const _offSH = showRect.sH - sH;
     if (!offX && !offY && !offW && !offH && !offR && !_offSH && !_offSV) {

@@ -204,7 +204,7 @@ export class Utils {
       imgOpt.showRect.y -= imgOpt.showRect.y / 2;
     }
     if (mask) {
-      const maskRect = mask.getmaskRect();
+      const maskRect = mask.getMaskRect();
       maskOpt = {
         isRound: mask.isRound,
         x: maskRect.x - maskRect.w / 2,

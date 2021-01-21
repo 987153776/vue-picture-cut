@@ -3,6 +3,7 @@ import {
   TouchePoint,
   Point,
   PhotoBasic,
+  PhotoChange
   // TouchList
 } from './interface';
 import $tool from './tool';
@@ -28,6 +29,8 @@ export default class PhotoRoot{
   eventList: Map<string, PhotoBasic> = new Map<string, PhotoBasic>();
   // 事件优先队列
   priorityEvent: PhotoBasic | null = null;
+  // 当遮罩或图片状态发生变化时执行
+  onPhotoChange?: PhotoChange;
   // 记录滚轮触发时间
   private wheelTime = 0;
   private wheelTimeOut = 0;
