@@ -315,7 +315,6 @@ export default class PhotoRoot{
    * @private
    */
   private _getTouchePoint (ct: Touch): TouchePoint {
-    console.log(ct)
     const elOffset = this._getClientPosition(this.root, {x: 0, y: 0});
     return {
       x: (ct.clientX - elOffset.x) * this.magnification - this.core.x,
@@ -344,9 +343,7 @@ export default class PhotoRoot{
    * @private
    */
   private _getClientPosition (el: HTMLElement, p: Point): Point {
-    // const rect: DOMRect = el.getClientRects()[0];
     const rect: DOMRect = el.getBoundingClientRect();
-    console.log(rect.top)
     p.x += rect.left;
     p.y += rect.top;
     return p;
