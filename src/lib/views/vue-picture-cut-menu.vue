@@ -67,17 +67,16 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Inject, Emit, Watch, Prop} from 'vue-property-decorator';
+import {Component, Vue, Emit, Watch, Prop, Inject} from 'vue-property-decorator';
 import PhotoMask from "@/lib/views/PhotoMask";
 import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMain from "@/lib/views/PhotoMain";
+import VuePictureCut from "@/lib/views/vue-picture-cut.vue";
 
 @Component
 export default class VuePictureCutMenu extends Vue {
-  @Inject({from: 'vuePictureCut', default: 'photoRoot'})
-  pRoot?: PhotoRoot;
 
-  @Prop({ type: Object, required: false}) root?: {photoRoot?: PhotoRoot};
+  @Prop({ type: Object, default: null}) root: VuePictureCut | null = null;
 
   @Prop({ type: String, default: 'default'}) theme!: string;
   // 裁剪长边像素
@@ -95,9 +94,10 @@ export default class VuePictureCutMenu extends Vue {
   @Prop({ type: String, default: 'Rotate'}) private menuRotateName!: string;
 
   private sliderAngle = 0;
+  cutRoot?: VuePictureCut;
 
-  private get photoRoot() {
-    return this.root ? this.root.photoRoot : this.pRoot;
+  get photoRoot(): PhotoRoot | undefined {
+    return this.root?.photoRoot || this.cutRoot?.photoRoot;
   }
 
   @Watch('sliderAngle')
@@ -108,6 +108,17 @@ export default class VuePictureCutMenu extends Vue {
       photoMain.setAngle(parseInt(to));
     }
   }
+
+  /*******生命周期********/
+  @Inject({ from: 'getCutRoot', default: null})
+  getCutRoot?: () => VuePictureCut;
+
+  protected created (): void {
+    if (this.getCutRoot) {
+      this.cutRoot = this.getCutRoot();
+    }
+  }
+
   /*******事件********/
   @Emit('on-change')
   onChangeEvent (blob: Blob | null, base64: string): {blob: Blob | null; base64: string} {

@@ -17,44 +17,54 @@
       </div>
     </div>
     <!--基本使用-->
-<!--    <vue-picture-cut class="cut" :src="src"-->
-<!--                     :init-angle="form.initAngle"-->
-<!--                     :rotate-control="form.rotateControl"-->
-<!--                     :msk-option="mskOption"-->
-<!--                     :max-pixel="form.maxPixel"-->
-<!--                     :encoder-options="form.encoderOptions"-->
-<!--                     :format="form.format"-->
-<!--                     @on-change="cutChange"/>-->
+<!--    <vue-picture-cut-->
+<!--      ref="pictureCut"-->
+<!--      class="cut" :src="src"-->
+<!--      :init-angle="form.initAngle"-->
+<!--      :rotate-control="form.rotateControl"-->
+<!--      :msk-option="mskOption"-->
+<!--      :max-pixel="form.maxPixel"-->
+<!--      :encoder-options="form.encoderOptions"-->
+<!--      :format="form.format"-->
+<!--      @on-change="cutChange"-->
+<!--    />-->
     <!--自定义菜单-->
-    <vue-picture-cut class="cut" ref="pictureCut" :src="src"
-                     :init-angle="form.initAngle"
-                     :msk-option="mskOption"
-                     :background-color="form.backgroundColor">
-      <vue-picture-cut-menu slot="menu"
-                            :max-pixel="form.maxPixel"
-                            :encoder-options="form.encoderOptions"
-                            :format="form.format"
-                            :theme="form.menuTheme"
-                            :size-auto-name="config(language, 'auto')"
-                            :size-raw-name="config(language, 'raw')"
-                            :menu-rotate-name="config(language, 'Rotate')"
-                            :cancel-name="config(language, 'Cancel')"
-                            :confirm-name="config(language, 'Ok')"
-                            @on-change="cutChange"/>
+    <vue-picture-cut
+      ref="pictureCut"
+      class="cut"
+      :src="src"
+      :init-angle="form.initAngle"
+      :msk-option="mskOption"
+      :background-color="form.backgroundColor">
+      <vue-picture-cut-menu
+        slot="menu"
+        :max-pixel="form.maxPixel"
+        :encoder-options="form.encoderOptions"
+        :format="form.format"
+        :theme="form.menuTheme"
+        :size-auto-name="config(language, 'auto')"
+        :size-raw-name="config(language, 'raw')"
+        :menu-rotate-name="config(language, 'Rotate')"
+        :cancel-name="config(language, 'Cancel')"
+        :confirm-name="config(language, 'Ok')"
+        @on-change="cutChange"
+      />
     </vue-picture-cut>
     <!--单独使用vuePictureCutMenu-->
-    <vue-picture-cut-menu class="cut-menu"
-                          :root="pictureCut"
-                          :max-pixel="form.maxPixel"
-                          :encoder-options="form.encoderOptions"
-                          :format="form.format"
-                          :theme="form.menuTheme"
-                          :size-auto-name="config(language, 'auto')"
-                          :size-raw-name="config(language, 'raw')"
-                          :menu-rotate-name="config(language, 'Rotate')"
-                          :cancel-name="config(language, 'Cancel')"
-                          :confirm-name="config(language, 'Ok')"
-                          @on-change="cutChange"/>
+    <vue-picture-cut-menu
+      class="cut-menu"
+      :root="pictureCut"
+      :max-pixel="form.maxPixel"
+      :encoder-options="form.encoderOptions"
+      :format="form.format"
+      :theme="form.menuTheme"
+      :size-auto-name="config(language, 'auto')"
+      :size-raw-name="config(language, 'raw')"
+      :menu-rotate-name="config(language, 'Rotate')"
+      :cancel-name="config(language, 'Cancel')"
+      :confirm-name="config(language, 'Ok')"
+      @on-change="cutChange"
+    />
 
     <el-alert :closable="false" type="success" effect="dark">
       {{ config(language, 'Now you can use the "utils" object to manipulate plug-ins in the browser console.') }}
@@ -70,11 +80,12 @@
         </a>
       </el-form-item>
       <el-form-item :label="'🙄' + config(language, 'Select Picture') + ':'">
-        <el-upload class="upload-demo"
-                   action=""
-                   accept="image/*"
-                   :show-file-list="false"
-                   :before-upload="inputChange">
+        <el-upload
+          class="upload-demo"
+          action=""
+          accept="image/*"
+          :show-file-list="false"
+          :before-upload="inputChange">
           <el-button size="small" type="primary">{{ config(language, 'Select') }}</el-button>
         </el-upload>
       </el-form-item>
@@ -111,8 +122,11 @@
       </el-form-item>
       <el-form-item :label="'😉' + config(language, 'Scaling factor') + ':'">
         <el-input-number v-model="form.zoom" :min="0" :step="0.05"></el-input-number>
-        <el-button size="mini" type="primary" style="margin-left: 10px"
-                   @click="$refs['pictureCut'].scale(form.zoom)">{{ config(language, 'Perform zoom') }}</el-button>
+        <el-button
+          size="mini" type="primary" style="margin-left: 10px"
+          @click="$refs['pictureCut'].scale(form.zoom)">
+          {{ config(language, 'Perform zoom') }}
+        </el-button>
       </el-form-item>
       <el-form-item :label="'😎' + config(language, 'Initial angle') + ':'">
         <el-input-number v-model="form.initAngle" placeholder="auto"></el-input-number>

@@ -3,20 +3,25 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Inject, Prop, PropSync, Watch} from 'vue-property-decorator';
+import {Component, Vue, Prop, PropSync, Watch, Inject} from 'vue-property-decorator';
 import PhotoRoot from "./PhotoRoot";
 import PhotoMain from "./PhotoMain";
+import VuePictureCut from "@/lib/views/vue-picture-cut.vue";
 
 @Component
 export default class VuePictureCutCanvas extends Vue {
-  @Inject({from: 'vuePictureCut', default: 'photoRoot'})
-  photoRoot!: PhotoRoot;
+
   // 旋转
   @Prop({ type: Number, required: false}) private angle: number | undefined;
 
   @PropSync('loading', { type: Boolean, default: false}) private _loading!: boolean;
 
   photoMain: PhotoMain | null = null;
+  cutRoot!: VuePictureCut;
+
+  get photoRoot(): PhotoRoot {
+    return this.cutRoot?.photoRoot;
+  }
 
   @Watch('angle')
   watchAngle (to: number | undefined): void {
@@ -26,6 +31,13 @@ export default class VuePictureCutCanvas extends Vue {
   }
 
   /*******生命周期********/
+  @Inject('getCutRoot')
+  getCutRoot!: () => VuePictureCut;
+
+  protected created (): void {
+    this.cutRoot = this.getCutRoot();
+  }
+
   protected mounted (): void {
     setTimeout(() => {
       this.photoMain = new PhotoMain(

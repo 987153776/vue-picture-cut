@@ -9,19 +9,23 @@
     <path v-if="thisResize" class="cls-4" :d="TRHorn"/>
     <path v-if="thisResize" class="cls-4" :d="BLHorn"/>
     <path v-if="thisResize" class="cls-4" :d="BRHorn"/>
+    <text v-if="cutRoot && cutRoot.cutSize" class="text" :x="rect.x" :y="rect.y - 10">
+      <slot name="text">
+        {{ cutRoot.cutSize.w + ' x ' + cutRoot.cutSize.h }}
+      </slot>
+    </text>
   </svg>
 </template>
 
 <script lang="ts">
-import {Component, Vue, Inject, Prop, Watch} from 'vue-property-decorator';
+import {Component, Vue, Prop, Watch, Inject} from 'vue-property-decorator';
+import VuePictureCut from "@/lib/views/vue-picture-cut.vue";
 import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMask from "@/lib/views/PhotoMask";
-import { Rect } from './interface';
+import {Rect} from './interface';
 
 @Component
 export default class VuePictureCutMask extends Vue {
-  @Inject({from: 'vuePictureCut', default: 'photoRoot'})
-  photoRoot!: PhotoRoot;
 
   // 前景色
   @Prop({ type: String, default: 'rgba(0,0,0,.5)' }) private color?: string;
@@ -44,6 +48,11 @@ export default class VuePictureCutMask extends Vue {
   border='10, 5';
   thisRound = false;
   thisResize = true;
+  cutRoot!: VuePictureCut;
+
+  get photoRoot(): PhotoRoot {
+    return this.cutRoot?.photoRoot;
+  }
 
   get TLHorn (): string {
     const x = this.rect.x;
@@ -104,7 +113,15 @@ export default class VuePictureCutMask extends Vue {
   }
 
   /*******生命周期********/
+  @Inject('getCutRoot')
+  getCutRoot!: () => VuePictureCut;
+
+  protected created (): void {
+    this.cutRoot = this.getCutRoot();
+  }
+
   protected mounted (): void {
+    (window as any).aaa = this;
     this.thisRound = this.isRound;
     this.thisResize = this.resize;
     setTimeout(() => {
@@ -175,5 +192,9 @@ export default class VuePictureCutMask extends Vue {
   stroke: rgba(255,255,255,.8);
   stroke-width: 2px;
   fill: rgba(255,255,255,.5);
+}
+text{
+  font-size: 20px;
+  fill: #fff;
 }
 </style>

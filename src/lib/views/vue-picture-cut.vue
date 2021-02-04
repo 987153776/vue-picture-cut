@@ -104,8 +104,6 @@ export default class VuePictureCut extends Vue {
 
   photoRoot: PhotoRoot = new PhotoRoot();
 
-  @Provide()
-  vuePictureCut = this.photoRoot;
 
   get thickness () {
     if (this.menuThickness === void 0 || this.menuThickness < 0) {
@@ -228,6 +226,11 @@ export default class VuePictureCut extends Vue {
   }
 
   /**********方法**********/
+
+  @Provide('getCutRoot')
+  private getCutRoot() {
+    return this;
+  }
 
   setImg(): void {
     const photoMain = this.photoRoot.getEventList<PhotoMain>('PhotoMain');
