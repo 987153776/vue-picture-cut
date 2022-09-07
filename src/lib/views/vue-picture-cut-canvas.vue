@@ -7,7 +7,9 @@ import {Component, Vue, Inject, Prop, PropSync, Watch} from 'vue-property-decora
 import PhotoRoot from "./PhotoRoot";
 import PhotoMain from "./PhotoMain";
 
-@Component
+@Component({
+  name: 'VuePictureCutCanvas'
+})
 export default class VuePictureCutCanvas extends Vue {
   @Inject({from: 'vuePictureCut', default: 'photoRoot'})
   photoRoot!: PhotoRoot;

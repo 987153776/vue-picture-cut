@@ -72,7 +72,9 @@ import PhotoMask from "@/lib/views/PhotoMask";
 import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMain from "@/lib/views/PhotoMain";
 
-@Component
+@Component({
+  name: 'VuePictureCutMenu'
+})
 export default class VuePictureCutMenu extends Vue {
   @Inject({from: 'vuePictureCut', default: 'photoRoot'})
   pRoot?: PhotoRoot;

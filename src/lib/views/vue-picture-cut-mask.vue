@@ -18,7 +18,9 @@ import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMask from "@/lib/views/PhotoMask";
 import { Rect } from './interface';
 
-@Component
+@Component({
+  name: 'VuePictureCutMask'
+})
 export default class VuePictureCutMask extends Vue {
   @Inject({from: 'vuePictureCut', default: 'photoRoot'})
   photoRoot!: PhotoRoot;
