@@ -73,7 +73,9 @@ import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMain from "@/lib/views/PhotoMain";
 import VuePictureCut from "@/lib/views/vue-picture-cut.vue";
 
-@Component
+@Component({
+  name: 'VuePictureCutMenu'
+})
 export default class VuePictureCutMenu extends Vue {
 
   @Prop({ type: Object, default: null}) root: VuePictureCut | null = null;

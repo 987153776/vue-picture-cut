@@ -24,7 +24,9 @@ import PhotoRoot from "@/lib/views/PhotoRoot";
 import PhotoMask from "@/lib/views/PhotoMask";
 import {Rect} from './interface';
 
-@Component
+@Component({
+  name: 'VuePictureCutMask'
+})
 export default class VuePictureCutMask extends Vue {
 
   // 前景色

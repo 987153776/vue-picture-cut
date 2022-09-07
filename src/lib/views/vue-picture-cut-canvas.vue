@@ -8,7 +8,9 @@ import PhotoRoot from "./PhotoRoot";
 import PhotoMain from "./PhotoMain";
 import VuePictureCut from "@/lib/views/vue-picture-cut.vue";
 
-@Component
+@Component({
+  name: 'VuePictureCutCanvas'
+})
 export default class VuePictureCutCanvas extends Vue {
 
   // 旋转

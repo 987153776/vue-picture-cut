@@ -52,6 +52,7 @@ interface MskOption {
 }
 
 @Component({
+  name: 'VuePictureCut',
   components: {
     VuePictureCutCanvas,
     VuePictureCutMask
