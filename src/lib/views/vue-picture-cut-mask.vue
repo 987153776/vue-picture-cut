@@ -123,7 +123,6 @@ export default class VuePictureCutMask extends Vue {
   }
 
   protected mounted (): void {
-    (window as any).aaa = this;
     this.thisRound = this.isRound;
     this.thisResize = this.resize;
     setTimeout(() => {
