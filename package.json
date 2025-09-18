@@ -1,15 +1,41 @@
 {
   "name": "vue-picture-cut",
-  "version": "0.1.0",
-  "private": true,
+  "version": "3.0.0-alpha.0",
+  "description": "基于vue和typescript开发的一款图片剪裁处理工具。优点：原生、轻量、使用简单、功能全面、扩展性强。目前功能：缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁。",
+  "main": "lib/vue-picture-cut.umd.min.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [
+    "vue",
+    "canvas",
+    "JypeScript",
+    "TypeScript",
+    "剪裁",
+    "图像处理"
+  ],
+  "author": "光年以外 <lightyear0720@vip.qq.com>",
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "tag": "alpha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/987153776/vue-picture-cut.git"
+  },
+  "bugs": {
+    "url": "https://github.com/987153776/vue-picture-cut/issues"
+  },
+  "homepage": "https://github.com/987153776/vue-picture-cut#readme",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lib": "vue-cli-service build --target lib --name vue-picture-cut --dest lib src/lib/index.ts"
   },
   "dependencies": {
-    "core-js": "^3.8.3",
-    "vue": "^2.6.14"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -17,10 +43,13 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "core-js": "^3.8.3",
+    "element-ui": "^2.15.6",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
+    "vue": "^2.6.14",
     "vue-template-compiler": "^2.6.14"
   }
 }

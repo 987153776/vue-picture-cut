@@ -1,0 +1,279 @@
+@import "../styles/font/index.css";
+
+$themes:(
+  // 暗黑
+  dark-theme: (
+    bgColor: #000,
+    color: #aaa,
+    sliderBarColor: rgba(136, 136, 136, .8),
+    sliderBarShadow: rgba(255,255,255,.1),
+    sliderButtonColor: #888,
+    sliderButtonShadow: rgba(255,255,255,.3),
+    sliderTipsBg: rgba(85, 85, 85, 0.8),
+    sliderTipsColor: #aaa,
+    sliderTipsShadow: rgba(255,255,255,.1),
+    boxColor: #aaa,
+    boxBorderColor: #666
+  ),
+  // 灰色
+  gray-theme: (
+    bgColor: #35362e,
+    color: #bbb,
+    sliderBarColor: rgba(170, 170, 170, 0.6),
+    sliderBarShadow: rgba(255,255,255,.1),
+    sliderButtonColor: #aaa,
+    sliderButtonShadow: rgba(255,255,255,.3),
+    sliderTipsBg: rgba(136, 136, 136, 0.7),
+    sliderTipsColor: #ccc,
+    sliderTipsShadow: rgba(255,255,255,.1),
+    boxColor: #bbb,
+    boxBorderColor: #666
+  ),
+  // 白色
+  default-theme: (
+    bgColor: #f4f5f6,
+    color: #666,
+    sliderBarColor: rgba(255,255,255,.6),
+    sliderBarShadow: rgba(0,0,0,.3),
+    sliderButtonColor: #fff,
+    sliderButtonShadow: rgba(0,0,0,.8),
+    sliderTipsBg: rgba(255,255,255,.6),
+    sliderTipsColor: #666,
+    sliderTipsShadow: rgba(0,0,0,.3),
+    boxColor: #444,
+    boxBorderColor: #aaa
+  )
+);
+
+@mixin root-theme($k1, $k2, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} {
+      @if $important {
+        background-color: map-get($map: $theme, $key: $k1) !important;
+        color: map-get($map: $theme, $key: $k2) !important;
+      } @else {
+        background-color: map-get($map: $theme, $key: $k1);
+        color: map-get($map: $theme, $key: $k2);
+      }
+    }
+  }
+}
+
+@mixin font-theme($k, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        color: map-get($map: $theme, $key: $k) !important;
+      } @else {
+        color: map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@mixin border-theme($k, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        border-color: map-get($map: $theme, $key: $k) !important;
+      } @else {
+        border-color: map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@mixin background-theme($k, $important: false) {
+  @each $themename, $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        background-color: map-get($map: $theme, $key: $k) !important;
+      } @else {
+        background-color: map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@mixin box-shadow-theme($h, $v, $blur, $spread, $k, $important:false) {
+  @each $themename,
+  $theme in $themes {
+    .#{$themename} & {
+      @if $important {
+        box-shadow: $h $v $blur $spread map-get($map: $theme, $key: $k) !important;
+      }
+      @else {
+        box-shadow: $h $v $blur $spread map-get($map: $theme, $key: $k);
+      }
+    }
+  }
+}
+
+@include root-theme('bgColor', 'color');
+.vue-picture-cut-menu{
+  display: block;
+  height: 120px;
+  width: 100%;
+  user-select: none;
+  box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
+  &_slider{
+    height: 40px;
+    line-height: 16px;
+    text-align: center;
+    padding: 13px 15px 0 65px;
+    position: relative;
+    span{
+      font-size: 14px;
+      margin-right: 10px;
+      @include font-theme('color');
+      position: absolute;
+      top: 0;
+      left: -45px;
+    }
+    &-box{
+      width: 100%;
+      max-width: 400px;
+      height: 16px;
+      padding: 7px 8px 0;
+      margin: 0 auto;
+      position: relative;
+      input[type="range"] {
+        width: 100%;
+        height: 20px;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: -1px;
+        left: 0;
+        z-index: 1000;
+        cursor: pointer;
+        opacity: 0;
+        outline: none;
+      }
+
+      &-bar{
+        height: 3px;
+        width: 100%;
+        border-radius: 5px;
+        @include background-theme('sliderBarColor');
+        @include box-shadow-theme(0, 0, 3px, 0, 'sliderBarShadow');
+        position: relative;
+      }
+      &-button{
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background-color: #fff;
+        @include background-theme('sliderButtonColor');
+        @include box-shadow-theme(0, 0, 3px, 0, 'sliderButtonShadow');
+        margin-left: -8px;
+        position: absolute;
+        left: 0;
+        top: -6px;
+      }
+      &-tips{
+        @include background-theme('sliderTipsBg');
+        @include box-shadow-theme(0, 0, 3px, 0, 'sliderTipsShadow');
+        @include font-theme('sliderTipsColor');
+        height: 20px;
+        font-size: 12px;
+        text-align: center;
+        line-height: 20px;
+        padding: 0 5px;
+        border-radius: 3px;
+        transform: translateX(-50%);
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+      }
+    }
+  }
+  &_box{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    @include font-theme('boxColor');
+    position: relative;
+    &-content{
+      width: 100%;
+      height: 70px;
+      padding: 0 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    &-list{
+      margin: 0 auto;
+      > span{
+        display: inline-block;
+        vertical-align: middle;
+        height: 15px;
+        width: 1px;
+        border-left: 1px solid #aaa;
+        @include border-theme('boxBorderColor');
+        margin: 0 7px;
+      }
+    }
+    &-item{
+      display: inline-block;
+      vertical-align: middle;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      font-size: 22px;
+      cursor: pointer;
+      .__mask{
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 10px;
+        line-height: 24px;
+        height: 26px;
+        width: 26px;
+        border: 1px solid #444;
+        border-radius: 2px;
+        @include border-theme('boxBorderColor');
+        &._5_4{
+          height: 24px;
+          width: 30px;
+          line-height: 24px;
+        }
+        &._4_5{
+          height: 30px;
+          width: 24px;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+  &_confirm{
+    height: 40px;
+    margin: 0 auto;
+    position: relative;
+    .__cancel,
+    .__sure,
+    .v-p-icon_cancel,
+    .v-p-icon_sure{
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 14px;
+      position: absolute;
+      top: 0;
+      cursor: pointer;
+    }
+    .__cancel{
+      left: 10px;
+    }
+    .__sure{
+      right: 10px;
+      &.__center{
+        left: 50%;
+        margin-left: -20px;
+      }
+    }
+  }
+}
