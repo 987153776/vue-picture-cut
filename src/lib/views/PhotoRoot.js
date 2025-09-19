@@ -1,32 +1,91 @@
 import $tool from './tool';
 
+/**
+ @class {module:vue-picture-cut.PhotoRoot} PhotoRoot
+ */
 export default class PhotoRoot{
 
+  /**
+   * @type {boolean}
+   */
   debug = false;
-  // 是否是火狐
+  /**
+   * 是否是火狐
+   * @type {boolean}
+   */
   isFirefox = navigator.userAgent.indexOf("Firefox") > 0;
-  // 最外层dom
-  root;
-  // 画布宽高
-  width;
-  height;
-  // 绘制宽高
-  drawWidth;
-  drawHeight;
-  // 缩放率
-  magnification;
-  // 画布中心
+  /**
+   * 最外层dom
+   * @type {HTMLElement|null}
+   */
+  root = null;
+  /**
+   * 画布宽
+   * @type {number}
+   */
+  width = 0;
+  /**
+   * 画布高
+   * @type {number}
+   */
+  height = 0;
+  /**
+   * 绘制宽
+   * @type {number}
+   */
+  drawWidth = 0;
+  /**
+   * 绘制高
+   * @type {number}
+   */
+  drawHeight = 0;
+  /**
+   * 缩放率
+   * @type {number}
+   */
+  magnification = 1.5;
+  /**
+   * 画布中心
+   * @type {module:vue-picture-cut.Point}
+   */
   core;
-  // 事件队列
+  /**
+   * 事件队列
+   * @type {module:vue-picture-cut.EventList}
+   * @private
+   */
   eventList = new Map();
-  // 事件优先队列
+  /**
+   * 事件优先队列
+   * @type {module:vue-picture-cut.PhotoBasic|null}
+   */
   priorityEvent = null;
-  // 记录滚轮触发时间
+  /**
+   * 记录滚轮触发时间
+   * @type {number}
+   * @private
+   */
   _wheelTime = 0;
-  wheelTimeOut = 0;
-  // 记录滚轮状态
-  wheelstatus = false;
+  /**
+   * 记录滚轮触发时间
+   * @type {number}
+   * @private
+   */
+  _wheelTimeOut = 0;
+  /**
+   * 记录滚轮状态
+   * @type {boolean}
+   * @private
+   */
+  _wheelStatus = false;
 
+  constructor() {}
+
+  /**
+   * 初始化
+   * @param {HTMLDivElement} el
+   * @param {number} magnification=1.5
+   */
   init (el, magnification = 1.5) {
     this.root = el;
     this.width = el.offsetWidth;
@@ -43,14 +102,16 @@ export default class PhotoRoot{
 
   /**
    * 鼠标样式
+   * @param {string} value
    */
   set cursor(value) {
+    if (!this.root) return;
     this.root.style.cursor = value;
   }
 
   /**
    * 添加对象到事件队列中
-   * @param pe
+   * @param {module:vue-picture-cut.PhotoBasic} pe
    */
   addEventList(pe) {
     this.eventList.set(pe.className, pe);
@@ -58,7 +119,8 @@ export default class PhotoRoot{
 
   /**
    * 从事件队列中获取对象
-   * @param className
+   * @param {string} className
+   * @returns {any|null}
    */
   getEventList(className) {
     const t = this.eventList.get(className);
@@ -70,7 +132,7 @@ export default class PhotoRoot{
 
   /**
    * 从事件队列中移除对象
-   * @param className
+   * @param {string} className
    */
   deleteEventList(className) {
     this.eventList.delete(className);
@@ -78,7 +140,7 @@ export default class PhotoRoot{
 
   /**
    * 添加对象到事件优先队列
-   * @param pe
+   * @param {module:vue-picture-cut.PhotoBasic} pe
    */
   setPriority(pe) {
     if (!this.priorityEvent) {
@@ -88,6 +150,7 @@ export default class PhotoRoot{
 
   /**
    * 从事件优先队列中获取对象
+   * @returns {module:vue-picture-cut.PhotoBasic|null}
    */
   getPriority() {
     if (this.priorityEvent) {
@@ -111,6 +174,7 @@ export default class PhotoRoot{
    * @private
    */
   _eventInit () {
+    if (!this.root) return;
     this.root.addEventListener('touchstart', event =>  {
       const e = event || window.event;
       e.preventDefault();
@@ -151,6 +215,11 @@ export default class PhotoRoot{
     }, false);
     this.isFirefox ?
       this.root.addEventListener('DOMMouseScroll', event => {
+        /**
+         * 鼠标滚轮事件
+         * @type {WheelEvent}
+         */
+        // @ts-ignore
         const e = event || window.event;
         e.preventDefault();
         const delta = e.detail * -40;
@@ -160,8 +229,14 @@ export default class PhotoRoot{
         });
       }, false) :
       this.root.addEventListener('mousewheel', event => {
+        /**
+         * 鼠标滚轮事件
+         * @type {WheelEvent}
+         */
+        // @ts-ignore
         const e = event || window.event;
         e.preventDefault();
+        // @ts-ignore
         const delta = e.wheelDelta || e.detail;
         this._mouseWheel(delta, {
           x: e.offsetX * this.magnification - this.core.x,
@@ -170,6 +245,11 @@ export default class PhotoRoot{
       }, false);
   }
 
+  /**
+   * 触摸事件
+   * @param {TouchList} touches
+   * @private
+   */
   _touchStart(touches) {
     const cts = Array.from(touches).map(t => this._getTouchePoint(t));
     if (this.priorityEvent) {
@@ -190,6 +270,11 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 触摸事件
+   * @param {TouchList} touches
+   * @private
+   */
   _touchEnd (touches) {
     const cts = Array.from(touches).map(t => this._getTouchePoint(t));
     if (this.priorityEvent) {
@@ -199,6 +284,11 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 触摸事件
+   * @param {TouchList} touches
+   * @private
+   */
   _touchMove (touches) {
     const cts = Array.from(touches).map(t => this._getTouchePoint(t));
     if (this.priorityEvent) {
@@ -208,6 +298,11 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 鼠标事件
+   * @param {MouseEvent} e
+   * @private
+   */
   _mouseDown (e) {
     const cts = [this._getMousePoint(e)];
     if (this.priorityEvent) {
@@ -228,6 +323,11 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 鼠标事件
+   * @param {MouseEvent} e
+   * @private
+   */
   _mouseUp (e) {
     const cts = [this._getMousePoint(e)];
     if (this.priorityEvent) {
@@ -237,6 +337,11 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 鼠标事件
+   * @param {MouseEvent} e
+   * @private
+   */
   _mouseMove (e) {
     const cts = [this._getMousePoint(e)];
     if (this.priorityEvent) {
@@ -246,24 +351,36 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 鼠标滚轮事件
+   * @param {number} zoom
+   * @param {module:vue-picture-cut.Point} point
+   * @private
+   */
   _mouseWheel (zoom, point) {
     clearTimeout(this._wheelTimeOut);
     const now = Date.now();
-    const isStart = now - this._wheelTime > 400 && !this._wheelstatus;
+    const isStart = now - this._wheelTime > 400 && !this._wheelStatus;
     if (isStart) {
       // 滚轮开始
-      this._wheelstatus = true;
+      this._wheelStatus = true;
       this._wheelStart(zoom, point);
     }
     this._wheelTime = now;
     this._wheelTimeOut = setTimeout(() => {
       // 滚轮结束
-      this._wheelstatus = false;
+      this._wheelStatus = false;
       this._wheelEnd(zoom, point);
     }, 400);
     isStart || this._wheelChange(zoom, point);
   }
 
+  /**
+   * 滚轮事件
+   * @param {number} zoom
+   * @param {module:vue-picture-cut.Point} point
+   * @private
+   */
   _wheelStart(zoom, point) {
     if (this.priorityEvent) {
       this.priorityEvent.wheelStart(zoom, $tool.cloneJSON(point));
@@ -283,6 +400,12 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 滚轮事件
+   * @param {number} zoom
+   * @param {module:vue-picture-cut.Point} point
+   * @private
+   */
   _wheelChange(zoom, point) {
     if (this.priorityEvent) {
       this.priorityEvent.wheelChange(zoom, $tool.cloneJSON(point));
@@ -291,6 +414,12 @@ export default class PhotoRoot{
     }
   }
 
+  /**
+   * 滚轮事件
+   * @param {number} zoom
+   * @param {module:vue-picture-cut.Point} point
+   * @private
+   */
   _wheelEnd(zoom, point) {
     if (this.priorityEvent) {
       this.priorityEvent.wheelEnd(zoom, $tool.cloneJSON(point));
@@ -301,11 +430,12 @@ export default class PhotoRoot{
 
   /**
    * 获取手指
-   * @param ct
+   * @param {Touch} ct
+   * @returns {module:vue-picture-cut.TouchePoint|void}
    * @private
    */
   _getTouchePoint (ct) {
-    console.log(ct)
+    if (!this.root) return;
     const elOffset = this._getClientPosition(this.root, {x: 0, y: 0});
     return {
       x: (ct.clientX - elOffset.x) * this.magnification - this.core.x,
@@ -316,7 +446,8 @@ export default class PhotoRoot{
 
   /**
    * 获取鼠标
-   * @param ct
+   * @param {MouseEvent} ct
+   * @returns {module:vue-picture-cut.TouchePoint}
    * @private
    */
   _getMousePoint (ct) {
@@ -329,8 +460,9 @@ export default class PhotoRoot{
 
   /**
    * 计算dom元素相对于网页左上角的绝对坐标
-   * @param el
-   * @param p
+   * @param {HTMLElement} el
+   * @param {module:vue-picture-cut.Point} p
+   * @returns {module:vue-picture-cut.Point}
    * @private
    */
   _getClientPosition (el, p) {

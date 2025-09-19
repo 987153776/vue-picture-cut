@@ -3,51 +3,119 @@ import $tool from './tool';
 
 /**
  * 主画布
+ * @class {module:vue-picture-cut.PhotoMain} PhotoMain
  */
 export default class PhotoMain{
 
   className = 'PhotoMain';
 
+  /**
+   * @type {HTMLCanvasElement}
+   * @private
+   */
   _canvas;
+  /**
+   * @type {CanvasRenderingContext2D}
+   * @private
+   */
   _ctx;
+  /**
+   * @type {module:vue-picture-cut.PhotoRoot}
+   * @private
+   */
   _root;
-  // 当前展示的图片的源src
+  /**
+   * 当前展示的图片的源src
+   * @type {string | undefined}
+   * @private
+   */
   _src;
-  // 当前展示的图片（原始未处理的）
+  /**
+   * 当前展示的图片（原始未处理的）
+   * @type {HTMLImageElement | undefined}
+   * @private
+   */
   originalImg;
-  // 当前展示的图片（已被处理成宽高小于1500像素）
+  /**
+   * 当前展示的图片（已被处理成宽高小于1500像素）
+   * @type {HTMLImageElement | undefined}
+   * @private
+   */
   img;
-  // 图片矩形
+  /**
+   * 图片矩形
+   * @type {module:vue-picture-cut.Rect}
+   */
   imgRect = { x: 0, y: 0, w: 0, h: 0};
-  // 显示矩形
+  /**
+   * 显示矩形
+   * @type {module:vue-picture-cut.RectFull}
+   */
   showRect = { x: 0, y: 0, w: 0, h: 0, r: 0, sV: 1, sH: 1 };
+  /**
+   * @type {module:vue-picture-cut.RectFull}
+   * @private
+   */
   _showRect;
-  // 图片可移动范围
+  /**
+   * 图片可移动范围
+   * @type {module:vue-picture-cut.Rect2}
+   * @private
+   */
   _moveRect = { minX: null, minY: null, maxX: null, maxY: null };
-  // 当前触点
+  /**
+   * 当前触点
+   * @type {module:vue-picture-cut.TouchePoint[]}
+   * @private
+   */
   _touchList= [];
-  // 当前状态
+  /**
+   * 当前状态
+   * @type {string | null}
+   * @private
+   */
   _status = null;
-  // 单指(或双指中心)初始偏移量
+  /**
+   * 单指(或双指中心)初始偏移量
+   * @type {module:vue-picture-cut.Point}
+   * @private
+   */
   _touchstartPoint = {x: 0, y: 0};
-  // 初始触点记录
+  /**
+   * 初始触点记录
+   * @type {module:vue-picture-cut.DoubleToucheEvent}
+   * @private
+   */
   _touchstartEvent = $tool.doubleTouche({x: 0, y: 0, id: 0});
 
+  /**
+   * @type {module:vue-picture-cut.Animation|undefined}
+   * @private
+   */
   _animation = undefined;
 
+  /**
+   * @type {number | null}
+   * @private
+   */
   _scaleTimer = null
 
-  _loadingEvent;
+  /**
+   * @type {module:vue-picture-cut.LoadImgCallback|undefined}
+   * @private
+   */
+  _loadingEvent = undefined;
 
   /**
    * 供外部使用，注入的方法会在每次加载图片后执行
+   * @type {module:vue-picture-cut.LoadImgCallbackMap}
    */
   loadImgEd = new Map();
 
   /**
    * 构造函数
-   * @param el
-   * @param root
+   * @param {HTMLCanvasElement} el - canvas画布
+   * @param {module:vue-picture-cut.PhotoRoot} root
    */
   constructor(el, root) {
     el.width = root.drawWidth;
@@ -55,15 +123,16 @@ export default class PhotoMain{
     root.addEventList(this);
     this._root = root;
     this._canvas = el;
+    // @ts-ignore
     this._ctx = el.getContext('2d');
     this._ctx.translate(this._root.core.x, this._root.core.y);
   }
 
   /**
    * 载入图片
-   * @param src
-   * @param angle
-   * @param _n
+   * @param {string} src - 图片地址
+   * @param {number} angle - 图片旋转角度
+   * @param {number} _n - 递归次数
    */
   setSrc(src, angle = this.showRect.r, _n = 0) {
     this.clear();
@@ -140,13 +209,13 @@ export default class PhotoMain{
 
   /**
    * 设置图片可移动范围
-   * @param minX
-   * @param minY
-   * @param maxX
-   * @param maxY
-   * @param offPoint  中心偏移量
-   * @param zoom      放大系数
-   * @return          计算之后的图片坐标偏移量
+   * @param {number} minX
+   * @param {number} minY
+   * @param {number} maxX
+   * @param {number} maxY
+   * @param {module:vue-picture-cut.Point} [offPoint] - 中心偏移量
+   * @param {number} [zoom] - 放大系数
+   * @return {[number, number, number, number]} - 计算之后的图片坐标偏移量
    */
   setMoveRange(minX, minY, maxX, maxY, offPoint, zoom) {
 
@@ -180,8 +249,8 @@ export default class PhotoMain{
 
   /**
    * 设置旋转角度
-   * @param angle       // 角度
-   * @param animation   // 是否动画
+   * @param {number} angle - 角度
+   * @param {boolean} animation=false - 是否动画
    */
   setAngle (angle, animation = false) {
     if (this.img) {
@@ -203,9 +272,9 @@ export default class PhotoMain{
 
   /**
    * 设置图片翻折
-   * @param sV  垂直翻折
-   * @param sH  水平翻折
-   * @param animation   // 是否动画
+   * @param {boolean} sV - 垂直翻折
+   * @param {boolean} sH - 水平翻折
+   * @param {boolean} animation=false - 是否动画
    */
   setFlip (sV, sH, animation = false) {
     const sh = this.showRect.sH === -1;
@@ -225,8 +294,8 @@ export default class PhotoMain{
 
   /**
    * 设置图片垂直翻折
-   * @param sV  垂直翻折
-   * @param animation   // 是否动画
+   * @param {boolean} sV - 垂直翻折
+   * @param {boolean} animation=false - 是否动画
    */
   setFlipV (sV, animation = false) {
     const sv = this.showRect.sV === -1;
@@ -244,8 +313,8 @@ export default class PhotoMain{
 
   /**
    * 设置图片水平翻折
-   * @param sH  水平翻折
-   * @param animation   // 是否动画
+   * @param {boolean} sH - 水平翻折
+   * @param {boolean} animation=false - 是否动画
    */
   setFlipH (sH, animation = false) {
     const sh = this.showRect.sH === -1;
@@ -263,7 +332,7 @@ export default class PhotoMain{
 
   /**
    * 缩放
-   * @param zoom  缩放系数，大于1(放大)，大于0小于1(缩小)
+   * @param {number} zoom - 缩放系数，大于1(放大)，大于0小于1(缩小)
    */
   scale (zoom) {
     if (!this.img || zoom < 0 || zoom === 1) return;
@@ -281,7 +350,7 @@ export default class PhotoMain{
 
   /**
    * 监听图片加载过程
-   * @param callback
+   * @param {(loading: boolean) => void} callback
    */
   onLoading (callback) {
     this._loadingEvent = callback;
@@ -289,7 +358,7 @@ export default class PhotoMain{
 
   /**
    * 设置图片矩形
-   * @param showRect
+   * @param {module:vue-picture-cut.RectFull} showRect - 矩形
    */
   setShowRect (showRect) {
     if (this.img) {
@@ -300,15 +369,20 @@ export default class PhotoMain{
 
   /**
    * 将图片上的坐标映射到画布上
-   * @param point
+   * @param {module:vue-picture-cut.Point} point
+   * @returns {module:vue-picture-cut.Point}
+   * @private
    */
   _changePointByCanvas (point){
     const { r } = this.showRect;
     return $tool.rotatePoint(point.x, point.y, r);
   }
+
   /**
    * 将画布上的坐标映射到图片上
-   * @param point
+   * @param {module:vue-picture-cut.Point} point
+   * @returns {module:vue-picture-cut.Point}
+   * @private
    */
   _changePointByImage (point){
     const { r } = this.showRect;
@@ -348,6 +422,10 @@ export default class PhotoMain{
 
   /**
    * 初始化图片可移动范围
+   * @param {number | null} minX=null
+   * @param {number | null} minY=null
+   * @param {number | null} maxX=null
+   * @param {number | null} maxY=null
    * @private
    */
   _initMoveRange (minX = null, minY = null, maxX = null, maxY = null) {
@@ -379,8 +457,8 @@ export default class PhotoMain{
 
   /**
    * 绘制画布
-   * @param imgRect   图片矩形
-   * @param showRect  将要显示的矩形
+   * @param {module:vue-picture-cut.Rect} imgRect - 图片矩形
+   * @param {module:vue-picture-cut.RectFull} showRect - 将要显示的矩形
    * @private
    */
   _draw(imgRect, showRect) {
@@ -587,7 +665,8 @@ export default class PhotoMain{
 
   /**
    * 获取core相对图片的位置
-   * @param core
+   * @param {module:vue-picture-cut.Point} core
+   * @returns {module:vue-picture-cut.Point}
    * @private
    */
   _getPointerLocation(core) {
@@ -596,6 +675,7 @@ export default class PhotoMain{
 
   /**
    * 移动图片
+   * @param {module:vue-picture-cut.Point} core
    * @private
    */
   _move(core) {
@@ -607,7 +687,7 @@ export default class PhotoMain{
 
   /**
    * 缩放图片
-   * @param e
+   * @param {module:vue-picture-cut.DoubleToucheEvent} e
    * @private
    */
   _scaleByLocation(e) {
@@ -620,9 +700,9 @@ export default class PhotoMain{
 
   /**
    * 缩放图片
-   * @param zoom
-   * @param core
-   * @param angle
+   * @param {number} zoom=1
+   * @param {module:vue-picture-cut.Point} core
+   * @param {number} angle=0
    * @private
    */
   _scaleByZoom(zoom = 1, core, angle = 0) {
@@ -644,9 +724,9 @@ export default class PhotoMain{
 
   /**
    * 检查图片是否在可移动范围内
-   * @param showRect
+   * @param {module:vue-picture-cut.RectFull} showRect
+   * @returns {[number, number, number, number]}
    * @private
-   * @return    坐标偏移量
    */
   _checkRange(showRect = this.showRect) {
     let { x: cx, y: cy } = showRect;
@@ -659,7 +739,7 @@ export default class PhotoMain{
     maxX = maxX || 0;
     maxY = maxY || 0;
     let nx = cx, ny = cy, nw = cw, nh = ch;
-    let rl = this._getPohtoByRangeLocation([cx, cy, cw, ch]);
+    let rl = this._getPhotoByRangeLocation([cx, cy, cw, ch]);
     const imgOff = cw / ch;
     if (rl[4] <= 0) {
       nw = maxX - minX;
@@ -667,14 +747,14 @@ export default class PhotoMain{
       nx = cx + (cw - nw) / 2;
       ny = cy + (ch - nh) / 2;
     }
-    rl = this._getPohtoByRangeLocation([nx, ny, nw, nh]);
+    rl = this._getPhotoByRangeLocation([nx, ny, nw, nh]);
     if (rl[5] <= 0) {
       nh = maxY - minY;
       nw = nh * imgOff;
       nx = cx + (cw - nw) / 2;
       ny = cy + (ch - nh) / 2;
     }
-    rl = this._getPohtoByRangeLocation([nx, ny, nw, nh]);
+    rl = this._getPhotoByRangeLocation([nx, ny, nw, nh]);
     if (rl[0] > 0) nx -= rl[0];
     if (rl[1] > 0) ny -= rl[1];
     if (rl[2] < 0) nx -= rl[2];
@@ -690,10 +770,11 @@ export default class PhotoMain{
 
   /**
    * 获取图片相对可移动范围的各边坐标的偏移量
-   * @param newLocation
+   * @param {[number, number, number, number]} [newLocation]
+   * @returns {[number, number, number, number, number, number]} - 坐标偏移量
    * @private
    */
-  _getPohtoByRangeLocation(newLocation) {
+  _getPhotoByRangeLocation(newLocation) {
     let { x, y, w, h } = this.showRect;
     const { minX, minY, maxX, maxY } = this._moveRect;
     if (newLocation) {
@@ -711,15 +792,14 @@ export default class PhotoMain{
 
   /**
    * 动画
-   * @param offX 偏移量
-   * @param offY 偏移量
-   * @param offW 偏移量
-   * @param offH 偏移量
-   * @param offR 偏移量
-   * @param offSV 偏移量
-   * @param offSH 偏移量
-   * @param endCallback 结束时的回调
-   * @private
+   * @param {number} offX - 偏移量
+   * @param {number} offY - 偏移量
+   * @param {number} offW - 偏移量
+   * @param {number} offH - 偏移量
+   * @param {number} offR - 偏移量
+   * @param {boolean} [offSV] - 偏移量
+   * @param {boolean} [offSH] - 偏移量
+   * @param {Function} [endCallback] - 结束时的回调
    */
   doAnimation(offX, offY, offW, offH, offR, offSV, offSH, endCallback) {
     if (!offX && !offY && !offW && !offH && !offR && offSV === undefined && offSH === undefined) {

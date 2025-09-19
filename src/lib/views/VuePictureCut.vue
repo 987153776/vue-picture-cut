@@ -37,8 +37,8 @@
 
 <script>
 import PhotoRoot from './PhotoRoot';
-import VuePictureCutCanvas from './vue-picture-cut-canvas.vue';
-import VuePictureCutMask from './vue-picture-cut-mask.vue';
+import VuePictureCutCanvas from './VuePictureCutCanvas';
+import VuePictureCutMask from './VuePictureCutMask';
 
 export default {
   name: 'VuePictureCut',

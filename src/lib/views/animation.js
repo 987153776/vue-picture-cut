@@ -27,11 +27,21 @@ import Bezier, { BEZIER } from './Bezier';
   }
 }());
 
+/**
+ * 主画布
+ * @class {module:vue-picture-cut.Animation} Animation
+ */
 class Animation {
+  /**
+   * 贝塞尔曲线
+   * @type {module:vue-picture-cut.Bezier}
+   * @private
+   */
   _bezier = new Bezier();
   /**
    * 动画持续时间，单位毫秒，
    * 默认1000毫秒。
+   * @type {number}
    */
   _duration = 1000;
   /**
@@ -42,16 +52,19 @@ class Animation {
    * ease-out(由快到慢)；
    * ease-in-out(由慢到快再到慢)；
    * [[x1,y1],[x1,y1]...](数组,[x1,y1]表示点1的坐标,[x2,y2]表示点2的坐标)。
+   * @type {module:vue-picture-cut.Bezier|string}
    */
   _timing = [];
   /**
    * 动画的延迟时间，单位毫秒，
    * 默认0毫秒。
+   * @type {number}
    */
   _delay = 0
   /**
    * 动画循环次数，infinite为无限循环
    * 默认1次。
+   * @type {number | string}
    */
   _iteration = 1;
   /**
@@ -60,29 +73,39 @@ class Animation {
    * reverse(反向运行)；
    * alternate(先正向，后反向，并交替)；
    * alternate-reverse(先反向，后正向，并交替)。
+   * @type {string}
    */
   _direction = 'normal';
   /**
    * 回调函数，接收参数x，x在0~1之间
+   * @type {module:vue-picture-cut.AnimationParamsChange}
    */
   _change = () => false;
   /**
    * 回调函数，动画结束时执行
+   * @type {module:vue-picture-cut.AnimationParamsEnd}
    */
   _end = () => undefined;
   /**
    * 包含循环的总的时间
+   * @type {number}
    */
   _times;
   /**
    * 动画开始时的时间
+   * @type {number}
    */
-  startTime = 0;
+  _startTime = 0;
   /**
    * 动画状态
+   * @type {number}
    */
-  id = 0;
+  _id = 0;
 
+  /**
+   * 构造函数
+   * @param {module:vue-picture-cut.AnimationParams} option
+   */
   constructor(option) {
     if (option.duration !== void 0) this._duration = option.duration;
     if (option.timing !== void 0) {
@@ -99,7 +122,8 @@ class Animation {
     if (option.end !== void 0) this._end = option.end;
 
     // 包含循环的总的时间
-    const times = (this._iteration === 'infinite') ? 9999999999999 : (this._iteration * this._duration);
+    // @ts-ignore
+    const times = (this._iteration === 'infinite') ? Infinity : (this._iteration * this._duration);
     // 如果动画正反向交替进行，则总时间乘以2
     this._times = (this._direction === 'alternate' || this._direction === 'alternate-reverse') ? (2 * times) : times;
 
@@ -111,24 +135,24 @@ class Animation {
    */
   start () {
     // 动画开始时的时间
-    this.startTime = 0;
+    this._startTime = 0;
     // 判断延迟执行
     if (this._delay) {
       setTimeout(() => {
-        this.startTime = Date.now();
+        this._startTime = Date.now();
         this._do();
       }, this._delay);
     } else {
-      this.startTime = Date.now();
+      this._startTime = Date.now();
       this._do();
     }
     return this;
   }
 
   _do() {
-    this.id = requestAnimationFrame(() => {
+    this._id = requestAnimationFrame(() => {
       // 动画运行的时间，毫秒
-      const difT = Date.now() - this.startTime;
+      const difT = Date.now() - this._startTime;
 
       let difT2 = difT / this._duration;
       // 运行的次数
@@ -165,11 +189,11 @@ class Animation {
 
   /**
    * 中止动画
-   * @param doEnd 是否执行动画结束时的回调
+   * @param {boolean} doEnd 是否执行动画结束时的回调
    */
   abort (doEnd = false) {
-    this.id > 0 && cancelAnimationFrame(this.id);
-    this.id = 0;
+    this._id > 0 && cancelAnimationFrame(this._id);
+    this._id = 0;
     doEnd && this._end();
   }
 }

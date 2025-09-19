@@ -14,6 +14,7 @@ const cursorConfig = new Map([
 
 /**
  * 遮罩
+ * @class {module:vue-picture-cut.PhotoMask} PhotoMask
  */
 export default class PhotoMask {
 
@@ -31,21 +32,33 @@ export default class PhotoMask {
   _faultTolerant;
   _maskRect;
   __maskRect;
-  // 当前触点
+  /**
+   * @type {module:vue-picture-cut.TouchePoint|null}
+   * @private
+   */
   _touche = null;
+  /**
+   * @type {string | void}
+   * @private
+   */
   _touchePosition = undefined;
 
+  /**
+   * 当前触点
+   * @type {module:vue-picture-cut.Animation|void}
+   * @private
+   */
   __animation = undefined;
 
   _draw;
 
   /**
    * 构造函数
-   * @param root    PhotoRoot引用
-   * @param width   裁剪框宽
-   * @param height  裁剪框高
-   * @param resize  是否可以调整比例
-   * @param draw
+   * @param {module:vue-picture-cut.PhotoRoot} root - PhotoRoot引用
+   * @param {number} width - 裁剪框宽
+   * @param {number} height - 裁剪框高
+   * @param {boolean} resize - 是否可以调整比例
+   * @param {module:vue-picture-cut.Draw} draw
    */
   constructor(root, width, height, resize, draw) {
     root.addEventList(this);
@@ -68,15 +81,19 @@ export default class PhotoMask {
     }
   }
 
-  getmaskRect() {
+  /**
+   * 获取裁剪框矩形
+   * @return {module:vue-picture-cut.Rect}
+   */
+  getMaskRect() {
     return this._maskRect;
   }
 
   /**
    * 重新设置裁剪框宽高比例
-   * @param photoMain   // 原PhotoMain对象
-   * @param newObj      // 该json会与photoMain合并
-   * @param animation   // 改变图片的矩形是否经过动画
+   * @param {module:vue-picture-cut.PhotoMain} photoMain - 原PhotoMain对象
+   * @param {{}} newObj - 该json会与photoMain合并
+   * @param {boolean} animation=false - 改变图片的矩形是否经过动画
    * @private
    */
   _reset(photoMain, newObj = {}, animation = false) {
@@ -109,8 +126,8 @@ export default class PhotoMask {
 
   /**
    * 重新设置裁剪框宽高比例
-   * @param width
-   * @param height
+   * @param {number} width
+   * @param {number} height
    */
   reset(width, height) {
     this.width = width || 1;
@@ -143,10 +160,18 @@ export default class PhotoMask {
   }
 
 
+  /**
+   * 是否圆形裁剪
+   * @returns {boolean}
+   */
   get isRound() {
     return this._isRound;
   }
 
+  /**
+   * 设置圆形裁剪
+   * @param {boolean} value
+   */
   set isRound(value) {
     this._isRound = value;
     this._draw(this._maskRect, false, this);
@@ -155,7 +180,7 @@ export default class PhotoMask {
 
   /**
    * 设置是否可拖动改变裁剪框比例
-   * @param value
+   * @param {boolean} value
    */
   setResize(value) {
     if (!value) {
@@ -165,15 +190,20 @@ export default class PhotoMask {
     this._draw(this._maskRect, false, this);
   }
 
+  /**
+   * 获取是否可拖动改变裁剪框比例
+   * @returns {boolean}
+   */
   getResize() {
     return this._resize;
   }
 
   /**
    * 裁剪
-   * @maxPixel          裁剪长边像素
-   * @encoderOptions    裁剪压缩率(仅jpg)
-   * @format            裁剪格式
+   * @param {number} [maxPixel] - 裁剪长边像素
+   * @param {number} [encoderOptions] - 裁剪压缩率(仅jpg)
+   * @param {string} [format] - 裁剪格式
+   * @returns {module:vue-picture-cut.ClipResult|null}
    */
   clip(maxPixel, encoderOptions, format) {
     const photoMain = this._root.getEventList('PhotoMain');
@@ -216,6 +246,8 @@ export default class PhotoMask {
 
   /**
    * 计算裁剪框矩形
+   * @returns {module:vue-picture-cut.Rect}
+   * @private
    */
   _getMaskRect() {
     const k1 = this.width / this.height;
@@ -238,6 +270,10 @@ export default class PhotoMask {
 
   /**
    * 动画
+   * @param {number} offX
+   * @param {number} offY
+   * @param {number} offW
+   * @param {number} offH
    * @private
    */
   _animation(offX, offY, offW, offH) {
@@ -275,10 +311,10 @@ export default class PhotoMask {
 
   /**
    * 指定坐标与裁剪框边框的碰撞检测
-   * @param x
-   * @param y
+   * @param {number} x
+   * @param {number} y
+   * @returns {string | void} - 返回碰撞位置
    * @private
-   * @return 返回碰撞位置
    */
   _isHover (x, y) {
     const ft = this._faultTolerant;
@@ -303,6 +339,10 @@ export default class PhotoMask {
     }
   }
 
+  /**
+   * 触摸开始
+   * @param {module:vue-picture-cut.TouchePoint[]} tps
+   */
   touchStart(tps) {
     if (this._resize && this._touche === null) {
       const tp = tps[0];
@@ -315,6 +355,9 @@ export default class PhotoMask {
     }
   }
 
+  /**
+   * 触摸结束
+   */
   touchEnd() {
     if (this._touche !== null && this._touchePosition) {
       this._touche = null;
@@ -334,6 +377,10 @@ export default class PhotoMask {
     }
   }
 
+  /**
+   * 触摸移动
+   * @param {module:vue-picture-cut.TouchePoint[]} tps
+   */
   touchMove(tps) {
     if (this._resize && this._touche !== null && this._touchePosition) {
       const toucheId = this._touche.id;
@@ -360,23 +407,43 @@ export default class PhotoMask {
   wheelEnd() {}
   wheelChange() {}
 
+  /**
+   * 移动上边框
+   * @param {module:vue-picture-cut.TouchePoint} tp
+   * @private
+   */
   _moveTop (tp) {
     const _y = tp.y - this._touche.y;
     this._maskRect.y += _y;
     this._maskRect.h -= _y;
   }
 
+  /**
+   * 移动下边框
+   * @param {module:vue-picture-cut.TouchePoint} tp
+   * @private
+   */
   _moveBottom (tp) {
     const _y = tp.y - this._touche.y;
     this._maskRect.h += _y;
   }
 
+  /**
+   * 移动左边框
+   * @param {module:vue-picture-cut.TouchePoint} tp
+   * @private
+   */
   _moveLeft (tp) {
     const _x = tp.x - this._touche.x;
     this._maskRect.x += _x;
     this._maskRect.w -= _x;
   }
 
+  /**
+   * 移动右边框
+   * @param {module:vue-picture-cut.TouchePoint} tp
+   * @private
+   */
   _moveRight (tp) {
     const _x = tp.x - this._touche.x;
     this._maskRect.w += _x;

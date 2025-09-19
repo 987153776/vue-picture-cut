@@ -3,6 +3,7 @@
   "version": "3.0.0-alpha.0",
   "description": "基于vue和typescript开发的一款图片剪裁处理工具。优点：原生、轻量、使用简单、功能全面、扩展性强。目前功能：缩放、翻折、旋转、边缘校验、矩形剪裁、任意(椭)圆剪裁。",
   "main": "lib/vue-picture-cut.umd.min.js",
+  "types": "types/index.d.ts",
   "directories": {
     "test": "tests"
   },
@@ -33,13 +34,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name vue-picture-cut --dest lib src/lib/index.ts"
+    "lib": "vue-cli-service build --target lib --name vue-picture-cut --dest lib src/lib/index.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",

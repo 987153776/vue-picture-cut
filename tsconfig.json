@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "allowJs": true,           // 允许编译 JS 文件
+    "checkJs": true,           // 对 JS 文件进行类型检查
+    "noEmit": true,            // 不生成输出文件，只进行类型检查
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "types/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.vue",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}

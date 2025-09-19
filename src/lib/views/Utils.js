@@ -6,10 +6,18 @@ export class Utils {
 
   photoRoot;
 
+  /**
+   * 工具类
+   * @param {module:vue-picture-cut.CutInterface} cut
+   */
   constructor(cut) {
     this.photoRoot = cut.photoRoot;
   }
 
+  /**
+   * 获取图片剪裁
+   * @returns {module:vue-picture-cut.PhotoMask|null}
+   */
   getPhotoMask() {
     if (this.photoRoot) {
       return this.photoRoot.getEventList('PhotoMask');
@@ -17,6 +25,10 @@ export class Utils {
     return null;
   }
 
+  /**
+   * 获取图片主控件
+   * @returns {module:vue-picture-cut.PhotoMain|null}
+   */
   getPhotoMain() {
     if (this.photoRoot) {
       return this.photoRoot.getEventList('PhotoMain');
@@ -26,9 +38,10 @@ export class Utils {
 
   /**
    * 裁剪
-   * @param opt             最大像素
-   * @param encoderOptions  压缩率
-   * @param format          导出格式
+   * @param {number|{maxPixel,encoderOptions,format}} [opt] - 最大像素
+   * @param {number} [encoderOptions] - 压缩率
+   * @param {string} [format] - 导出格式
+   * @returns {module:vue-picture-cut.ClipResult|null}
    */
   cut(opt, encoderOptions, format) {
     if (!this.photoRoot) return null;
@@ -55,7 +68,7 @@ export class Utils {
 
   /**
    * 设置剪裁框是否圆形
-   * @param isRound
+   * @param {boolean} isRound=true
    */
   setMaskRound(isRound = true) {
     if (!this.photoRoot) return;
@@ -67,8 +80,8 @@ export class Utils {
 
   /**
    * 设置剪裁框
-   * @param w   比例宽
-   * @param h   比例高
+   * @param {number} w - 比例宽
+   * @param {number} h - 比例高
    */
   setMaskSize(w, h) {
     if (!this.photoRoot) return;
@@ -78,6 +91,7 @@ export class Utils {
 
   /**
    * 按图片宽高比例设置剪裁框尺寸
+   * @returns {{width: number, height: number} | void}
    */
   setMaskSizeToOriginal () {
     if (!this.photoRoot) return;
@@ -93,7 +107,7 @@ export class Utils {
 
   /**
    * 设置剪裁框是否可拖动改变大小
-   * @param resize
+   * @param {boolean} resize=true
    */
   setMaskResize (resize = true) {
     if (!this.photoRoot) return;
@@ -103,8 +117,9 @@ export class Utils {
 
   /**
    * 图片旋转
-   * @param angle       逆时针角度
-   * @param animation   是否动画
+   * @param {number} angle - 逆时针角度
+   * @param {boolean} animation=false - 是否动画
+   * @returns {number | void}
    */
   rotate (angle, animation = false) {
     if (!this.photoRoot || angle % 360 === 0) return;
@@ -118,8 +133,8 @@ export class Utils {
 
   /**
    * 图片旋转到指定角度
-   * @param angle       逆时针角度
-   * @param animation   是否动画
+   * @param {number} angle - 逆时针角度
+   * @param {boolean} animation=false - 是否动画
    */
   rotateTo (angle, animation = false) {
     if (!this.photoRoot) return;
@@ -131,7 +146,8 @@ export class Utils {
 
   /**
    * 设置图片垂直翻转
-   * @param animation   是否动画
+   * @param {boolean} animation=false - 是否动画
+   * @returns {boolean | void}
    */
   setFlipV(animation) {
     if (!this.photoRoot) return;
@@ -144,9 +160,10 @@ export class Utils {
 
   /**
    * 设置图片水平翻转
-   * @param animation   是否动画
+   * @param {boolean} animation=false - 是否动画
+   * @returns {boolean | void}
    */
-  setFlipH(animation) {
+  setFlipH(animation = false) {
     if (!this.photoRoot) return;
     const main = this.getPhotoMain();
     if (main) {
@@ -157,11 +174,11 @@ export class Utils {
 
   /**
    * 设置图片翻转
-   * @param sV          垂直
-   * @param sH          水平
-   * @param animation   是否动画
+   * @param {boolean} sV - 垂直
+   * @param {boolean} sH - 水平
+   * @param {boolean} animation=false - 是否动画
    */
-  setFlip (sV, sH, animation) {
+  setFlip (sV, sH, animation = false) {
     if (!this.photoRoot) return;
     const main = this.getPhotoMain();
     main?.setFlip(sV, sH, animation);
@@ -169,7 +186,7 @@ export class Utils {
 
   /**
    * 图片缩放
-   * @param zoom    缩放系数
+   * @param {number} zoom - 缩放系数
    */
   scale(zoom){
     const photoMain = this.getPhotoMain();
@@ -178,6 +195,7 @@ export class Utils {
 
   /**
    * 获取控件参数
+   * @returns {module:vue-picture-cut.CutOptions|null}
    */
   getOptions() {
     const root = this.photoRoot;
@@ -197,7 +215,7 @@ export class Utils {
       imgOpt.showRect.y -= imgOpt.showRect.y / 2;
     }
     if (mask) {
-      const maskRect = mask.getmaskRect();
+      const maskRect = mask.getMaskRect();
       maskOpt = {
         isRound: mask.isRound,
         x: maskRect.x - maskRect.w / 2,
@@ -220,6 +238,11 @@ export class Utils {
   }
 }
 
+/**
+ * 创建工具类
+ * @param cut
+ * @returns {Utils}
+ */
 export default function createUtils(cut) {
   if (!cut || !cut.photoRoot) {
     throw new Error(

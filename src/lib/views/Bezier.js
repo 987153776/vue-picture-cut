@@ -11,16 +11,34 @@ export const BEZIER = {
 
 /**
  * n次贝塞尔
+ * @class {module:vue-picture-cut.Bezier} PhotoMain
  */
 export default class Bezier {
 
+  /**
+   * 贝塞尔曲线控制点
+   * @type {[number, number][]}
+   * @private
+   */
   _bezierCtrlNodesArr = [];
 
-  setOpt(Nodes) {
+  constructor(){}
+
+  /**
+   * 设置贝塞尔曲线控制点
+   * @param {[number, number][]} Nodes
+   * @returns {module:vue-picture-cut.Bezier}
+   */
+  setOpt(Nodes = []) {
     this._bezierCtrlNodesArr = Nodes;
     return this;
   }
 
+  /**
+   * 获取贝塞尔曲线点
+   * @param {number} t 时间
+   * @returns {module:vue-picture-cut.Point}
+   */
   getPoint(t) {
     const bezierCtrlNodesArr = this._bezierCtrlNodesArr,
       n = bezierCtrlNodesArr.length - 1;
@@ -42,7 +60,9 @@ export default class Bezier {
 
   /**
    * 递归阶乘
-   * @param num
+   * @param {number} num
+   * @returns {number}
+   * @private
    */
   _factorial(num) { //递归阶乘
     if (num <= 1) {
