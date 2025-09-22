@@ -43,7 +43,12 @@ export default class PhotoRoot{
    * 缩放率
    * @type {number}
    */
-  magnification = 1.5;
+  magnification = window.devicePixelRatio;
+  /**
+   * 开启边缘检测
+   * @type {boolean}
+   */
+  _edgeDetection = false;
   /**
    * 画布中心
    * @type {module:vue-picture-cut.Point}
@@ -79,25 +84,16 @@ export default class PhotoRoot{
    */
   _wheelStatus = false;
 
-  constructor() {}
+  get edgeDetection() {
+    return this._edgeDetection;
+  }
 
-  /**
-   * 初始化
-   * @param {HTMLDivElement} el
-   * @param {number} magnification=1.5
-   */
-  init (el, magnification = 1.5) {
-    this.root = el;
-    this.width = el.offsetWidth;
-    this.height = el.offsetHeight;
-    this.drawWidth = Math.floor(this.width * magnification);
-    this.drawHeight = Math.floor(this.height * magnification);
-    this.magnification = magnification;
-    this.core = {
-      x: Math.floor(this.drawWidth / 2),
-      y: Math.floor(this.drawHeight / 2)
-    };
-    this._eventInit();
+  set edgeDetection(value) {
+    this._edgeDetection = value;
+    const photoMain = this.getEventList('PhotoMain');
+    if (photoMain) {
+      photoMain.emitCheckRange();
+    }
   }
 
   /**
@@ -108,6 +104,31 @@ export default class PhotoRoot{
     if (!this.root) return;
     this.root.style.cursor = value;
   }
+
+  constructor() {}
+
+  /**
+   * 初始化
+   * @param {HTMLDivElement} el
+   * @param {module:vue-picture-cut.PhotoRootInitParams} [options={}]
+   */
+  init (el, options = {}) {
+    let magnification = options.magnification || 1.5;
+    let edgeDetection = !!options.edgeDetection || false;
+    this.root = el;
+    this.width = el.offsetWidth;
+    this.height = el.offsetHeight;
+    this.drawWidth = Math.floor(this.width * magnification);
+    this.drawHeight = Math.floor(this.height * magnification);
+    this.magnification = magnification;
+    this.edgeDetection = edgeDetection;
+    this.core = {
+      x: Math.floor(this.drawWidth / 2),
+      y: Math.floor(this.drawHeight / 2)
+    };
+    this._eventInit();
+  }
+
 
   /**
    * 添加对象到事件队列中
@@ -468,7 +489,6 @@ export default class PhotoRoot{
   _getClientPosition (el, p) {
     // const rect = el.getClientRects()[0];
     const rect = el.getBoundingClientRect();
-    console.log(rect.top)
     p.x += rect.left;
     p.y += rect.top;
     return p;

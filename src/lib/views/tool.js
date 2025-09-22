@@ -146,7 +146,11 @@ function loadCrossDomainImg (src) {
   });
 }
 
-export default {
+/**
+ * 工具类
+ * @type {module:vue-picture-cut.Tool}
+ */
+const tool = {
   rotatePoint,
   loadCrossDomainImg,
   /**
@@ -181,8 +185,8 @@ export default {
    * @param {number} width - 裁剪宽
    * @param {number} height - 裁剪高
    * @param {module:vue-picture-cut.RectFull} showRect - 显示图片的矩形
-   * @param {number} encoderOptions=0.8 - 压缩率
-   * @param {string} format='image/jpeg' - 导出格式
+   * @param {number} [encoderOptions=0.8] - 压缩率
+   * @param {string} [format='image/jpeg'] - 导出格式
    * @param {module:vue-picture-cut.PathDone} [pathDone] - 绘制剪裁路径
    * @returns {string}
    */
@@ -231,8 +235,8 @@ export default {
    * @param {number} width - 裁剪宽
    * @param {number} height - 裁剪高
    * @param {module:vue-picture-cut.RectFull} showRect - 显示图片的矩形
-   * @param {number} encoderOptions=0.8 - 压缩率
-   * @param {string} format='image/jpeg' - 导出格式
+   * @param {number} [encoderOptions=0.8] - 压缩率
+   * @param {string} [format='image/jpeg'] - 导出格式
    * @returns {string}
    */
   clipByRound (img,
@@ -255,8 +259,8 @@ export default {
   /**
    * 若图片宽或高大于max，则压缩图片
    * @param {HTMLImageElement} img
-   * @param {number} max=2000
-   * @param {number} encoderOptions=1
+   * @param {number} [max=2000]
+   * @param {number} [encoderOptions=1]
    * @returns {module:vue-picture-cut.ClipResult|void}
    */
   clipByMax (img,
@@ -294,7 +298,7 @@ export default {
   /**
    * 将base64转Blob对象
    * @param {string} base64
-   * @param {string} format='image/jpeg'
+   * @param {string} [format='image/jpeg']
    * @returns {Blob | null}
    */
   base64ToBlob (base64, format = 'image/jpeg') {
@@ -402,5 +406,56 @@ export default {
       w: nx + nx,
       h: ny + ny
     };
-  }
+  },
+
+  /**
+   * 函数防抖
+   * @param {function} func
+   * @param {number} [delay=300] - 延迟时间
+   * @param {boolean} [immediate=false] - 是否立即执行
+   * @returns {function}
+   */
+  debounce(func, delay = 300, immediate = false) {
+    let timer = null;
+    return function (...args) {
+      const callNow = immediate && !timer;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      if (callNow) {
+        // @ts-ignore
+        func.apply(this, args);
+      }
+      timer = setTimeout(() => {
+        timer = null; // 重置 timer，为下一次立即执行做准备
+        if (!immediate) {
+          // @ts-ignore
+          func.apply(this, args);
+        }
+      }, delay);
+    };
+  },
+
+  /**
+   * 函数节流
+   * @param {function} func
+   * @param {number} [delay=300] - 延迟时间
+   * @returns {function}
+   */
+  throttle(func, delay = 300) {
+    let previous = 0; // 上一次执行的时间戳
+    return function (...args) {
+      const now = Date.now(); // 获取当前时间
+
+      // 如果距离上一次执行的时间超过了 delay，则执行函数
+      if (now - previous >= delay){
+        // @ts-ignore{
+        func.apply(this, args);
+        previous = now; // 更新上一次执行的时间
+      }
+    }
+  },
+
 }
+
+export default tool;

@@ -102,7 +102,7 @@ export default {
     // 是否显示旋转控件
     rotateControl: {
       type: Boolean,
-      required: false
+      default: false
     },
     // 菜单栏宽度/高度
     menuThickness: {
@@ -114,6 +114,11 @@ export default {
       type: String,
       default: 'bottom'
     },
+    // 是否开启边缘检测
+    edgeDetection: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -198,6 +203,9 @@ export default {
       if (photoMain) {
         photoMain.setAngle(parseInt(to));
       }
+    },
+    edgeDetection(to) {
+      this.photoRoot.edgeDetection = to;
     }
   },
   created () {

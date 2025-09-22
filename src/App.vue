@@ -29,6 +29,7 @@
     <vue-picture-cut class="cut" ref="pictureCut" :src="src"
                      :init-angle="form.initAngle"
                      :msk-option="mskOption"
+                     :edge-detection="form.edgeDetection"
                      :background-color="form.backgroundColor">
       <vue-picture-cut-menu slot="menu"
                             :max-pixel="form.maxPixel"
@@ -78,8 +79,11 @@
           <el-button size="small" type="primary">{{ config(language, 'Select') }}</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item :label="'😱' + config(language, 'reset') + ':'">
+      <el-form-item :label="'🥳' + config(language, 'reset') + ':'">
         <el-button size="small" type="primary" @click="reset">{{ config(language, 'do') }}</el-button>
+      </el-form-item>
+      <el-form-item :label="'😱' + config(language, 'edge detection') + ':'">
+        <el-switch v-model="form.edgeDetection"></el-switch>
       </el-form-item>
       <el-form-item :label="'😱' + config(language, 'Canvas bgColor') + ':'">
         <el-color-picker v-model="form.backgroundColor" show-alpha></el-color-picker>
@@ -154,6 +158,7 @@ export default {
       pictureCut: null,
       utils: Utils,
       form: {
+        edgeDetection: false,
         backgroundColor: undefined,
         maskColor: undefined,
         maskBorderColor: undefined,

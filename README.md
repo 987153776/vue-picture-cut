@@ -137,6 +137,7 @@ Tools：`Bezier`、`createAnimation`、`Tool`、`createUtils`。
     :encoder-options="encoderOptions"
     :format="format"
     :rotate-control="rotateControl"
+    :edge-detection="edgeDetection"
     :menu-position="menuPosition"
     :menu-thickness="menuThickness"
     :background-color="backgroundColor"
@@ -185,15 +186,19 @@ Tools：`Bezier`、`createAnimation`、`Tool`、`createUtils`。
 	**type**：boolean  
 	**default**：false  
 	**describe**：Whether to display the rotation control.  
-9. `menuPosition`：  
+9. `edgeDetection`：  
+	**type**：boolean  
+	**default**：false  
+	**describe**：Whether to enable edge detection.  
+10. `menuPosition`：  
 	**type**：string  
 	**default**：bottom  
 	**describe**：Location of menu bar. Value：top、bottom、left、right.  
-10. `menuThickness`：  
+11. `menuThickness`：  
 	**type**：number  
 	**required**：false  
 	**describe**：When 'menuPosition' is equal to 'top' or 'bottom', it represents the height of the menu bar. When 'menuPosition' equals 'left' or 'right', it represents the width of the menu bar. The value is greater than 0. Hide menu bar when equal to 0.  
-11. `backgroundColor`：  
+12. `backgroundColor`：  
 	**type**：string  
 	**required**：false  
 	**describe**：The background color of the component. 
@@ -224,6 +229,7 @@ Tools：`Bezier`、`createAnimation`、`Tool`、`createUtils`。
     :magnification="magnification"
     :init-angle="initAngle"
     :rotate-control="rotateControl"
+    :edge-detection="edgeDetection"
     :max-pixel="maxPixel"
     :encoder-options="encoderOptions"
     :format="format"
@@ -285,6 +291,7 @@ Menu bar component, see demo for effect.
     :magnification="magnification"
     :init-angle="initAngle"
     :rotate-control="rotateControl"
+    :edge-detection="edgeDetection"
     :msk-option="mskOption"
     @on-change="cutChange"
   >

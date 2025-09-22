@@ -11,6 +11,7 @@ const config = {
     'Ellipse': '椭圆',
     'Unchangeable': '不可改变',
     'Changeable': '可改变',
+    'edge detection': '边缘检测',
     'Canvas bgColor': '画布背景色',
     'Mask color': '遮罩颜色',
     'CropBox color': '裁剪框颜色',

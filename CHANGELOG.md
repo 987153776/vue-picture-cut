@@ -1,3 +1,11 @@
+## 3.0.0-alpha.0 (2025-09-22)
+
+#### :house: Optimize
+* 作者本人太菜，工作也很忙，没空深究TypeScript，所以转成了js实现。对此我很抱歉，但项目中定义了`.d.ts`类型声明文件。
+
+#### :rocket: New Features
+* 增加新参数`rotateControl`，控制是否开启边缘检测，开启后图片会自动撑满裁剪框。
+
 ## 2.0.18-alpha.0 (2022-05-23)
 
 #### :bug: Bug Fix

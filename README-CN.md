@@ -137,6 +137,7 @@ import {
     :encoder-options="encoderOptions"
     :format="format"
     :rotate-control="rotateControl"
+    :edge-detection="edgeDetection"
     :menu-position="menuPosition"
     :menu-thickness="menuThickness"
     :background-color="backgroundColor"
@@ -184,16 +185,20 @@ import {
 8. `rotateControl`：  
 	**类型**：boolean  
 	**默认**：false  
-	**描述**：是否显示旋转控件。  
-9. `menuPosition`：  
+	**描述**：是否显示旋转控件。 
+9. `edgeDetection`：  
+	**类型**：boolean  
+	**默认**：false  
+	**描述**：是否开启边缘检测。  
+10. `menuPosition`：  
 	**类型**：string  
 	**默认**：bottom  
 	**描述**：菜单栏位置，取值：top、bottom、left、right。  
-10. `menuThickness`：  
+11. `menuThickness`：  
 	**类型**：number  
 	**必须**：非必须  
 	**描述**：menuPosition取top、bottom时表示菜单栏高度，menuPosition取left、right时表示菜单栏高度宽度，取值大于0，等于0时隐藏菜单栏。  
-11. `backgroundColor`：  
+12. `backgroundColor`：  
 	**类型**：string  
 	**必须**：非必须  
 	**描述**：组件背景色。  
@@ -224,6 +229,7 @@ import {
     :magnification="magnification"
     :init-angle="initAngle"
     :rotate-control="rotateControl"
+    :edge-detection="edgeDetection"
     :max-pixel="maxPixel"
     :encoder-options="encoderOptions"
     :format="format"
@@ -285,6 +291,7 @@ import {
     :magnification="magnification"
     :init-angle="initAngle"
     :rotate-control="rotateControl"
+    :edge-detection="edgeDetection"
     :msk-option="mskOption"
     @on-change="cutChange"
   >

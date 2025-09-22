@@ -343,8 +343,7 @@ export default class PhotoMain{
     this._scaleByZoom(zoom, offPoint);
     this._draw(this.imgRect, this.showRect);
     this._scaleTimer = setTimeout(() => {
-      const [offX, offY, offW, offH] = this._checkRange();
-      this.doAnimation(offX, offY, offW, offH, 0);
+      this.emitCheckRange();
     }, 500);
   }
 
@@ -472,53 +471,63 @@ export default class PhotoMain{
       ctx.translate(x , y);
       ctx.scale(sH, sV);
 
-      ctx.drawImage(this.img,
-        imgRect.x, imgRect.y, imgRect.w, imgRect.h,
-        -w / 2, -h /2, w, h);
+      ctx.drawImage(
+        this.img,
+        imgRect.x,
+        imgRect.y,
+        imgRect.w,
+        imgRect.h,
+        -w / 2,
+        -h /2,
+        w,
+        h
+      );
 
       ctx.scale(-sH, -sV);
       ctx.translate(-x, -y);
 
       if (this._root.debug) {
+        let {x: coreX, y: coreY} = this._root.core;
+        let {minX, minY, maxX, maxY} = this._moveRect;
         ctx.strokeStyle = '#0f0';
         ctx.lineWidth = 2;
         for (let i = 0; i < this._root.drawHeight / 200; i++) {
           ctx.beginPath();
-          ctx.moveTo(-this._root.core.x,i * 100 + 50);
-          ctx.lineTo(this._root.core.x,i * 100 + 50);
+          ctx.moveTo(-coreX, i * 100 + 50);
+          ctx.lineTo(coreX, i * 100 + 50);
           ctx.stroke();
           ctx.closePath();
           ctx.beginPath();
-          ctx.moveTo(-this._root.core.x,-i * 100 - 50);
-          ctx.lineTo(this._root.core.x,-i * 100 - 50);
+          ctx.moveTo(-coreX, -i * 100 - 50);
+          ctx.lineTo(coreX, -i * 100 - 50);
           ctx.stroke();
           ctx.closePath();
         }
         for (let i = 0; i < this._root.drawWidth / 200; i++) {
           ctx.beginPath();
-          ctx.moveTo(i * 100 + 50, -this._root.core.y);
-          ctx.lineTo(i * 100 + 50, this._root.core.y);
+          ctx.moveTo(i * 100 + 50, -coreY);
+          ctx.lineTo(i * 100 + 50, coreY);
           ctx.stroke();
           ctx.closePath();
           ctx.beginPath();
-          ctx.moveTo(-i * 100 - 50, -this._root.core.y);
-          ctx.lineTo(-i * 100 - 50, this._root.core.y);
+          ctx.moveTo(-i * 100 - 50, -coreY);
+          ctx.lineTo(-i * 100 - 50, coreY);
           ctx.stroke();
           ctx.closePath();
         }
 
-        if (this._moveRect.minX !== null &&
-          this._moveRect.maxX !== null &&
-          this._moveRect.minY !== null &&
-          this._moveRect.maxY !== null) {
+        if (minX !== null &&
+          maxX !== null &&
+          minY !== null &&
+          maxY !== null) {
           ctx.strokeStyle = '#00f';
           ctx.fillStyle = 'rgba(0,0,0,0)';
           ctx.lineWidth = 2;
           ctx.strokeRect(
-            this._moveRect.minX,
-            this._moveRect.minY,
-            this._moveRect.maxX - this._moveRect.minX,
-            this._moveRect.maxY - this._moveRect.minY);
+            minX,
+            minY,
+            maxX - minX,
+            maxY - minY);
         }
 
         ctx.beginPath();
@@ -608,9 +617,12 @@ export default class PhotoMain{
     this._touchstartPoint = this._getPointerLocation(offPoint);
     this._root.setPriority(this);
 
+    let {w, h} = this.showRect;
+    let size = Math.max(w, h);
     zoom = 1 + zoom * 0.0005;
+    zoom = (size - 700 + 700 * zoom) / size;
     zoom = zoom > 1.08 ? 1.08 : zoom < 0.92593 ? 0.92593 : zoom;
-    this._scaleByZoom(zoom, point);
+    this.__scaleByZoom(zoom, point);
     this._draw(this.imgRect, this.showRect);
   }
 
@@ -619,8 +631,7 @@ export default class PhotoMain{
     this._status = null;
     this._touchstartEvent = $tool.doubleTouche({x: 0, y: 0, id: 0});
     this._touchstartPoint = {x: 0, y: 0};
-    const [offX, offY, offW, offH] = this._checkRange();
-    this.doAnimation(offX, offY, offW, offH, 0);
+    this.emitCheckRange();
     this._root.deletePriority(this.className);
   }
 
@@ -702,10 +713,20 @@ export default class PhotoMain{
    * 缩放图片
    * @param {number} zoom=1
    * @param {module:vue-picture-cut.Point} core
-   * @param {number} angle=0
+   * @param {number} [angle=0]
    * @private
    */
-  _scaleByZoom(zoom = 1, core, angle = 0) {
+  __scaleByZoom = $tool.throttle(this._scaleByZoom, 16);
+
+  /**
+   * 缩放图片
+   * @param {number} zoom
+   * @param {module:vue-picture-cut.Point} core
+   * @param {number} [angle=0]
+   * @private
+   */
+  _scaleByZoom(zoom, core, angle = 0) {
+
     let pl = this._touchstartPoint;
     this._touchstartPoint = { x: pl.x * zoom, y: pl.y * zoom};
     pl = this._touchstartPoint;
@@ -720,6 +741,14 @@ export default class PhotoMain{
       sV,
       sH
     };
+  }
+
+  /**
+   * 触发边缘检测
+   */
+  emitCheckRange() {
+    const [offX, offY, offW, offH] = this._checkRange();
+    this.doAnimation(offX, offY, offW, offH, 0);
   }
 
   /**
@@ -775,19 +804,31 @@ export default class PhotoMain{
    * @private
    */
   _getPhotoByRangeLocation(newLocation) {
+    let {edgeDetection} = this._root;
     let { x, y, w, h } = this.showRect;
     const { minX, minY, maxX, maxY } = this._moveRect;
     if (newLocation) {
       [x, y, w, h] = newLocation;
     }
-    return [
-      x - (minX || 0),
-      y - (minY || 0),
-      x + w - (maxX || 0),
-      y + h - (maxY || 0),
-      w - (maxX || 0) + (minX || 0),
-      h - (maxY || 0) + (minY || 0)
-    ];
+    if (edgeDetection) {
+      return [
+        x - (minX || 0),
+        y - (minY || 0),
+        x + w - (maxX || 0),
+        y + h - (maxY || 0),
+        w - (maxX || 0) + (minX || 0),
+        h - (maxY || 0) + (minY || 0)
+      ];
+    } else {
+      return [
+        x - (maxX || 0),
+        y - (maxY || 0),
+        x + w - (minX || 0),
+        y + h - (minY || 0),
+        w - (minX || 0) + (maxX || 0),
+        h - (minY || 0) + (maxY || 0)
+      ];
+    }
   }
 
   /**

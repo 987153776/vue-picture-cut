@@ -180,7 +180,6 @@ class Animation {
       }
       const { x, y } = this._bezier.getPoint(difT2);
       const c = this._change(x, y);
-      console.log(c, difT, this._times);
       if (c !== false && difT < this._times) {
         this._do();
       } else this._end();

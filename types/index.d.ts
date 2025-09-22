@@ -2,6 +2,21 @@ declare module 'vue-picture-cut' {
     export type LoadImgCallback = (loading: boolean) => void;
     export type LoadImgCallbackMap = Map<string, LoadImgCallback>;
     export type EventList = Map<string, PhotoBasic>;
+    export type Tool = {
+        rotatePoint(x: number, y: number, angle: number): Point;
+        loadCrossDomainImg(src: string): Promise<string>;
+        cloneJSON(obj: any): any;
+        loadImg (src: string): Promise<HTMLImageElement>;
+        clipBy (img: HTMLImageElement, width: number, height: number, showRect: RectFull, encoderOptions?: number, format?: string, pathDone?: PathDone): string;
+        clipByRound (img: HTMLImageElement, width: number, height: number, showRect: RectFull, encoderOptions?: number, format?: string): string;
+        clipByMax (img: HTMLImageElement, max?: number, encoderOptions?: number): ClipResult | void;
+        base64ToBlob (base64: string, format?: string): Blob | null;
+        doubleTouche (tp1: TouchePoint | Point, tp2: TouchePoint): DoubleToucheEvent;
+        getEllipseRectByRect(w: number, h: number, angle: number): Rect;
+        getRectByRect(w: number, h: number, angle: number): Rect;
+        debounce<T extends (...args: any[]) => any>(func: T, delay: number, immediate?: boolean): T;
+        throttle<T extends (...args: any[]) => any>(func: T, delay: number): T;
+    }
 
     export interface Window {
         BlobBuilder?: any;
@@ -57,9 +72,10 @@ declare module 'vue-picture-cut' {
         private _status: string | null;
         private _touchstartPoint: Point;
         private _touchstartEvent: DoubleToucheEvent;
-        private _animation: AnimationInterface | undefined;
+        private _animation: Animation | undefined;
         private _scaleTimer: number | null;
         private _loadingEvent: (loading: boolean) => void | undefined;
+        private __scaleByZoom: (zoom: number, core: Point, angle: number) => void;
         loadImgEd: LoadImgCallbackMap;
 
         constructor(el: HTMLCanvasElement, root: PhotoRoot);
@@ -85,6 +101,7 @@ declare module 'vue-picture-cut' {
         wheelStart(zoom: number, point: Point): void;
         wheelChange(zoom: number, point: Point): void;
         wheelEnd(): void;
+        emitCheckRange(): void;
         private _touchStart1(tp: TouchePoint);
         private _touchStart2(tp1: TouchePoint, tp2: TouchePoint);
         private _touchMove1(tp: TouchePoint);
@@ -110,7 +127,7 @@ declare module 'vue-picture-cut' {
         private __maskRect?: Rect;
         private _touche: TouchePoint | null;
         private _touchePosition: string | undefined;
-        private __animation: AnimationInterface | undefined;
+        private __animation: Animation | undefined;
         private readonly _draw: Draw;
 
         constructor(root: PhotoRoot, width: number, height: number, resize: boolean, draw: Draw);
@@ -153,6 +170,7 @@ declare module 'vue-picture-cut' {
         drawWidth: number;
         drawHeight: number;
         magnification: number;
+        private _edgeDetection: boolean;
         core: Point;
         eventList: EventList;
         priorityEvent: PhotoBasic | null;
@@ -160,10 +178,13 @@ declare module 'vue-picture-cut' {
         private _wheelTimeOut: number;
         private _wheelStatus: boolean;
 
+        get edgeDetection(): boolean;
+        set edgeDetection(value: boolean);
+        set cursor(value: string);
+
         constructor();
 
-        init (el: HTMLElement, magnification?: number): void;
-        set cursor(value: string);
+        init (el: HTMLElement, options?: PhotoRootInitParams): void;
         addEventList(pe: PhotoBasic): void;
         getEventList<T>(className: string): T | null;
         deleteEventList(className: string): void;
@@ -291,6 +312,11 @@ declare module 'vue-picture-cut' {
         iteration?: number | string;
         direction?: string;
         end?: AnimationParamsEnd;
+    }
+
+    export interface PhotoRootInitParams {
+        magnification: number | undefined;
+        edgeDetection: boolean | undefined;
     }
 
     export interface AnimationInterface {
