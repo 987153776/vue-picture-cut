@@ -1,3 +1,14 @@
-> 1%
+# .browserslistrc
+
+[production]
+> 0.2%
+ie >= 10
+Chrome >= 75
+not dead
+not op_mini all
+
+[development]
+ie >= 10
+Chrome >= 75
 last 2 versions
 not dead
